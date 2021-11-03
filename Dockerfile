@@ -1,5 +1,5 @@
 # Stage 1
-FROM registry.il2.dso.mil/platform-one/devops/pipeline-templates/ironbank/nodejs14:14.16.1 AS builder
+FROM registry1.dso.mil/ironbank/opensource/nodejs/nodejs14:14.17.6 AS builder
 
 USER root
 
@@ -12,14 +12,13 @@ RUN npm run build
 USER node
 
 # Stage 2
-FROM registry.il2.dso.mil/platform-one/devops/pipeline-templates/base-image/harden-nginx-19:1.19.9
-
-USER 0
-
-COPY --from=builder --chown=appuser:appuser /app/build /var/www
+FROM registry.il2.dso.mil/platform-one/devops/pipeline-templates/base-image/harden-nginx-20:1.20.1
 
 USER appuser
+
+COPY --from=builder --chown=appuser:appuser /app/build /var/www
 
 EXPOSE 8080
 
 CMD [ "nginx", "-g", "daemon off;" ]
+
