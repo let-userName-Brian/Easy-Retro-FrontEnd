@@ -1,6 +1,8 @@
 import './App.css';
 import { useState, useEffect } from 'react'
 import { io } from "socket.io-client";
+import { Route, Routes } from 'react-router-dom'
+import Retro from './retro/Retro'
 
 function App() {
 
@@ -41,11 +43,10 @@ function App() {
   }, [])
 
   return (
-    <div className="App">
-      <header className="App-header">
-        Welcome, galvanize to your React app for sdi07-03 Floyd's computer is from 2001!
-      </header>
-    </div>
+    < Routes >
+      <Route path="/" element={<></>} />
+      <Route path="/retro/:retro_id" element={<Retro />} />
+    </Routes >
   );
 }
 
