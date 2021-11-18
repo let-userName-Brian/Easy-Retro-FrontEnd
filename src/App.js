@@ -1,6 +1,12 @@
 import './App.css';
 import { useState, useEffect } from 'react'
 import { io } from "socket.io-client";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+import Dashboard from './Dashboard/Dashboard';
 
 function App() {
 
@@ -41,11 +47,11 @@ function App() {
   }, [])
 
   return (
-    <div className="App">
-      <header className="App-header">
-        Welcome, galvanize to your React app for sdi07-03 Floyd's computer is from 2001!
-      </header>
-    </div>
+   <Router>
+      <Routes>
+        <Route path="/" element={<Dashboard users={users}/>}/>
+      </Routes>
+   </Router>
   );
 }
 
