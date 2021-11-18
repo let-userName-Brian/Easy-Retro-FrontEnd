@@ -1,9 +1,6 @@
 import './App.css';
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import { io } from "socket.io-client";
-
-// const serverURL = "https://sdi07-03.staging.dso.mil"
-const serverURL = "http://localhost:8080"
 
 function App() {
 
@@ -13,6 +10,10 @@ function App() {
   const [users, setUsers] = useState()
   const [retro, setRetro] = useState()
   const [socket, setSocket] = useState()
+
+  console.log("NODE_ENV", process.env.NODE_ENV)
+  const serverURL = process.env.NODE_ENV === "development" ? "http://localhost:8080" : "https://sdi07-03.staging.dso.mil"
+  const serverPath = process.env.NODE_ENV === "development" ? "/socket.io/" : "/api/socket.io/"
 
   useEffect(() => {
     // fetch(`https://sdi07-03.staging.dso.mil/api/retros/${retroId}`)
@@ -24,7 +25,7 @@ function App() {
     console.log('connecting to socket.io at: ', serverURL)
     const newSocket = io(serverURL, {
       //const newSocket = io("http://localhost:8080", {
-      //path: "/socket.io/",
+      path: serverPath,
       transport: ['websocket', 'polling', 'flashsocket']
     });
     console.log('connected to socket.io at: ', serverURL, "id:", newSocket.id)
