@@ -63,7 +63,7 @@ export default function Navbar({ users, darkMode, setDarkMode }) {
 
   return (
     <Box sx={{ flexGrow: 1}}>
-      <AppBar position="static" style={{ backgroundColor: '#121212'}}>
+      <AppBar position="static" style={{ backgroundColor: '#121212', overflow: 'hidden'}}>
         <Toolbar>
           <div style={{ flexGrow: 1 }}>
             <img src={mjolnirImage} style={{ width: '125px'}} alt="Logo"/>

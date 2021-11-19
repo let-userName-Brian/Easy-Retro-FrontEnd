@@ -62,7 +62,7 @@ xit('has an open retro button in the card ', async ()=>{
 })
 
 //opens the retro when clicked 
-
+//look at the app on localhost
 //check if title exists on card
 it('has a title on the card', async ()=>{
     render(dashRender);
@@ -71,9 +71,9 @@ it('has a title on the card', async ()=>{
 })
 
 //verify ID exists on card
-xit('has an id on the card for the retro', async ()=>{
+xit('has an id on the card for the retro', ()=>{
     render(dashRender);
-    const id = await screen.findByText(/e0fef645-088d-4f13-b53a-ccb95f4f2131/i)
+    const id = screen.getByAltText(/e0fef645-088d-4f13-b53a-ccb95f4f2131/i)
     expect(id).toBeInTheDocument();
 })
 

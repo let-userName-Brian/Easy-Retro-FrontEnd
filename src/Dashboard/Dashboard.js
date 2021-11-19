@@ -11,6 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { mock_retros } from './MockData';
+import bar2 from './bar2.png';
 
 export default function Dashboard({users, darkMode, setDarkMode}) {
 
@@ -71,7 +72,7 @@ export default function Dashboard({users, darkMode, setDarkMode}) {
         <Navbar users={users} darkMode={darkMode} setDarkMode={setDarkMode}/>
         <Divider color="gray" />
       </nav>
-      <Grid container spacing={2} margin={0}>
+      <Grid container spacing={2} margin={0} sx={{overflow: 'hidden'}}>
       <Grid item xs={6}>
         <Typography>Welcome back {users?.[0]?.user_name}!</Typography>
         </Grid> 
@@ -105,14 +106,14 @@ export default function Dashboard({users, darkMode, setDarkMode}) {
             component="img"
             alt={retro.retro_id}
             height="140"
-            //image=""
+            image={bar2}
           />
           <CardContent>
             <Typography gutterBottom variant="h6" component="div">
               {retro.retro_name}
             </Typography>
             <Typography gutterBottom variant="p" component="div">
-              #{retro.tags.join(', #')}
+              #{retro.tags.join(' #')}
             </Typography>
           </CardContent>
           <CardActions>
