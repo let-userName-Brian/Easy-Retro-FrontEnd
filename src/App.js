@@ -7,8 +7,13 @@ import {
   Route,
 } from "react-router-dom";
 import Dashboard from './Dashboard/Dashboard';
+import {ThemeProvider, Switch } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
-function App() {
+
+
+export default function App() {
 
   let retroId = 'e0fef645-088d-4f13-b53a-ccb95f4f2131'
   let userId = 'c1ad74ae-b651-4fa0-9820-833193797964'
@@ -17,9 +22,16 @@ function App() {
   const [retro, setRetro] = useState()
   const [socket, setSocket] = useState()
 
+  const [darkMode, setDarkMode] = useState(false); //darkMode state -- passed to NavBar
+  //console.log('state pre', darkMode)
+
+
   console.log("NODE_ENV", process.env.NODE_ENV)
   const serverURL = process.env.NODE_ENV === "development" ? "http://localhost:8080" : "https://sdi07-03.staging.dso.mil"
   const serverPath = process.env.NODE_ENV === "development" ? "/socket.io/" : "/api/socket.io/"
+
+
+
 
   useEffect(() => {
     // fetch(`https://sdi07-03.staging.dso.mil/api/retros/${retroId}`)
@@ -46,13 +58,23 @@ function App() {
     })
   }, [])
 
+
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? 'dark' : 'light',
+  }
+  })
+
   return (
-   <Router>
-      <Routes>
-        <Route path="/" element={<Dashboard users={users}/>}/>
-      </Routes>
-   </Router>
+
+        <Router>
+          <ThemeProvider theme={theme}>
+            <CssBaseline>
+              <Routes>
+                <Route path="/" element={<Dashboard users={users} darkMode={darkMode} setDarkMode={setDarkMode}/>} />
+              </Routes>
+            </CssBaseline>
+          </ThemeProvider>
+        </Router>
   );
 }
-
-export default App;

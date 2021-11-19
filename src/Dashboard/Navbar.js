@@ -3,25 +3,24 @@ import mjolnirImage from './mjolnir.png';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Avatar } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { Switch } from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-export default function Navbar({ users }) {
 
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
+export default function Navbar({ users, darkMode, setDarkMode }) {
+
+  const [auth, setAuth] = useState(true);
+  const [anchorEl, setAnchorEl] = useState(null);
+  
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -60,22 +59,24 @@ export default function Navbar({ users }) {
     };
   }
 
+  const handleDarkMode = () => {
+    setDarkMode(!darkMode);
+    // console.log('state post', darkMode)
+  }
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box sx={{ flexGrow: 1}}>
+      <AppBar position="static" >
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
           <div style={{ flexGrow: 1 }}>
-            <img src={mjolnirImage} style={{ width: '125px' }} />
+            <img src={mjolnirImage} style={{ width: '125px'}} />
           </div>
+          <IconButton sx={{ ml: 1 }} 
+            onClick={handleDarkMode}
+            color="inherit"
+            >
+            {darkMode ? <Brightness4Icon /> : <Brightness7Icon />}
+          </IconButton>
           {auth && (
             <div>
               <IconButton
@@ -105,8 +106,8 @@ export default function Navbar({ users }) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Admin Tools</MenuItem>
+                <MenuItem onClick={handleClose}>My Retros</MenuItem>
               </Menu>
             </div>
           )}
@@ -115,17 +116,3 @@ export default function Navbar({ users }) {
     </Box>
   )
 }
-
-    // <Grid container xs={12}>
-    //   <Grid item xs={8} s={8}>
-    //     <img src={mjolnirImage} width={125} />
-    //   </Grid>
-    //   <Grid item xs={4}>
-    //     <Avatar sx={{
-    //       position: 'absolute',
-    //       right: '10px',
-    //     }} 
-    //     {...stringAvatar(users?.[0]?.user_name || "unknown user")}
-    //     />
-    //   </Grid>
-    // </Grid>
