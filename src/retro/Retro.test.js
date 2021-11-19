@@ -10,9 +10,10 @@ import { createMemoryHistory } from 'history'
 import App from '../App';
 
 const server = setupServer(
-  rest.get('/retros', (req, res, ctx) => {
-    return res(ctx.json(mock_retros))
-  }),
+  rest.get('/retros/:retro_id', (req, res, ctx) => {
+    const { retro_id } = req.params;
+    return res(ctx.json(mock_retros.find(retro => retro.retro_id === retro_id)))
+  })
 )
 
 const retro = (<Router><Retro /></Router>)
@@ -26,7 +27,7 @@ test('Displays the retro page without crashing', () => {
 })
 
 
-test('Displays the ID of the retro', () => {
+test('Displays the ID of the retro', async () => {
   const retro_id = mock_retros[0].retro_id
   const retroUrl = `/retro/${retro_id}`
 
@@ -35,12 +36,11 @@ test('Displays the ID of the retro', () => {
       <Route path="/retro/:retro_id" element={<Retro />} />
     </Routes>
   </Router>)
-
   const reg = new RegExp(retro_id, "gi")
-  expect(screen.getByText(reg)).toBeInTheDocument()
+  expect(await screen.findByText(reg)).toBeInTheDocument()
 })
 
-test('Displays the name of the retro', () => {
+test('Displays the name of the retro', async () => {
   const retro_id = mock_retros[0].retro_id
   const retroUrl = `/retro/${retro_id}`
 
@@ -51,5 +51,5 @@ test('Displays the name of the retro', () => {
   </Router>)
 
   const reg = new RegExp(mock_retros[0].retro_name, "gi")
-  expect(screen.getByText(reg)).toBeInTheDocument()
+  expect(await screen.findByText(reg)).toBeInTheDocument()
 })

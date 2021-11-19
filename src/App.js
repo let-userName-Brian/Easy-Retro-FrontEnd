@@ -40,6 +40,7 @@ function App() {
       setUsers(users)
       console.log('joined retro', users)
     })
+    return () => newSocket.disconnect();
   }, [])
 
   return (

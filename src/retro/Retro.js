@@ -10,9 +10,11 @@ export default function Retro() {
   const [retro, setRetro] = useState()
 
   useEffect(() => {
+    let mounted = true;
     getRetroById(retro_id)
-      .then(retro => setRetro(retro))
-  })
+      .then(retro => mounted && setRetro(retro))
+      return () => mounted = false;
+  },[])
 
   if(!retro){
     return <div>Loading Retro!</div>
