@@ -75,7 +75,7 @@ export default function Dashboard({users, darkMode, setDarkMode}) {
       <Grid item xs={6}>
         <Typography>Welcome back {users?.[0]?.user_name}!</Typography>
         </Grid> 
-
+        
         <Grid item xs={5}>
         <Search>
             <SearchIconWrapper>
@@ -86,15 +86,15 @@ export default function Dashboard({users, darkMode, setDarkMode}) {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-        <Divider />
+
         </Grid>
 
-        <Grid item xs={12}>
-          <Button variant="outlined">Create a new Retro</Button>
+        <Grid container padding={2} justifyContent="center" alignItems="center">
+          <Button variant="outlined" >Create a new Retro</Button>
         </Grid>
 
         <Grid item xs={8}>
-          <Typography variant="h5">Your Active Retros</Typography>
+          <Typography variant="h6">Your Active Retros</Typography>
         </Grid>
 
         <Grid item xs={12} >
