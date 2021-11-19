@@ -13,24 +13,21 @@ function App() {
   const [retro, setRetro] = useState()
   const [socket, setSocket] = useState()
 
-  console.log("NODE_ENV", process.env.NODE_ENV)
-  const serverURL = process.env.NODE_ENV === "development" ? "http://localhost:8080" : "https://sdi07-03.staging.dso.mil"
-  const serverPath = process.env.NODE_ENV === "development" ? "/socket.io/" : "/api/socket.io/"
+  const sockets = {
+    test: "",
+    development: "http://localhost:8080",
+    production: "https://sdi07-03.staging.dso.mil/api"
+  }
+
+  const serverURL = sockets[process.env.NODE_ENV]
 
   useEffect(() => {
-    // fetch(`https://sdi07-03.staging.dso.mil/api/retros/${retroId}`)
-    //   .then(resp => resp.json())
-    //   .then(retro => {
-    //     setRetro(retro)
-    //   })
-
     console.log('connecting to socket.io at: ', serverURL)
     const newSocket = io(serverURL, {
-      //const newSocket = io("http://localhost:8080", {
-      path: serverPath,
+      path: "/socket.io/",
       transport: ['websocket', 'polling', 'flashsocket']
     });
-    console.log('connected to socket.io at: ', serverURL, "id:", newSocket.id)
+    console.log('connected to socket.io at: ', serverURL)
 
     setSocket(newSocket) //useState var
 
