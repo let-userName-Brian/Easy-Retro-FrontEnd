@@ -1,9 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import '@testing-library/jest-dom'
+import { render, screen } from '@testing-library/react'
 import App from './App';
+import { BrowserRouter as Router } from 'react-router-dom'
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
-});
+const app = (<Router><App /></Router>)
+
+test('renders without crashing', () => {
+  render(app)
+})
