@@ -1,8 +1,17 @@
 import './App.css';
 import { useState, useEffect } from 'react'
 import { io } from "socket.io-client";
+import Retro from './retro/Retro'
+import {
+  Routes,
+  Route,
+} from "react-router-dom";
+import Dashboard from './Dashboard/Dashboard';
+import { ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
-function App() {
+export default function App() {
 
   let retroId = 'e0fef645-088d-4f13-b53a-ccb95f4f2131'
   let userId = 'c1ad74ae-b651-4fa0-9820-833193797964'
@@ -10,25 +19,25 @@ function App() {
   const [users, setUsers] = useState()
   const [retro, setRetro] = useState()
   const [socket, setSocket] = useState()
+  const [darkMode, setDarkMode] = useState(); //darkMode state -- passed to NavBar
 
-  console.log("NODE_ENV", process.env.NODE_ENV)
-  const serverURL = process.env.NODE_ENV === "development" ? "http://localhost:8080" : "https://sdi07-03.staging.dso.mil"
-  const serverPath = process.env.NODE_ENV === "development" ? "/socket.io/" : "/api/socket.io/"
+
+
+  const sockets = {
+    test: "",
+    development: "http://localhost:8080",
+    production: "https://sdi07-03.staging.dso.mil/api"
+  }
+
+  const serverURL = sockets[process.env.NODE_ENV]
 
   useEffect(() => {
-    // fetch(`https://sdi07-03.staging.dso.mil/api/retros/${retroId}`)
-    //   .then(resp => resp.json())
-    //   .then(retro => {
-    //     setRetro(retro)
-    //   })
-
     console.log('connecting to socket.io at: ', serverURL)
     const newSocket = io(serverURL, {
-      //const newSocket = io("http://localhost:8080", {
-      path: serverPath,
+      path: "/socket.io/",
       transport: ['websocket', 'polling', 'flashsocket']
     });
-    console.log('connected to socket.io at: ', serverURL, "id:", newSocket.id)
+    console.log('connected to socket.io at: ', serverURL)
 
     setSocket(newSocket) //useState var
 
@@ -38,15 +47,24 @@ function App() {
       setUsers(users)
       console.log('joined retro', users)
     })
+    return () => newSocket.disconnect();
   }, [])
 
+
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? 'dark' : 'light',
+    }
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        Welcome, galvanize to your React app for sdi07-03 Floyd's computer is from 2001!
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline>
+        <Routes>
+          <Route path="/" element={<Dashboard users={users} darkMode={darkMode} setDarkMode={setDarkMode} />} />
+          <Route path="/retro/:retro_id" element={<Retro />} />
+        </Routes>
+      </CssBaseline>
+    </ThemeProvider>
   );
 }
-
-export default App;
