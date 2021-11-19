@@ -1,10 +1,17 @@
 import './App.css';
 import { useState, useEffect } from 'react'
 import { io } from "socket.io-client";
-import { Route, Routes } from 'react-router-dom'
 import Retro from './retro/Retro'
+import {
+  Routes,
+  Route,
+} from "react-router-dom";
+import Dashboard from './Dashboard/Dashboard';
+import { ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
-function App() {
+export default function App() {
 
   let retroId = 'e0fef645-088d-4f13-b53a-ccb95f4f2131'
   let userId = 'c1ad74ae-b651-4fa0-9820-833193797964'
@@ -12,6 +19,9 @@ function App() {
   const [users, setUsers] = useState()
   const [retro, setRetro] = useState()
   const [socket, setSocket] = useState()
+  const [darkMode, setDarkMode] = useState(); //darkMode state -- passed to NavBar
+
+
 
   const sockets = {
     test: "",
@@ -40,12 +50,21 @@ function App() {
     return () => newSocket.disconnect();
   }, [])
 
+
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? 'dark' : 'light',
+    }
+  })
+
   return (
-    < Routes >
-      <Route path="/" element={<></>} />
-      <Route path="/retro/:retro_id" element={<Retro />} />
-    </Routes >
+    <ThemeProvider theme={theme}>
+      <CssBaseline>
+        <Routes>
+          <Route path="/" element={<Dashboard users={users} darkMode={darkMode} setDarkMode={setDarkMode} />} />
+          <Route path="/retro/:retro_id" element={<Retro />} />
+        </Routes>
+      </CssBaseline>
+    </ThemeProvider>
   );
 }
-
-export default App;
