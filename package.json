@@ -48,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "msw": "^0.35.0",
     "@testing-library/react": "^11.2.7"
   }
 }
