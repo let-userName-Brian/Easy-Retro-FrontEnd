@@ -90,7 +90,7 @@ export default function Dashboard({users, darkMode, setDarkMode}) {
         </Grid>
 
         <Grid container padding={2} justifyContent="center" alignItems="center">
-          <Button variant="outlined" >Create a new Retro</Button>
+          <Button variant="outlined" alt='Create'>Create a new Retro</Button>
         </Grid>
 
         <Grid item xs={8}>
@@ -100,7 +100,7 @@ export default function Dashboard({users, darkMode, setDarkMode}) {
         <Grid item xs={12} >
           {mock_retros.map((retro, index) => (
             
-        <Card sx={{ maxWidth: 345, marginBottom: 2}}>
+        <Card key={index} sx={{ maxWidth: 345, marginBottom: 2}}>
           <CardMedia
             component="img"
             alt={retro.retro_id}
