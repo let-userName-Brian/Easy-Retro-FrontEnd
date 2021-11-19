@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { mock_retros } from './MockData';
 
 
 
@@ -62,7 +63,7 @@ export default function Navbar({ users, darkMode, setDarkMode }) {
 
   return (
     <Box sx={{ flexGrow: 1}}>
-      <AppBar position="static" style={{ backgroundColor: '#121212'}}>
+      <AppBar position="static" style={{ backgroundColor: '#121212', overflow: 'hidden'}}>
         <Toolbar>
           <div style={{ flexGrow: 1 }}>
             <img src={mjolnirImage} style={{ width: '125px'}} alt="Logo"/>
