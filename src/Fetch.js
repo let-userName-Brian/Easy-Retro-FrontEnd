@@ -1,6 +1,6 @@
 const servers = {
   test: "",
-  development: "localhost:8080",
+  development: "http://localhost:8080",
   production: "https://sdi07-03.staging.dso.mil/api"
 }
 
