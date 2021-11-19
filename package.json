@@ -9,7 +9,6 @@
     "@mui/icons-material": "^5.1.1",
     "@mui/material": "^5.1.1",
     "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -26,6 +25,7 @@
     "test:unit": "react-scripts test --coverage --watchAll=false",
     "lint": "./node_modules/.bin/eslint . --ext js,ts,tsx",
     "eject": "react-scripts eject",
+    "test": "react-scripts test",
     "test:e2e": "npx cypress run",
     "test:e2e-ci": "npx cypress run --env configFile=pipeline"
   },
@@ -46,5 +46,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/react": "^11.2.7"
   }
 }

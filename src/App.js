@@ -7,7 +7,7 @@ import {
   Route,
 } from "react-router-dom";
 import Dashboard from './Dashboard/Dashboard';
-import {ThemeProvider, Switch } from '@mui/material';
+import {ThemeProvider} from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -21,9 +21,8 @@ export default function App() {
   const [users, setUsers] = useState()
   const [retro, setRetro] = useState()
   const [socket, setSocket] = useState()
+  const [darkMode, setDarkMode] = useState(); //darkMode state -- passed to NavBar
 
-  const [darkMode, setDarkMode] = useState(false); //darkMode state -- passed to NavBar
-  //console.log('state pre', darkMode)
 
 
   console.log("NODE_ENV", process.env.NODE_ENV)
@@ -66,7 +65,6 @@ export default function App() {
   })
 
   return (
-
         <Router>
           <ThemeProvider theme={theme}>
             <CssBaseline>

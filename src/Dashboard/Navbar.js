@@ -4,13 +4,11 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Avatar } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useState, useContext } from 'react';
-import { Switch } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
@@ -21,7 +19,6 @@ export default function Navbar({ users, darkMode, setDarkMode }) {
   const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   
-
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -50,7 +47,7 @@ export default function Navbar({ users, darkMode, setDarkMode }) {
     //todo: Get fancier to handle first.last format.
     console.log('stringAvatar name: ', name)
     const nameParts = name.split(' ');
-    const initials = `${nameParts?.[0]?.[0] || ''}${nameParts?.[1]?.[0] || ''}`;
+    const initials = `${nameParts?.[0]?.[0] || ''}${nameParts?.[1]?.[0] || 'uK'}`;
     return {
       sx: {
         bgcolor: stringToColor(name),
@@ -61,15 +58,14 @@ export default function Navbar({ users, darkMode, setDarkMode }) {
 
   const handleDarkMode = () => {
     setDarkMode(!darkMode);
-    // console.log('state post', darkMode)
   }
 
   return (
     <Box sx={{ flexGrow: 1}}>
-      <AppBar position="static" >
+      <AppBar position="static" style={{ backgroundColor: '#121212'}}>
         <Toolbar>
           <div style={{ flexGrow: 1 }}>
-            <img src={mjolnirImage} style={{ width: '125px'}} />
+            <img src={mjolnirImage} style={{ width: '125px'}} alt="Logo"/>
           </div>
           <IconButton sx={{ ml: 1 }} 
             onClick={handleDarkMode}
@@ -78,7 +74,7 @@ export default function Navbar({ users, darkMode, setDarkMode }) {
             {darkMode ? <Brightness4Icon /> : <Brightness7Icon />}
           </IconButton>
           {auth && (
-            <div>
+            <div alt='Avatar'>
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -87,7 +83,7 @@ export default function Navbar({ users, darkMode, setDarkMode }) {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <Avatar
+                <Avatar 
                   {...stringAvatar(users?.[0]?.user_name || "unknown user")}
                 />
               </IconButton>
