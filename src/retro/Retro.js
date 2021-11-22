@@ -14,7 +14,7 @@ export default function Retro() {
     let mounted = true;
     getRetroById(retro_id)
       .then(retro => mounted && setRetro(retro))
-      return () => mounted = false;
+      return () => mounted = false;  
   },[])
 
   if(!retro){
@@ -22,6 +22,6 @@ export default function Retro() {
   }
 
   return <><div>Hello Stephen!</div>
-    <Column retro_id={retro_id}/>
+    <Column retro_id={retro_id} cards={cards} />
     <div>Retro Name: {retro.retro_name}</div></>
 }
