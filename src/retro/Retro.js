@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { getRetroById } from "../Fetch"
 import { useState, useEffect } from "react"
+import Column from "./Column"
 
 
 export default function Retro() {
@@ -21,6 +22,6 @@ export default function Retro() {
   }
 
   return <><div>Hello Stephen!</div>
-    <div>Retro ID: {retro_id}</div>
+    <Column retro_id={retro_id}/>
     <div>Retro Name: {retro.retro_name}</div></>
 }
