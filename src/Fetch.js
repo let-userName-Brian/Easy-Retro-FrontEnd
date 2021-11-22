@@ -45,3 +45,4 @@ export function getUserById(user_id) {
       .catch(err => resolve(null))
   })
 }
+

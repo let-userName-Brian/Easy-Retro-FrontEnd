@@ -6,19 +6,19 @@ import RetroCards from './RetroCards';
 import SearchBar from './SearchBar';
 import RetroModal from './RetroModal';
 
-export default function Dashboard({users, darkMode, setDarkMode}) {
+export default function Dashboard({user, darkMode, setDarkMode}) {
 
 
 
   return (
     <div>
       <nav>
-        <Navbar users={users} darkMode={darkMode} setDarkMode={setDarkMode}/>
+        <Navbar users={user} darkMode={darkMode} setDarkMode={setDarkMode}/>
         <Divider color="gray" />
       </nav>
       <Grid container spacing={2} margin={0} sx={{overflow: 'hidden'}}>
         <Grid item xs={6}>
-          <Typography>Welcome back {users?.[0]?.user_name}!</Typography>
+          <Typography>Welcome back {user?.[0]?.user_name}!</Typography>
         </Grid> 
         
         <Grid item xs={5}>
