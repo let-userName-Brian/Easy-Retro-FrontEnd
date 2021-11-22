@@ -32,3 +32,16 @@ export function getRetroById(retro_id) {
   })
 }
 
+//fetch user from the db
+export function getUserById(user_id) {
+  return new Promise((resolve, _) => {
+    fetch(`${serverURL}/users/${user_id}`)
+      .then(function (res) {
+        if (res.ok) { return res }
+        else { throw new Error(res.statusText) }
+      })
+      .then(res => res.json())
+      .then(user => resolve(user))
+      .catch(err => resolve(null))
+  })
+}

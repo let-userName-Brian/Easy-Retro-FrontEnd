@@ -33,7 +33,7 @@ export default function Dashboard({users, darkMode, setDarkMode}) {
           <Typography variant="h6">Your Active Retros</Typography>
         </Grid>
 
-        <Grid container spacing={2}>
+        <Grid container spacing={2} margin={0}>
           <RetroCards />
         </Grid>
     </div>
