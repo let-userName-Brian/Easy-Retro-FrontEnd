@@ -85,7 +85,7 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
                 color="inherit"
               >
                 <Avatar 
-                  {...stringAvatar(user?.[0]?.user_name || "unknown user")}
+                  {...stringAvatar(user?.user_name || "unknown user")}
                 />
               </IconButton>
               <Menu
