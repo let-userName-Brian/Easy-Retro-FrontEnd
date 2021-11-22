@@ -15,7 +15,7 @@ import { mock_retros } from './MockData';
 
 
 
-export default function Navbar({ users, darkMode, setDarkMode }) {
+export default function Navbar({ user, darkMode, setDarkMode }) {
 
   const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -85,7 +85,7 @@ export default function Navbar({ users, darkMode, setDarkMode }) {
                 color="inherit"
               >
                 <Avatar 
-                  {...stringAvatar(users?.[0]?.user_name || "unknown user")}
+                  {...stringAvatar(user?.user_name || "unknown user")}
                 />
               </IconButton>
               <Menu
