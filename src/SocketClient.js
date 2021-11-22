@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { io } from "socket.io-client";
 
 const sockets = {
@@ -9,49 +8,39 @@ const sockets = {
 
 const serverURL = sockets[process.env.NODE_ENV]
 
-export default function SocketClient() {
+let connected = false
+export let socket
+socket = init()
 
-  // const [socket, setSocket] = useState()
-  let socket
-  const [users, setUsers] = useState([])
-
-  useEffect(() => {
-    let socket = init()
-    return () => socket.disconnect();
-  }, [])
-
-  function init() {
-    console.log('connecting to socket.io at: ', serverURL)
-    socket = io(serverURL, {
-      path: "/socket.io/",
-      transport: ['websocket', 'polling', 'flashsocket']
-    });
-
-    // setSocket(socket)
-
-    socket.on('joinedRetro', onJoinedRetro)
-    socket.on('connect', onConnect)
-    socket.on('disconnect', onDisconnect)
-
+function init() {
+  if (connected) {
     return socket
   }
 
-  function onConnect() {
-    console.log('connected to socket.io at: ', serverURL, socket)
-  }
+  console.log('connecting to socket.io at: ', serverURL)
+  socket = io(serverURL, {
+    path: "/socket.io/",
+    transport: ['websocket', 'polling', 'flashsocket']
+  });
 
-  function onDisconnect() {
-    console.log('Disconnected from socket')
-  }
+  connected = true
 
-  function joinRetro(userId, retroId) {
-    socket.emit('joinRetro', { userId, retroId });
-  }
+  socket.on('joinedRetro', onJoinedRetro)
+  socket.on('connect', onConnect)
+  socket.on('disconnect', onDisconnect)
 
-  function onJoinedRetro(users) {
-    setUsers(users)
-    console.log('joined retro', users)
-  }
+  return socket
+}
 
-  return null
+function onConnect() {
+  console.log('connected to socket.io at: ', serverURL, socket)
+}
+
+function onDisconnect() {
+  console.log('Disconnected from socket')
+  connected = false
+}
+
+function onJoinedRetro(users) {
+  console.log('joined retro', users)
 }

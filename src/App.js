@@ -1,16 +1,14 @@
-import './App.css';
-import { useState, useEffect } from 'react'
-import Retro from './retro/Retro'
-import {
-  Routes,
-  Route,
-} from "react-router-dom";
-import Dashboard from './Dashboard/Dashboard';
 import { ThemeProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import SocketClient from './SocketClient'
-import { getUserById, getRetrosByUserId } from './Fetch';
+import { createTheme } from '@mui/material/styles';
+import { useState, useEffect } from 'react';
+import {
+  Route, Routes
+} from "react-router-dom";
+import './App.css';
+import Dashboard from './Dashboard/Dashboard';
+import { getRetrosByUserId, getUserById } from './Fetch';
+import Retro from './retro/Retro';
 
 export default function App() {
 
@@ -23,15 +21,15 @@ export default function App() {
 
   useEffect(() => {
     getUserById(user_id)
-    .then(userProfile => setUser(userProfile))
+      .then(userProfile => setUser(userProfile))
   }, [])
 
   useEffect(() => {
     getRetrosByUserId(user_id)
-    .then(userProfileRetro => setUserRetro(userProfileRetro))
+      .then(userProfileRetro => setUserRetro(userProfileRetro))
   }, [])
 
-  
+
 
   console.log('user', user)
   console.log("retros", userRetro)
@@ -47,7 +45,6 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline>
-        <SocketClient />
         <Routes>
           <Route path="/" element={<Dashboard user={user} retros={userRetro} darkMode={darkMode} setDarkMode={setDarkMode} />} />
           <Route path="/retro/:retro_id" element={<Retro />} />
