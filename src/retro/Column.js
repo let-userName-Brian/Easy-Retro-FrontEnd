@@ -1,18 +1,22 @@
 
 import Card from "./Card" 
+import { useState, useEffect } from "react"
 
-export default function Column({ retro_id, cards }) {
+export default function Column({ column_id }) {
+    const [cards, setCards] = useState([])
+
+    
     return (
     <>
-        <div>Column Retro ID: {retro_id}</div>
+        <div>Column ID: {column_id}</div>
         {cards.map((card) => ( 
-            <Card card={card} key={card.card_id} />
+            <Card key={card.card_id} />
         ))}
     </> 
     )
 }
 
-// set up litener for card updated, then add behavyor for what shoudl happen 
+// set up litener for card updated, then add behavyor for what should happen 
 
 
 //get retro by user_id

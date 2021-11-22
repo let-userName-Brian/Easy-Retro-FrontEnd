@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { io } from "socket.io-client";
 
 const sockets = {
@@ -8,6 +8,8 @@ const sockets = {
 }
 
 const serverURL = sockets[process.env.NODE_ENV]
+
+export const SocketContext = createContext()
 
 export default function SocketClient() {
 
@@ -55,3 +57,4 @@ export default function SocketClient() {
 
   return null
 }
+

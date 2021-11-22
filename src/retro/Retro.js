@@ -21,7 +21,11 @@ export default function Retro() {
     return <div>Loading Retro!</div>
   }
 
-  return <><div>Hello Stephen!</div>
-    <Column retro_id={retro_id} cards={cards} />
-    <div>Retro Name: {retro.retro_name}</div></>
+  return (
+  <>
+    <div>Hello Stephen!</div>
+    <div>Retro Name: {retro.retro_name}</div>
+    {retro.column_ids.map(id => (<Column column_id={id} />))}
+  </>
+  )
 }

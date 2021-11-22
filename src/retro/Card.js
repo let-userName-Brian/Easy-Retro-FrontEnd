@@ -1,12 +1,12 @@
 //import Comment from "./Comment.js"
 
-export default function Card({card_id, card_text, user_id, votes}){
+export default function Card({key:card_id}){
     return (
     <ul>
         <div> Card ID: {card_id}</div>
-        <div> Card Text {card_text}</div>
+        {/* <div> Card Text {card_text}</div>
         <div> User ID: {user_id}</div>
-        <div> Votes: {votes}</div>
+        <div> Votes: {votes}</div> */}
         {/* {comments.map((comment) => ( 
             <Comment comment={comment} key={comment.comment_id} />
         ))} */}
