@@ -1,6 +1,5 @@
 import './App.css';
 import { useState, useEffect } from 'react'
-import { io } from "socket.io-client";
 import Retro from './retro/Retro'
 import {
   Routes,
@@ -10,6 +9,7 @@ import Dashboard from './Dashboard/Dashboard';
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import SocketClient from './SocketClient'
 
 export default function App() {
 
@@ -18,38 +18,7 @@ export default function App() {
 
   const [users, setUsers] = useState()
   const [retro, setRetro] = useState()
-  const [socket, setSocket] = useState()
   const [darkMode, setDarkMode] = useState(); //darkMode state -- passed to NavBar
-
-
-
-  const sockets = {
-    test: "",
-    development: "http://localhost:8080",
-    production: "https://sdi07-03.staging.dso.mil/api"
-  }
-
-  const serverURL = sockets[process.env.NODE_ENV]
-
-  useEffect(() => {
-    console.log('connecting to socket.io at: ', serverURL)
-    const newSocket = io(serverURL, {
-      path: "/socket.io/",
-      transport: ['websocket', 'polling', 'flashsocket']
-    });
-    console.log('connected to socket.io at: ', serverURL)
-
-    setSocket(newSocket) //useState var
-
-    newSocket.emit('joinedRetro', { userId, retroId });
-
-    newSocket.on('joinedRetro', users => {
-      setUsers(users)
-      console.log('joined retro', users)
-    })
-    return () => newSocket.disconnect();
-  }, [])
-
 
   const theme = createTheme({
     palette: {
@@ -60,6 +29,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline>
+        <SocketClient />
         <Routes>
           <Route path="/" element={<Dashboard users={users} darkMode={darkMode} setDarkMode={setDarkMode} />} />
           <Route path="/retro/:retro_id" element={<Retro />} />
