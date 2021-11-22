@@ -33,8 +33,6 @@ export default function SocketClient() {
     socket.on('connect', onConnect)
     socket.on('disconnect', onDisconnect)
 
-    joinRetro('12345', 'retroId')
-
     return socket
   }
 
