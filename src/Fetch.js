@@ -1,3 +1,5 @@
+//import { json } from "stream/consumers"
+
 const servers = {
   test: "",
   development: "http://localhost:8080",
@@ -58,4 +60,29 @@ export function getRetrosByUserId(user_id) {
      .then(user => resolve(user))
      .catch(err => resolve(null))
  })
+}
+
+//post a new retro to the db
+export function postRetro(retro) {
+  return new Promise((resolve, _) => {
+    fetch(`${serverURL}/retros/create`, {
+      //posts to retros
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(retro)
+    })
+      .then(function (res) {
+        if (res.ok) { return res }
+        else { throw new Error(res.statusText) }
+      })
+      .then(res => res.json())
+      .then(json => {console.log('response', json) 
+        return json
+      })
+      .then(retro =>resolve(retro))
+      .catch(err => resolve(null))
+  })
 }

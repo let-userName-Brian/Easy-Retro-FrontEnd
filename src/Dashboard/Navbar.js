@@ -46,7 +46,6 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
 
   const stringAvatar = (name) => {
     //todo: Get fancier to handle first.last format.
-    console.log('stringAvatar name: ', name)
     const nameParts = name.split(' ');
     const initials = `${nameParts?.[0]?.[0] || ''}${nameParts?.[1]?.[0] || 'uK'}`;
     return {
