@@ -31,8 +31,8 @@ export default function App() {
 
 
 
-  console.log('user', user)
-  console.log("retros", userRetro)
+  // console.log('user', user)
+  // console.log("retros", userRetro)
 
   const [darkMode, setDarkMode] = useState(); //darkMode state -- passed to NavBar
 
