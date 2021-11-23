@@ -1,129 +1,41 @@
 import React from 'react'
 import {Divider, Grid} from '@mui/material'
 import Navbar from './Navbar'
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import SearchIcon from '@mui/icons-material/Search';
-import { styled, alpha } from '@mui/material/styles';
-import InputBase from '@mui/material/InputBase';
-import { mock_retros } from './MockData';
-import bar2 from './bar2.png';
+import RetroCards from './RetroCards';
+import SearchBar from './SearchBar';
+import RetroModal from './RetroModal';
 
-export default function Dashboard({users, darkMode, setDarkMode}) {
+export default function Dashboard({user, darkMode, setDarkMode, retros }) {
 
-  const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
-  }));
   
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
-  
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: '12ch',
-        '&:focus': {
-          width: '20ch',
-        },
-      },
-    },
-  }));
-
-
-
-  /*
-  const handleClick = () => {
-    render(
-      <Retro />,
-    )
-  */
 
   return (
     <div>
       <nav>
-        <Navbar users={users} darkMode={darkMode} setDarkMode={setDarkMode}/>
+        <Navbar user={user} darkMode={darkMode} setDarkMode={setDarkMode}/>
         <Divider color="gray" />
       </nav>
       <Grid container spacing={2} margin={0} sx={{overflow: 'hidden'}}>
-      <Grid item xs={6}>
-        <Typography>Welcome back {users?.[0]?.user_name}!</Typography>
+        <Grid item xs={6}>
+          <Typography>Welcome back {user?.user_name}!</Typography>
         </Grid> 
         
         <Grid item xs={5}>
-        <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search..."
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-
+          <SearchBar />
         </Grid>
-
+      </Grid>
         <Grid container padding={2} justifyContent="center" alignItems="center">
-          <Button variant="outlined" alt='Create'>Create a new Retro</Button>
+          <RetroModal />
         </Grid>
 
-        <Grid item xs={8}>
+        <Grid item xs={12} sm={12} md={12} lg={12}>
           <Typography variant="h6">Your Active Retros</Typography>
         </Grid>
 
-        <Grid item xs={12} >
-          {mock_retros.map((retro, index) => (
-            
-        <Card key={index} sx={{ maxWidth: 345, marginBottom: 2}}>
-          <CardMedia
-            component="img"
-            alt={retro.retro_id}
-            height="140"
-            image={bar2}
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h6" component="div">
-              {retro.retro_name}
-            </Typography>
-            <Typography gutterBottom variant="p" component="div">
-              #{retro.tags.join(' #')}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small">Open retro</Button>
-          </CardActions>
-        </Card>
-            
-          ))}
-      </Grid>
-      </Grid>
+        <Grid container spacing={2} margin={0}>
+          <RetroCards retros={retros} />
+        </Grid>
     </div>
   )
 }

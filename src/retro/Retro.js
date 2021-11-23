@@ -1,26 +1,34 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getRetroById } from "../Fetch"
-import { useState, useEffect } from "react"
-
+import { socket } from '../SocketClient';
+import Column from "./Column";
 
 export default function Retro() {
 
   const params = useParams()
-  const retro_id = params.retro_id
+  const retroId = params.retro_id
   const [retro, setRetro] = useState()
 
-  useEffect(() => {
-    let mounted = true;
-    getRetroById(retro_id)
-      .then(retro => mounted && setRetro(retro))
-      return () => mounted = false;
-  },[])
+  console.log('socket', socket)
 
-  if(!retro){
+  let userId = 'c1ad74ae-b651-4fa0-9820-833193797964'
+
+  useEffect(() => {
+    // Ask the server to join the room with name retroId
+    socket.emit('joinRetro', { userId, retroId });
+
+    // Received when the server sends us a retro
+    socket.on('receivedRetro', (retro) => setRetro(retro))
+  }, [retroId])
+
+  if (!retro) {
     return <div>Loading Retro!</div>
   }
 
-  return <><div>Hello Stephen!</div>
-    <div>Retro ID: {retro_id}</div>
-    <div>Retro Name: {retro.retro_name}</div></>
+  return (
+    <>
+      <div>Retro Name: {retro.retro_name}</div>
+      {retro.column_ids.map(id => (<Column key={id} column_id={id} />))}
+    </>
+  )
 }

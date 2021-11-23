@@ -1,55 +1,40 @@
-import './App.css';
-import { useState, useEffect } from 'react'
-import { io } from "socket.io-client";
-import Retro from './retro/Retro'
-import {
-  Routes,
-  Route,
-} from "react-router-dom";
-import Dashboard from './Dashboard/Dashboard';
 import { ThemeProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { createTheme } from '@mui/material/styles';
+import { useState, useEffect } from 'react';
+import {
+  Route, Routes
+} from "react-router-dom";
+import './App.css';
+import Dashboard from './Dashboard/Dashboard';
+import { getRetrosByUserId, getUserById } from './Fetch';
+import Retro from './retro/Retro';
 
 export default function App() {
 
-  let retroId = 'e0fef645-088d-4f13-b53a-ccb95f4f2131'
-  let userId = 'c1ad74ae-b651-4fa0-9820-833193797964'
+  const [user, setUser] = useState()
+  const [userRetro, setUserRetro] = useState()
 
-  const [users, setUsers] = useState()
-  const [retro, setRetro] = useState()
-  const [socket, setSocket] = useState()
-  const [darkMode, setDarkMode] = useState(); //darkMode state -- passed to NavBar
-
-
-
-  const sockets = {
-    test: "",
-    development: "http://localhost:8080",
-    production: "https://sdi07-03.staging.dso.mil/api"
-  }
-
-  const serverURL = sockets[process.env.NODE_ENV]
+  //Floyd's userID to be used for testing
+  //its gonna need to be pulled from the header and then set if the user isnt in the db
+  const user_id = 'c1ad74ae-b651-4fa0-9820-833193797964'
 
   useEffect(() => {
-    console.log('connecting to socket.io at: ', serverURL)
-    const newSocket = io(serverURL, {
-      path: "/socket.io/",
-      transport: ['websocket', 'polling', 'flashsocket']
-    });
-    console.log('connected to socket.io at: ', serverURL)
-
-    setSocket(newSocket) //useState var
-
-    newSocket.emit('joinedRetro', { userId, retroId });
-
-    newSocket.on('joinedRetro', users => {
-      setUsers(users)
-      console.log('joined retro', users)
-    })
-    return () => newSocket.disconnect();
+    getUserById(user_id)
+      .then(userProfile => setUser(userProfile))
   }, [])
 
+  useEffect(() => {
+    getRetrosByUserId(user_id)
+      .then(userProfileRetro => setUserRetro(userProfileRetro))
+  }, [])
+
+
+
+  console.log('user', user)
+  console.log("retros", userRetro)
+
+  const [darkMode, setDarkMode] = useState(); //darkMode state -- passed to NavBar
 
   const theme = createTheme({
     palette: {
@@ -61,7 +46,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline>
         <Routes>
-          <Route path="/" element={<Dashboard users={users} darkMode={darkMode} setDarkMode={setDarkMode} />} />
+          <Route path="/" element={<Dashboard user={user} retros={userRetro} darkMode={darkMode} setDarkMode={setDarkMode} />} />
           <Route path="/retro/:retro_id" element={<Retro />} />
         </Routes>
       </CssBaseline>
