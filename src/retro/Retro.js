@@ -23,12 +23,12 @@ export default function Retro() {
     socket.emit('joinRetro', { userId, retroId });
 
     // Received when the server sends us a retro
-    socket.on('initRetro', ({ retro, columns, cardz, comments }) => {
-      console.log('initRetro:', retro, columns, cardz, comments)
-      setRetro(retro)
-      setColumns(columns)
-      setCards(cardz)
-      setComments(comments)
+    socket.on('initRetro', (retroPayload) => {
+      // console.log('initRetro:', retro, columns, cards, comments)
+      setRetro(retroPayload.retro)
+      setColumns(retroPayload.columns)
+      setCards(retroPayload.cards)
+      setComments(retroPayload.comments)
     })
   }, [userId, retroId])
 
