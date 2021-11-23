@@ -1,13 +1,18 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { socket } from '../SocketClient';
 import Column from "./Column";
+
+export const RetroContext = createContext()
 
 export default function Retro() {
 
   const params = useParams()
   const retroId = params.retro_id
   const [retro, setRetro] = useState()
+  const [columns, setColumns] = useState([])
+  const [cards, setCards] = useState([])
+  const [comments, setComments] = useState([])
 
   console.log('socket', socket)
 
@@ -18,17 +23,24 @@ export default function Retro() {
     socket.emit('joinRetro', { userId, retroId });
 
     // Received when the server sends us a retro
-    socket.on('receivedRetro', (retro) => setRetro(retro))
-  }, [retroId])
+    socket.on('initRetro', ({ retro, columns, cardz, comments }) => {
+      console.log('initRetro:', retro, columns, cardz, comments)
+      setRetro(retro)
+      setColumns(columns)
+      setCards(cardz)
+      setComments(comments)
+    })
+  }, [userId, retroId])
 
   if (!retro) {
     return <div>Loading Retro!</div>
   }
 
   return (
-    <>
+    <RetroContext.Provider value={{ retro, columns, cards, comments }}>
+      {console.log('state columns:', columns)}
       <div>Retro Name: {retro.retro_name}</div>
       {retro.column_ids.map(id => (<Column key={id} column_id={id} />))}
-    </>
+    </RetroContext.Provider>
   )
 }
