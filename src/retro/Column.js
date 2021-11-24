@@ -41,7 +41,6 @@ export default function Column({ column_id }) {
     <>
       <div>Column ID: {column_id}</div>
       <div>Column Name: {columnName}</div>
-      <div>Cards: {JSON.stringify(cards)}</div>
       {cards.map((card) => (
         <Card card_id={card.card_id} key={card.card_id} />
       ))}
