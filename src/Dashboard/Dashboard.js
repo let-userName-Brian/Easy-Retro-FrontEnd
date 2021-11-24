@@ -32,8 +32,7 @@ export default function Dashboard({user, darkMode, setDarkMode, retros }) {
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <Typography variant="h6">Your Active Retros</Typography>
         </Grid>
-
-        <Grid container spacing={2} margin={0}>
+        <Grid container spacing={2} margin={0} > 
           <RetroCards retros={retros} />
         </Grid>
     </div>

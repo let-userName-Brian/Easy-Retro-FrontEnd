@@ -21,8 +21,9 @@ export default function RetroCards( retros ) {
 
   
   return (
-    <Grid item xs={12} sm={12} md={4} lg={4}>
-          {retroInfo?.map((retro, index) => (   
+   <>
+    {retroInfo?.map((retro, index) => (   
+      <Grid key={index} item xs={12} sm={6} md={4.5} lg={4} sx={{ flexGrow: 1}}>
         <Card key={index} sx={{ maxWidth: 345, marginBottom: 2}}>
           <CardMedia
             component="img"
@@ -42,7 +43,8 @@ export default function RetroCards( retros ) {
             <Button size="small" onClick={()=> handleClick(retro?.retro_id)}>Open retro</Button>
           </CardActions>
         </Card> 
-          ))}
       </Grid>
+    ))}
+    </>
   )
 }
