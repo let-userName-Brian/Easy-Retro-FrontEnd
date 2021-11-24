@@ -4,15 +4,10 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import { Avatar } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { mock_retros } from './MockData';
-
 
 
 export default function Navbar({ user, darkMode, setDarkMode }) {
@@ -23,7 +18,6 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   
   const stringToColor = (string) => {
     let hash = 0;
@@ -80,6 +74,7 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
                 aria-haspopup="true"
                 onClick={handleMenu}
                 color="inherit"
+                
               >
                 <Avatar 
                   {...stringAvatar(user?.user_name || "unknown user")}

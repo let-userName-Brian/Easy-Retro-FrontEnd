@@ -63,9 +63,9 @@ export function getRetrosByUserId(user_id) {
 }
 
 //post a new retro to the db
-export function postRetro(retro) {
+export function postRetro(retro, user_id) {
   return new Promise((resolve, _) => {
-    fetch(`${serverURL}/retros/create`, {
+    fetch(`${serverURL}/retros/create/${user_id}`, {
       //posts to retros
       method: 'POST',
       headers: {
@@ -84,5 +84,5 @@ export function postRetro(retro) {
       })
       .then(retro =>resolve(retro))
       .catch(err => resolve(null))
-  })
-}
+      }) 
+    }

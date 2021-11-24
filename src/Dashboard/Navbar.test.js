@@ -2,17 +2,11 @@ import React from 'react';
 import Navbar from "./Navbar";
 import { BrowserRouter as Router } from 'react-router-dom';
 import { render, screen, fireEvent } from '@testing-library/react'
-import Dashboard from './Dashboard';
 import '@testing-library/jest-dom/extend-expect';
 import {setDarkMode} from "../App.js"
 
 
-const navRenderer = (
-  <Router>
-    <Dashboard>
-      <Navbar />
-    </Dashboard>
-  </Router>)
+const navRenderer = (<Navbar />)
 
 it('contains an image', () => {
   render(navRenderer);

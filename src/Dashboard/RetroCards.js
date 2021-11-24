@@ -6,7 +6,6 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { mock_retros } from './MockData';
 import bar2 from './bar2.png';
 
 export default function RetroCards( retros ) {
@@ -16,9 +15,8 @@ export default function RetroCards( retros ) {
 
    const handleClick = (id) => {
       console.log(id);
-      window.location.href = `/retro/${id}`;   
+      window.location.href = `/retros/${id}`;   
   }
-
   
   return (
    <>
@@ -32,7 +30,7 @@ export default function RetroCards( retros ) {
             image={bar2}
           />
           <CardContent>
-            <Typography gutterBottom variant="h6" component="div">
+            <Typography gutterBottom id="1" variant="h6" component="div">
               {retro?.retro_name}
             </Typography>
             <Typography gutterBottom variant="p" component="div">
