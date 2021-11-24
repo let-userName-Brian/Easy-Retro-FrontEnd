@@ -23,7 +23,7 @@ const style = {
   p: 4,
 };
 
-export default function RetroModal() {
+export default function RetroModal(user_id) {
 
   const [open, setOpen] = useState(false);
   const [retroName, setRetroName] = useState('');
@@ -59,8 +59,7 @@ export default function RetroModal() {
 
   useEffect(() => {
     async function sendRetro() {
-      let output = await postRetro(retro)
-      console.log("output in modal:", output)
+      let output = await postRetro(retro, user_id)
       navigate(`/retros/${output}`)
     }
     sendRetro();
@@ -108,17 +107,17 @@ export default function RetroModal() {
                     value={columnName3} onChange={(e) => setColumnName3(e.target.value)} />
                 </Grid>
                 <Grid item >
-                  <TextField id="tag_1" label="#Tags" variant="outlined"
+                  <TextField id="tag_1" label="Tag1" variant="outlined"
                     value={tag1} onChange={(e) => setTag1(e.target.value)} />
-                  <TextField id="tag_2" label="#Tags" variant="outlined"
+                  <TextField id="tag_2" label="Tag2" variant="outlined"
                     value={tag2} onChange={(e) => setTag2(e.target.value)} />
-                  <TextField id="tag_3" label="#Tags" variant="outlined"
+                  <TextField id="tag_3" label="Tag3" variant="outlined"
                     value={tag3} onChange={(e) => setTag3(e.target.value)} />
                 </Grid>
               </Grid>
             </FormControl>
-            <Button variant="outlined" onClick={() => handleClose()}>Cancel</Button>
-            <Button variant="outlined" onClick={(e) => openNewRetro(retro)}>Create</Button>
+            <Button variant="outlined" label='cancel' onClick={() => handleClose()}>Cancel</Button>
+            <Button variant="outlined" label="create" onClick={(e) => openNewRetro(retro)}>Create</Button>
           </Box>
         </Fade>
       </Modal>

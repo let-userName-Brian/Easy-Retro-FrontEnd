@@ -46,7 +46,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline>
         <Routes>
-          <Route path="/" element={<Dashboard user={user} retros={userRetro} darkMode={darkMode} setDarkMode={setDarkMode} />} />
+          <Route path="/" element={<Dashboard user={user} retros={userRetro} darkMode={darkMode} setDarkMode={setDarkMode} user_id={user_id}/>} />
           <Route path="/retros/:retro_id" element={<Retro />} />
         </Routes>
       </CssBaseline>

@@ -6,7 +6,7 @@ import RetroCards from './RetroCards';
 import SearchBar from './SearchBar';
 import RetroModal from './RetroModal';
 
-export default function Dashboard({user, darkMode, setDarkMode, retros }) {
+export default function Dashboard({user, darkMode, setDarkMode, retros, user_id }) {
 
   
 
@@ -26,7 +26,7 @@ export default function Dashboard({user, darkMode, setDarkMode, retros }) {
         </Grid>
       </Grid>
         <Grid container padding={2} justifyContent="center" alignItems="center">
-          <RetroModal />
+          <RetroModal user_id={user_id}/>
         </Grid>
 
         <Grid item xs={12} sm={12} md={12} lg={12}>
