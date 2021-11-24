@@ -47,33 +47,5 @@ it('displays "Your active retros" ', ()=>{
 })
 
 
-//come back to this when we have eveything talking 
-it('has a card', ()=>{
-    render(dashRender);
-    const card = screen.getByText(/chasten's thoughts on mjolnir/i)
-    expect(card).toBeInTheDocument();
-})
 
-//open retro button exists
-xit('has an open retro button in the card ', async ()=>{
-    render(dashRender);
-    const openRetroButton = await screen.findByText(/open retro/i)
-    expect(openRetroButton).toBeInTheDocument();
-})
-
-//opens the retro when clicked 
-//look at the app on localhost
-//check if title exists on card
-it('has a title on the card', async ()=>{
-    render(dashRender);
-    const title = await screen.findByText(/chasten's thoughts on mjolnir/i)
-    expect(title).toBeInTheDocument();
-})
-
-//verify ID exists on card
-xit('has an id on the card for the retro', ()=>{
-    render(dashRender);
-    const id = screen.getByAltText(/e0fef645-088d-4f13-b53a-ccb95f4f2131/i)
-    expect(id).toBeInTheDocument();
-})
 
