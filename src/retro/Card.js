@@ -1,6 +1,9 @@
 import { useContext, useState, useEffect } from "react"
 import { RetroContext } from "./Retro"
 import Comment from './Comment'
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+
 
 export default function Card({ card_id }) {
 
@@ -43,15 +46,24 @@ export default function Card({ card_id }) {
   }, [initComments])
 
   return (
-    <ul>
-      <div> Card ID: {card_id}</div>
-      <div> Card Text: {cardText}</div>
-      <div> Author: {author}</div>
-      <div> Votes: {votes.length}</div>
-      {comments.map((comment) => (
-        <Comment comment_id={comment.comment_id} key={comment.comment_id} />
-      ))}
-    </ul>
+    <Box
+      sx={{
+        m: 1,
+        width: "95vw",
+        height: "30"
+      }}>
+      <Paper elevation={3} >
+        <ul>
+          <div> Card ID: {card_id}</div>
+          <div> Card Text: {cardText}</div>
+          <div> Author: {author}</div>
+          <div> Votes: {votes.length}</div>
+          {comments.map((comment) => (
+            <Comment comment_id={comment.comment_id} key={comment.comment_id} />
+          ))}
+        </ul>
+      </Paper>
+    </Box>
   )
 }
 // need card ID from column where column ID = card ID

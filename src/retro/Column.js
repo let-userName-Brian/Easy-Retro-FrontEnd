@@ -2,6 +2,9 @@ import { useEffect, useState, useContext } from "react"
 import { socket } from "../SocketClient"
 import Card from "./Card"
 import { RetroContext } from './Retro'
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+
 
 export default function Column({ column_id }) {
   const { columns } = useContext(RetroContext)
@@ -39,11 +42,20 @@ export default function Column({ column_id }) {
 
   return (
     <>
-      <div>Column ID: {column_id}</div>
-      <div>Column Name: {columnName}</div>
-      {cards.map((card) => (
-        <Card card_id={card.card_id} key={card.card_id} />
-      ))}
+      <Box
+        sx={{
+          m: 1,
+          width: "30vw",
+          height: "90vh"
+        }}>
+        <Paper elevation={3} >
+          <div>Column ID: {column_id}</div>
+          <div>Column Name: {columnName}</div>
+          {cards.map((card) => (
+            <Card card_id={card.card_id} key={card.card_id} />
+          ))}
+        </Paper>
+      </Box>
     </>
   )
 }
