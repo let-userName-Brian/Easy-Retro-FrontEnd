@@ -20,7 +20,7 @@ export default function Comment({ comment_id }) {
   }, [initComments])
 
   return (
-    <Paper variant="outlined" >
+    <Paper variant="outlined" sx={{ m: 1, p: 1 }} >
       <ul>
         <div> Comment ID: {comment_id}</div>
         <div> Comment Text: {commentText}</div>

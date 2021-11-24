@@ -50,7 +50,7 @@ export default function Card({ card_id }) {
         width: "95%",
         height: "30"
       }}>
-      <Paper elevation={3} >
+      <Paper elevation={3} sx={{ m: 1, p: 1 }}>
         <Typography>{cardText}</Typography>
         <Typography>Author: {author}</Typography>
         <Typography>Votes: {votes.length}</Typography>
