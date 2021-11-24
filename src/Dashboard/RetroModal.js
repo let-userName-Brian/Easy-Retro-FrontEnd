@@ -22,7 +22,7 @@ const style = {
   p: 4,
 };
 
-export default function RetroModal( {user_id} ) {
+export default function RetroModal({ user_id }) {
 
   const [open, setOpen] = useState(false);
   const [retroName, setRetroName] = useState('');
@@ -34,11 +34,7 @@ export default function RetroModal( {user_id} ) {
   const [tag1, setTag1] = useState('');
   const [tag2, setTag2] = useState('');
   const [tag3, setTag3] = useState('');
-  const [retro, setRetro] = useState({
-    retro_name: '',
-    column_names: [],
-    tags: []
-  });
+  const [retro, setRetro] = useState();
 
   const handleOpen = () => setOpen(true);
   //reset the state to default
@@ -49,30 +45,36 @@ export default function RetroModal( {user_id} ) {
     setColumnName3('');
     setTag1('');
     setTag2('');
-    setTag3('');  
+    setTag3('');
     setOpen(false);
   }
   const navigate = useNavigate();
 
   //opens a new retro and generates a new UUID for it
-  const openNewRetro = async (retro) => {
-    setRetro((prevState) => {
-      const newRetro = {
-        retro_name: retroName,
-        column_names: [columnName1, columnName2, columnName3],
-        tags: [tag1, tag2, tag3]
-      }
-      return newRetro
+  const openNewRetro = async () => {
+    //setRetro()
+
+    const newRetro = {
+      retro_name: retroName,
+      column_names: [columnName1, columnName2, columnName3],
+      tags: [tag1, tag2, tag3]
+    }
+
+    postRetro(newRetro, user_id).then((retro_id) => {
+      console.log("new retro response:", retro_id)
+      navigate(`/retros/${retro_id}`)
     })
   }
 
-  useEffect(() => {
-    async function sendRetro() {
-      let output = await postRetro(retro, user_id)
-      navigate(`/retros/${output}`)
-    }
-    sendRetro();
-  }, [retro])
+  // useEffect(() => {
+  //   async function sendRetro() {
+  //     let output = 
+  //     navigate(`/retros/${output}`)
+  //   }
+  //   if (retro) {
+  //     sendRetro();
+  //   }
+  // }, [retro])
 
   return (
     <div>
@@ -99,29 +101,29 @@ export default function RetroModal( {user_id} ) {
             <FormControl>
               <Grid container spacing={3}>
                 <Grid item >
-                  <TextField fullWidth required id='retro_name' label="Retro Name?" variant="outlined" 
-                    value={retroName} onChange={(e) => setRetroName(e.target.value)}  />
+                  <TextField fullWidth required id='retro_name' label="Retro Name?" variant="outlined"
+                    value={retroName} onChange={(e) => setRetroName(e.target.value)} />
                 </Grid>
                 <Grid item >
                   <TextField fullWidth id="column_1" label="Column 1 name" variant="outlined"
-                    value={columnName1} onChange={(e) => setColumnName1(e.target.value)} sx={{ marginBottom: 1 }}/>
+                    value={columnName1} onChange={(e) => setColumnName1(e.target.value)} sx={{ marginBottom: 1 }} />
                   <TextField fullWidth id="column_2" label="Column 2 name" variant="outlined"
-                    value={columnName2} onChange={(e) => setColumnName2(e.target.value)} sx={{ marginBottom: 1 }}/>
+                    value={columnName2} onChange={(e) => setColumnName2(e.target.value)} sx={{ marginBottom: 1 }} />
                   <TextField fullWidth id="column_3" label="Column 3 name" variant="outlined"
-                    value={columnName3} onChange={(e) => setColumnName3(e.target.value)} sx={{ marginBottom: 1 }}/>
+                    value={columnName3} onChange={(e) => setColumnName3(e.target.value)} sx={{ marginBottom: 1 }} />
                 </Grid>
                 <Grid item >
                   <TextField fullWidth id="tag_1" label="Tag1" variant="outlined"
-                    value={tag1} onChange={(e) => setTag1(e.target.value)} sx={{ marginBottom: 1 }}/>
+                    value={tag1} onChange={(e) => setTag1(e.target.value)} sx={{ marginBottom: 1 }} />
                   <TextField fullWidth id="tag_2" label="Tag2" variant="outlined"
-                    value={tag2} onChange={(e) => setTag2(e.target.value)} sx={{ marginBottom: 1 }}/>
+                    value={tag2} onChange={(e) => setTag2(e.target.value)} sx={{ marginBottom: 1 }} />
                   <TextField fullWidth id="tag_3" label="Tag3" variant="outlined"
-                    value={tag3} onChange={(e) => setTag3(e.target.value)} sx={{ marginBottom: 2 }}/>
+                    value={tag3} onChange={(e) => setTag3(e.target.value)} sx={{ marginBottom: 2 }} />
                 </Grid>
               </Grid>
             </FormControl>
             <Button variant="outlined" label='cancel' onClick={() => handleClose()}>Cancel</Button>
-            <Button variant="outlined" label="create" onClick={(e) => openNewRetro(retro)} sx={{ marginLeft: 2}}>Create</Button>
+            <Button variant="outlined" label="create" onClick={(e) => openNewRetro()} sx={{ marginLeft: 2 }}>Create</Button>
           </Box>
         </Fade>
       </Modal>
