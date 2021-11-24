@@ -2,6 +2,9 @@ import { useEffect, useState, useContext } from "react"
 import { socket } from "../SocketClient"
 import Card from "./Card"
 import { RetroContext } from './Retro'
+import { Box, Paper } from '@mui/material/';
+import Typography from "@mui/material/Typography";
+
 
 export default function Column({ column_id }) {
   const { columns } = useContext(RetroContext)
@@ -35,15 +38,25 @@ export default function Column({ column_id }) {
   }, [columns])
 
   useEffect(() => { setColumnCardIds(initColumns.find(col => col.column_id === column_id)?.card_ids) }, [initColumns])
-  useEffect(() => { setCards(initCards.filter(card => columnCardIds.includes(card.card_id))) }, [initCards])
+  useEffect(() => { setCards(initCards.filter(card => columnCardIds?.includes(card.card_id))) }, [initCards])
 
   return (
     <>
-      <div>Column ID: {column_id}</div>
-      <div>Column Name: {columnName}</div>
-      {cards.map((card) => (
-        <Card card_id={card.card_id} key={card.card_id} />
-      ))}
+      <Box
+        sx={{
+          m: 1,
+          width: "30vw",
+          height: "90vh"
+        }}>
+        <Paper elevation={12} sx={{ p: 1 }} >
+          <Box container sx={{ textAlign: 'center' }}>
+            <Typography variant='h5'>{columnName}</Typography>
+          </Box>
+          {cards.map((card) => (
+            <Card card_id={card.card_id} key={card.card_id} />
+          ))}
+        </Paper>
+      </Box>
     </>
   )
 }

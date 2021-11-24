@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react"
 import { RetroContext } from "./Retro"
+import { Box, Paper } from '@mui/material/';
 
 export default function Comment({ comment_id }) {
 
@@ -19,11 +20,13 @@ export default function Comment({ comment_id }) {
   }, [initComments])
 
   return (
-    <ul>
-      <div> Comment ID: {comment_id}</div>
-      <div> Comment Text: {commentText}</div>
-      <div> Author: {author}</div>
-      <div> Reactions: {reactions.length}</div>
-    </ul>
+    <Paper variant="outlined" sx={{ m: 1, p: 1 }} >
+      <ul>
+        <div> Comment ID: {comment_id}</div>
+        <div> Comment Text: {commentText}</div>
+        <div> Author: {author}</div>
+        <div> Reactions: {reactions.length}</div>
+      </ul>
+    </Paper>
   )
 }
