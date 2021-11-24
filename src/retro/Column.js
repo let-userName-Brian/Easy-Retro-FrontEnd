@@ -5,13 +5,14 @@ import { RetroContext } from './Retro'
 
 export default function Column({ column_id }) {
   const { columns } = useContext(RetroContext)
-  const [cards, setCards] = useState(useContext(RetroContext).cards)
+  const [cards, setCards] = useState([])
   const [columnName, setColumnName] = useState('')
   const [columnCardIds, setColumnCardIds] = useState([])
+  const { cards: initCards, columns: initColumns } = useContext(RetroContext)
 
   useEffect(() => {
     // Received when the server sends us a card
-    socket.on('receivedCards', (cards) => setCards(cards))
+    // socket.on('receivedCards', (cards) => setCards(cards))
     socket.on('updatedColumnName', (column) => {
       if (column.column_id === column_id) {
         setColumnName(column.column_name)
@@ -22,14 +23,19 @@ export default function Column({ column_id }) {
         setColumnCardIds(column.card_ids)
       }
     })
-    return () => {socket.removeAllListeners('receivedCards')
-    socket.removeAllListeners('updatedColumnName')
-    socket.removeAllListeners('updatedColumnCardIds')}
+    return () => {
+      socket.removeAllListeners('receivedCards')
+      socket.removeAllListeners('updatedColumnName')
+      socket.removeAllListeners('updatedColumnCardIds')
+    }
   }, [column_id])
 
   useEffect(() => {
     setColumnName(columns.find(column => column.column_id === column_id)?.column_name || 'unknown col name')
   }, [columns])
+
+  useEffect(() => { setColumnCardIds(initColumns.find(col => col.column_id === column_id)?.card_ids) }, [initColumns])
+  useEffect(() => { setCards(initCards.filter(card => columnCardIds.includes(card.card_id))) }, [initCards])
 
   return (
     <>

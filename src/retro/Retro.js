@@ -24,7 +24,7 @@ export default function Retro() {
 
     // Received when the server sends us a retro
     socket.on('initRetro', (retroPayload) => {
-      // console.log('initRetro:', retro, columns, cards, comments)
+      console.log('initRetro:', retroPayload)
       setRetro(retroPayload.retro)
       setColumns(retroPayload.columns)
       setCards(retroPayload.cards)
