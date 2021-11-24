@@ -74,6 +74,7 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
                 aria-haspopup="true"
                 onClick={handleMenu}
                 color="inherit"
+                
               >
                 <Avatar 
                   {...stringAvatar(user?.user_name || "unknown user")}

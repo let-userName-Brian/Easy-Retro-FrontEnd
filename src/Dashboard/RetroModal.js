@@ -22,7 +22,7 @@ const style = {
   p: 4,
 };
 
-export default function RetroModal(user_id) {
+export default function RetroModal( {user_id} ) {
 
   const [open, setOpen] = useState(false);
   const [retroName, setRetroName] = useState('');
