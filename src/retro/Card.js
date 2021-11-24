@@ -1,8 +1,7 @@
 import { useContext, useState, useEffect } from "react"
 import { RetroContext } from "./Retro"
 import Comment from './Comment'
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
+import { Box, Paper, Typography } from '@mui/material/';
 
 
 export default function Card({ card_id }) {
@@ -32,7 +31,6 @@ export default function Card({ card_id }) {
     if (!thisCard) {
       return
     }
-    console.log("This card", thisCard)
     setCardText(thisCard.card_text)
     setAuthor(thisCard.user_name)
     setVotes(thisCard.votes)
@@ -49,19 +47,16 @@ export default function Card({ card_id }) {
     <Box
       sx={{
         m: 1,
-        width: "95vw",
+        width: "95%",
         height: "30"
       }}>
       <Paper elevation={3} >
-        <ul>
-          <div> Card ID: {card_id}</div>
-          <div> Card Text: {cardText}</div>
-          <div> Author: {author}</div>
-          <div> Votes: {votes.length}</div>
-          {comments.map((comment) => (
-            <Comment comment_id={comment.comment_id} key={comment.comment_id} />
-          ))}
-        </ul>
+        <Typography>{cardText}</Typography>
+        <Typography>Author: {author}</Typography>
+        <Typography>Votes: {votes.length}</Typography>
+        {comments.map((comment) => (
+          <Comment comment_id={comment.comment_id} key={comment.comment_id} />
+        ))}
       </Paper>
     </Box>
   )

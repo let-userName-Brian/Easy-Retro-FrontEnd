@@ -2,8 +2,8 @@ import { createContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { socket } from '../SocketClient';
 import Column from "./Column";
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import { Box, Container } from '@mui/material/';
+import { Button, Stack } from '@mui/material/';
 
 
 
@@ -26,6 +26,12 @@ export default function Retro() {
     // Ask the server to join the room with name retroId
     socket.emit('joinRetro', { userId, retroId });
 
+    socket.on('columnsUpdated', (columns) => {
+      console.log('Columns Updated', columns)
+      setRetro({ ...retro, column_ids: columns.map(col => col.column_id) })
+      setColumns(columns)
+    })
+
     // Received when the server sends us a retro
     socket.on('initRetro', (retroPayload) => {
       console.log('initRetro:', retroPayload)
@@ -36,12 +42,23 @@ export default function Retro() {
     })
   }, [userId, retroId])
 
+  function addColumn() {
+    socket.emit('createColumn', retroId);
+  }
+
   if (!retro) {
     return <div>Loading Retro!</div>
   }
 
   return (<Container maxWidth="lg">
-    <div>Retro Name: {retro.retro_name}</div>
+    <Stack spacing={2} direction="row">
+      <div>Retro Name: {retro.retro_name}</div>
+      <Button
+        onClick={() => {
+          addColumn();
+        }}
+        variant="contained">+Add Column</Button>
+    </Stack>
     <Box sx={{ height: '100vh', display: 'flex' }} >
       <RetroContext.Provider value={{ retro, columns, cards, comments }}>
         {console.log('state columns:', columns)}
