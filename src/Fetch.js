@@ -84,5 +84,5 @@ export function postRetro(retro, user_id) {
       })
       .then(retro =>resolve(retro))
       .catch(err => resolve(null))
-  })
-}
+      }) 
+    }
