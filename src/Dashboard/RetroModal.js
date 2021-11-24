@@ -10,7 +10,6 @@ import { postRetro } from '../Fetch';
 import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 
-
 const style = {
   position: 'absolute',
   top: '50%',
@@ -42,7 +41,17 @@ export default function RetroModal(user_id) {
   });
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  //reset the state to default
+  const handleClose = () => {
+    setRetroName('');
+    setColumnName1('');
+    setColumnName2('');
+    setColumnName3('');
+    setTag1('');
+    setTag2('');
+    setTag3('');  
+    setOpen(false);
+  }
   const navigate = useNavigate();
 
   //opens a new retro and generates a new UUID for it
@@ -90,34 +99,29 @@ export default function RetroModal(user_id) {
             <FormControl>
               <Grid container spacing={3}>
                 <Grid item >
-                  <TextField
-                    required
-                    id='retro_name'
-                    value={retroName}
-                    onChange={(e) => setRetroName(e.target.value)}
-                    label="Retro Name?"
-                  />
+                  <TextField fullWidth required id='retro_name' label="Retro Name?" variant="outlined" 
+                    value={retroName} onChange={(e) => setRetroName(e.target.value)}  />
                 </Grid>
                 <Grid item >
-                  <TextField id="column_1" label="Column 1 name" variant="outlined"
-                    value={columnName1} onChange={(e) => setColumnName1(e.target.value)} />
-                  <TextField id="column_2" label="Column 2 name" variant="outlined"
-                    value={columnName2} onChange={(e) => setColumnName2(e.target.value)} />
-                  <TextField id="column_3" label="Column 3 name" variant="outlined"
-                    value={columnName3} onChange={(e) => setColumnName3(e.target.value)} />
+                  <TextField fullWidth id="column_1" label="Column 1 name" variant="outlined"
+                    value={columnName1} onChange={(e) => setColumnName1(e.target.value)} sx={{ marginBottom: 1 }}/>
+                  <TextField fullWidth id="column_2" label="Column 2 name" variant="outlined"
+                    value={columnName2} onChange={(e) => setColumnName2(e.target.value)} sx={{ marginBottom: 1 }}/>
+                  <TextField fullWidth id="column_3" label="Column 3 name" variant="outlined"
+                    value={columnName3} onChange={(e) => setColumnName3(e.target.value)} sx={{ marginBottom: 1 }}/>
                 </Grid>
                 <Grid item >
-                  <TextField id="tag_1" label="Tag1" variant="outlined"
-                    value={tag1} onChange={(e) => setTag1(e.target.value)} />
-                  <TextField id="tag_2" label="Tag2" variant="outlined"
-                    value={tag2} onChange={(e) => setTag2(e.target.value)} />
-                  <TextField id="tag_3" label="Tag3" variant="outlined"
-                    value={tag3} onChange={(e) => setTag3(e.target.value)} />
+                  <TextField fullWidth id="tag_1" label="Tag1" variant="outlined"
+                    value={tag1} onChange={(e) => setTag1(e.target.value)} sx={{ marginBottom: 1 }}/>
+                  <TextField fullWidth id="tag_2" label="Tag2" variant="outlined"
+                    value={tag2} onChange={(e) => setTag2(e.target.value)} sx={{ marginBottom: 1 }}/>
+                  <TextField fullWidth id="tag_3" label="Tag3" variant="outlined"
+                    value={tag3} onChange={(e) => setTag3(e.target.value)} sx={{ marginBottom: 2 }}/>
                 </Grid>
               </Grid>
             </FormControl>
             <Button variant="outlined" label='cancel' onClick={() => handleClose()}>Cancel</Button>
-            <Button variant="outlined" label="create" onClick={(e) => openNewRetro(retro)}>Create</Button>
+            <Button variant="outlined" label="create" onClick={(e) => openNewRetro(retro)} sx={{ marginLeft: 2}}>Create</Button>
           </Box>
         </Fade>
       </Modal>

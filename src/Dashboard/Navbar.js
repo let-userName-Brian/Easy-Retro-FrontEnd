@@ -18,7 +18,6 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   
   const stringToColor = (string) => {
     let hash = 0;

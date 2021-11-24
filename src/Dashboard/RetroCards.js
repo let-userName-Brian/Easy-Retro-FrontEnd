@@ -17,7 +17,6 @@ export default function RetroCards( retros ) {
       console.log(id);
       window.location.href = `/retros/${id}`;   
   }
-
   
   return (
    <>
@@ -31,7 +30,7 @@ export default function RetroCards( retros ) {
             image={bar2}
           />
           <CardContent>
-            <Typography gutterBottom variant="h6" component="div">
+            <Typography gutterBottom id="1" variant="h6" component="div">
               {retro?.retro_name}
             </Typography>
             <Typography gutterBottom variant="p" component="div">
