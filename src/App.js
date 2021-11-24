@@ -34,7 +34,7 @@ export default function App() {
   // console.log('user', user)
   // console.log("retros", userRetro)
 
-  const [darkMode, setDarkMode] = useState(); //darkMode state -- passed to NavBar
+  const [darkMode, setDarkMode] = useState('dark'); //darkMode state -- passed to NavBar
 
   const theme = createTheme({
     palette: {
@@ -47,7 +47,7 @@ export default function App() {
       <CssBaseline>
         <Routes>
           <Route path="/" element={<Dashboard user={user} retros={userRetro} darkMode={darkMode} setDarkMode={setDarkMode} />} />
-          <Route path="/retro/:retro_id" element={<Retro />} />
+          <Route path="/retros/:retro_id" element={<Retro />} />
         </Routes>
       </CssBaseline>
     </ThemeProvider>

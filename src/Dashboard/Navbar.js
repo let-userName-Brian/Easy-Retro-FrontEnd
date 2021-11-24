@@ -24,9 +24,7 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  
   const stringToColor = (string) => {
     let hash = 0;
     let i;
@@ -87,24 +85,6 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
                   {...stringAvatar(user?.user_name || "unknown user")}
                 />
               </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Admin Tools</MenuItem>
-                <MenuItem onClick={handleClose}>My Retros</MenuItem>
-              </Menu>
             </div>
           )}
         </Toolbar>

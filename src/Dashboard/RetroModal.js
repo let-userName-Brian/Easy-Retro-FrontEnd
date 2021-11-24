@@ -5,8 +5,8 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
-import {postRetro} from '../Fetch';
+import { useState, useEffect } from 'react';
+import { postRetro } from '../Fetch';
 import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 
@@ -23,21 +23,15 @@ const style = {
   p: 4,
 };
 
-// const retro = { 
-//   retro_name: 'brian"s retro',
-//   column_names: ['column_1', 'column_2', 'column_3'],
-//   tags: ['apples', 'taters']
-// }
-
 export default function RetroModal() {
 
   const [open, setOpen] = useState(false);
-  const [retroName, setRetroName] = useState();
-  
+  const [retroName, setRetroName] = useState('');
+
   const [columnName1, setColumnName1] = useState('');
   const [columnName2, setColumnName2] = useState('');
-  const [columnName3, setColumnName3] = useState(''); 
-  
+  const [columnName3, setColumnName3] = useState('');
+
   const [tag1, setTag1] = useState('');
   const [tag2, setTag2] = useState('');
   const [tag3, setTag3] = useState('');
@@ -46,43 +40,35 @@ export default function RetroModal() {
     column_names: [],
     tags: []
   });
-  
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
 
-
-//opens a new retro and generates a new UUID for it
-const openNewRetro = async (e) => {
-  //handleClose();
-  setRetro({
-    retro_name: retroName,
-    column_names: [columnName1, columnName2, columnName3],
-    tags: [tag1, tag2, tag3]
-  })
-
-  // if state isnt set, dont render
-  if(!retro.retro_name) {
-    return null;
+  //opens a new retro and generates a new UUID for it
+  const openNewRetro = async (retro) => {
+    setRetro((prevState) => {
+      const newRetro = {
+        retro_name: retroName,
+        column_names: [columnName1, columnName2, columnName3],
+        tags: [tag1, tag2, tag3]
+      }
+      return newRetro
+    })
   }
 
-console.log('c1:', columnName1)
-console.log('c2:', columnName2)
-console.log('c3:', columnName3)
+  useEffect(() => {
+    async function sendRetro() {
+      let output = await postRetro(retro)
+      console.log("output in modal:", output)
+      navigate(`/retros/${output}`)
+    }
+    sendRetro();
+  }, [retro])
 
-console.log('t1:', tag1)
-console.log('t2:', tag2)
-console.log('t3:', tag3)
-console.log('retro:', retro)
-
-//let output = await postRetro(retro)
-//console.log("output in modal:", output)
-//navigate(`/retros/${output}`)
-}
-  
   return (
     <div>
-      <Button variant="outlined" alt='Create' onClick={()=> handleOpen()}>Create a new Retro</Button>
+      <Button variant="outlined" alt='Create' onClick={() => handleOpen()}>Create a new Retro</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -102,37 +88,37 @@ console.log('retro:', retro)
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
               Please select your Retro's options
             </Typography>
-              <FormControl>
-                <Grid container spacing={3}>
+            <FormControl>
+              <Grid container spacing={3}>
                 <Grid item >
-                    <TextField
-                      required
-                      id='retro_name'
-                      value={retroName}
-                      onChange={(e) => setRetroName(e.target.value)}
-                      label="Retro Name?"
-                    />
-                    </Grid>
-                    <Grid item > 
-                      <TextField id="column_1" label="Column 1 name" variant="outlined" 
-                      value={columnName1} onChange={(e) => setColumnName1(e.target.value)}/>
-                      <TextField id="column_2" label="Column 2 name" variant="outlined" 
-                      value={columnName2} onChange={(e) => setColumnName2(e.target.value)}/>
-                      <TextField id="column_3" label="Column 3 name" variant="outlined" 
-                      value={columnName3} onChange={(e) => setColumnName3(e.target.value)}/>
-                    </Grid>
-                    <Grid item >
-                      <TextField id="tag_1" label="#Tags" variant="outlined" 
-                      value={tag1} onChange={(e) => setTag1(e.target.value)}/>
-                      <TextField id="tag_2" label="#Tags" variant="outlined" 
-                      value={tag2} onChange={(e) => setTag2(e.target.value)}/>
-                      <TextField id="tag_3" label="#Tags" variant="outlined" 
-                      value={tag3} onChange={(e) => setTag3(e.target.value)}/>
-                    </Grid>
-                  </Grid>
+                  <TextField
+                    required
+                    id='retro_name'
+                    value={retroName}
+                    onChange={(e) => setRetroName(e.target.value)}
+                    label="Retro Name?"
+                  />
+                </Grid>
+                <Grid item >
+                  <TextField id="column_1" label="Column 1 name" variant="outlined"
+                    value={columnName1} onChange={(e) => setColumnName1(e.target.value)} />
+                  <TextField id="column_2" label="Column 2 name" variant="outlined"
+                    value={columnName2} onChange={(e) => setColumnName2(e.target.value)} />
+                  <TextField id="column_3" label="Column 3 name" variant="outlined"
+                    value={columnName3} onChange={(e) => setColumnName3(e.target.value)} />
+                </Grid>
+                <Grid item >
+                  <TextField id="tag_1" label="#Tags" variant="outlined"
+                    value={tag1} onChange={(e) => setTag1(e.target.value)} />
+                  <TextField id="tag_2" label="#Tags" variant="outlined"
+                    value={tag2} onChange={(e) => setTag2(e.target.value)} />
+                  <TextField id="tag_3" label="#Tags" variant="outlined"
+                    value={tag3} onChange={(e) => setTag3(e.target.value)} />
+                </Grid>
+              </Grid>
             </FormControl>
-            <Button variant="outlined" onClick={()=>handleClose()}>Cancel</Button>
-            <Button variant="outlined" onClick={(e) =>openNewRetro(e)}>Create</Button>
+            <Button variant="outlined" onClick={() => handleClose()}>Cancel</Button>
+            <Button variant="outlined" onClick={(e) => openNewRetro(retro)}>Create</Button>
           </Box>
         </Fade>
       </Modal>
