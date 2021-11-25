@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Grid} from '@mui/material'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -16,7 +16,7 @@ export default function RetroCards( retros ) {
    const handleClick = (id) => {
       window.location.href = `/retros/${id}`;   
   }
-console.log(retroInfo)
+
   return (
    <>
     {retroInfo?.map((retro, index) => (   
