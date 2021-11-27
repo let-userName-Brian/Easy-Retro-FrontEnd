@@ -2,10 +2,11 @@ import { useContext, useState, useEffect } from "react"
 import { RetroContext } from "./Retro"
 import Comment from './Comment'
 import { Box, Paper, Typography } from '@mui/material/';
+import { socket } from "../SocketClient"
 
 
 export default function Card({ card_id }) {
-
+  const [cards, setCards] = useState()
   const [cardText, setCardText] = useState('')
   const [author, setAuthor] = useState('')
   const [votes, setVotes] = useState([])
@@ -14,17 +15,7 @@ export default function Card({ card_id }) {
 
 
   // useEffect(() => {
-  //     // Received when the server sends us a card
-  //     socket.on('receivedCards', (cards) => setCards(cards))
-  //     socket.on('updatedColumnName', (column) => {
-  //       if (column.column_id === column_id) {
-  //         setColumnName(column.column_name)
-  //       }})
-  //       socket.on('updatedColumnCardIds', (column) => {
-  //         if (column.column_id === column_id) {
-  //           setColumnCardIds(column.card_ids)
-  //     }})
-  //   }, [column_id])
+  // }, [])
 
   useEffect(() => {
     let thisCard = initCards?.find(c => c.card_id === card_id)
@@ -34,14 +25,14 @@ export default function Card({ card_id }) {
     setCardText(thisCard.card_text)
     setAuthor(thisCard.user_name)
     setVotes(thisCard.votes)
-  }, [initCards])
+  }, [initCards, card_id])
 
   useEffect(() => {
     if (!initComments) {
       return
     }
     setComments(initComments.filter(com => com.card_id === card_id))
-  }, [initComments])
+  }, [initComments, card_id])
 
   return (
     <Box
@@ -61,6 +52,3 @@ export default function Card({ card_id }) {
     </Box>
   )
 }
-// need card ID from column where column ID = card ID
-// pass in column ID as props
-// make call to take all of the cards that are in this column
