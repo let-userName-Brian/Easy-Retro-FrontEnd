@@ -22,12 +22,12 @@ export default function Comment({ comment_id }) {
 
   return (
     <Paper variant="outlined" sx={{ m: 1, p: 1 }} >
-      <Typography> Comment ID: {comment_id}</Typography>
+      <Typography variant='h5'> Comment ID: {comment_id}</Typography>
       <TextField fullWidth label={commentText} id="commentText" InputProps={{
         inputProps: { style: { textAlign: "left" } }
       }} />
-      <Typography>Author: {author}</Typography>
-      <Typography>Reactions: {reactions.length}</Typography>
+      <Typography variant='h5'>Author: {author}</Typography>
+      <Typography variant='h5'>Reactions: {reactions.length}</Typography>
     </Paper>
   )
 }

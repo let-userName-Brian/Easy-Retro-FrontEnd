@@ -1,72 +1,56 @@
 import { useEffect, useState, useContext } from "react"
 import { socket } from "../SocketClient"
-import Card from "./Card"
-import { RetroContext } from './Retro'
 import { Box, Paper, Icon, TextField } from '@mui/material/';
-// import Typography from "@mui/material/Typography";
+import { RetroContext } from './Retro'
+import Card from "./Card"
 
+export default function Column({ col }) {
+  const { cards: retroCards, retro, userId } = useContext(RetroContext)
+  const [column, setColumn] = useState(col)
 
-export default function Column({ column_id }) {
-  const { columns, retro, userId } = useContext(RetroContext)
-  const [cards, setCards] = useState([])
-  const [columnName, setColumnName] = useState('')
-  const [columnCardIds, setColumnCardIds] = useState([])
-  const { cards: initCards, columns: initColumns } = useContext(RetroContext)
+  let c = retroCards.filter(card => column.card_ids?.includes(card.card_id))//is the ? necessary
+  const [cards, setCards] = useState([c])//run (c) and nothing renders(undefined?), run it with brackets and an empty card renders. remove the brackets without refreshing the page, and the cards load, but they disappear if you refresh the page??? after restarting server it no longer works...
+
+  console.log('state: ', c, '-', cards, 'wtf?')
 
   useEffect(() => {
     // Received when the server sends us a card update
-    socket.on('cardUpdated', (cards) => setCards(cards))
-    //   socket.on('updatedColumnName', (column) => {
-    //     if (column.column_id === column_id) {
-    //       setColumnName(column.column_name)
-    //     }
-    //   })
-    //   socket.on('updatedColumnCardIds', (column) => {
-    //     if (column.column_id === column_id) {
-    //       setColumnCardIds(column.card_ids)
-    //     }
-    //   })
+    socket.on('cardUpdated', (cards, column_id) => {
+
+      if (column_id === column.column_id) {
+        setColumn({ ...column, card_ids: cards.map(card => card.card_id) })
+        setCards(cards)
+        console.log(cards)
+      }
+    })
+
     return () => {
       socket.removeAllListeners('cardUpdated')
-
-      //     socket.removeAllListeners('updatedColumnName')
-      //     socket.removeAllListeners('updatedColumnCardIds')
     }
-  }, [column_id, setCards])
-
-  useEffect(() => { setColumnName(columns.find(column => column.column_id === column_id)?.column_name || 'unknown col name') }, [columns, column_id])
-
-  useEffect(() => { setColumnCardIds(initColumns.find(col => col.column_id === column_id)?.card_ids) }, [initColumns, column_id])
-
-  //needs init cards refactored. or must remove listener columnCardIds
-  useEffect(() => { setCards(initCards.filter(card => columnCardIds?.includes(card.card_id))) }, [initCards, columnCardIds])
+  }, [column])
 
   function addCard() {
     let retro_id = retro.retro_id;
+    let column_id = column.column_id;
     socket.emit('cardAdded', { retro_id, column_id, userId });
   }
 
   return (
-    <>
-      <Box
-        sx={{
-          m: 1,
-          width: "30vw",
-          height: "90vh"
-        }}>
-        <Paper elevation={12} sx={{ p: 1 }} >
-          <Box container sx={{ textAlign: 'center' }}>
-            <TextField fullWidth label={columnName} id="columnName" InputProps={{
-              inputProps: { style: { textAlign: "center" } }
-            }} />
-            {/* <Typography variant='h5'>{columnName}</Typography> */}
-            <Icon sx={{}} onClick={() => { addCard() }}>add_circle</Icon>
-          </Box>
-          {cards.map((card) => (
-            <Card card_id={card.card_id} key={card.card_id} />
-          ))}
-        </Paper>
-      </Box>
-    </>
+    <Box
+      sx={{
+        m: 1,
+        width: "30vw",
+        height: "90vh"
+      }}>
+      <Paper elevation={12} sx={{ p: 1 }} >
+        <Box container sx={{ textAlign: 'center' }}>
+          <TextField fullWidth label={column.column_name} id="columnName" InputProps={{
+            inputProps: { style: { textAlign: "left" } }
+          }} />
+          <Icon sx={{}} onClick={() => { addCard() }}>add_circle</Icon>
+        </Box>
+        {cards.map((card) => (<Card key={card.card_id} c={card} />))}
+      </Paper>
+    </Box>
   )
 }

@@ -24,8 +24,8 @@ export default function Card({ c }) {
         <TextField fullWidth label={card?.card_text} id="cardText" InputProps={{
           inputProps: { style: { textAlign: "center" } }
         }} />
-        <Typography>Author: {author}</Typography>
-        <Typography>Votes: {votes.length}</Typography>
+        <Typography variant='h5'>Author: {author}</Typography>
+        <Typography variant='h5'>Votes: {votes.length}</Typography>
         {comments.map((comment) => (<Comment key={comment.comment_id} comment={comment} />))}
       </Paper>
     </Box>
