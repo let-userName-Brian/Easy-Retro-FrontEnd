@@ -32,7 +32,7 @@ export default function RetroModal({ user_id }) {
   const [open, setOpen] = useState(false);
   const [retroName, setRetroName] = useState('');
   const [columnNames, setColumnNames] = useState(['Went Well', 'To Improve', 'Action Items'])
-  const [maxVotes, setMaxVotes] = useState();
+  const [maxVotes, setMaxVotes] = useState(10);
   const [tags, setTags] = useState([])
 
   const handleOpen = () => setOpen(true);
@@ -41,6 +41,7 @@ export default function RetroModal({ user_id }) {
     setRetroName('');
     setColumnNames(['Went Well', 'To Improve', 'Action Items'])
     setTags([])
+    setMaxVotes(10)
     setOpen(false);
   }
   const navigate = useNavigate();
@@ -94,7 +95,7 @@ export default function RetroModal({ user_id }) {
 
   function addColumnName() {
     let newColumnNames = [...columnNames]
-    newColumnNames.push('New Column')
+    newColumnNames.push('')
     setColumnNames(newColumnNames)
   }
 
@@ -148,29 +149,26 @@ export default function RetroModal({ user_id }) {
                 <Typography id="transition-modal-description" sx={{ fontStyle: 'oblique', marginBottom: 1 }}>
                   Need more columns? Don't worry, you can add them inside the retro!
                 </Typography>
-                <Box component='form'>
-                  {columnNames.map((name, index) => (
-                    <Input fullWidth id={`column_${index}`} label={`Column ${index + 1}`} variant="outlined"
-                      value={name} onChange={(e) => changeColumnName(e.target.value, index)} sx={{ marginBottom: 1 }} key={index}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="remove element"
-                            onClick={(e) => removeColumnName(index)}
-                          >
-                            <RemoveCircleIcon />
-                          </IconButton>
-                        </InputAdornment>
-                      } />
-                  ))}
-                  <Box sx={{ width: '100%', my: 1 }}>
-                    <Box sx={{ mx: 'auto', width: 150 }}>
-                      <Button
-                        onClick={() => {
-                          addColumnName();
-                        }}
-                        variant="contained" startIcon={<AddIcon />}>Add Column</Button>
+                {columnNames.map((name, index) => (
+                  <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}><TextField fullWidth id={`column_${index}`} label={`Column ${index + 1}`} variant="outlined"
+                    value={name} onChange={(e) => changeColumnName(e.target.value, index)} sx={{ my: 1 }} />
+                    <Box>
+                      <IconButton
+                        aria-label="remove element"
+                        onClick={(e) => removeColumnName(index)}
+                      >
+                        <RemoveCircleIcon />
+                      </IconButton>
                     </Box>
+                  </Box>
+                ))}
+                <Box sx={{ width: '100%', my: 1 }}>
+                  <Box sx={{ mx: 'auto', width: 150 }}>
+                    <Button
+                      onClick={() => {
+                        addColumnName();
+                      }}
+                      variant="contained" startIcon={<AddIcon />}>Add Column</Button>
                   </Box>
                 </Box>
               </Grid>
@@ -182,6 +180,7 @@ export default function RetroModal({ user_id }) {
                   id="outlined-number"
                   label="Set Max Votes"
                   type="number"
+                  value={maxVotes}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -192,29 +191,26 @@ export default function RetroModal({ user_id }) {
                 <Typography id="transition-modal-description" sx={{ fontStyle: 'oblique', marginBottom: 1 }}>
                   Set your Tags to easily search for this retro in the future!
                 </Typography>
-                <Box component='form'>
-                  {tags?.map((name, index) => (
-                    <Input fullWidth id={`tag_${index}`} label={`Tag ${index + 1}`} variant="outlined"
-                      value={name} onChange={(e) => changeTag(e.target.value, index)} sx={{ marginBottom: 1 }} key={index}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="remove element"
-                            onClick={(e) => removeTag(index)}
-                          >
-                            <RemoveCircleIcon />
-                          </IconButton>
-                        </InputAdornment>
-                      } />
-                  ))}
-                  <Box sx={{ width: '100%', my: 1 }}>
-                    <Box sx={{ mx: 'auto', width: 116 }}>
-                      <Button
-                        onClick={() => {
-                          addTag();
-                        }}
-                        variant="contained" startIcon={<AddIcon />}>Add Tag</Button>
+                {tags?.map((name, index) => (
+                  <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}><TextField fullWidth id={`tag_${index}`} label={`Tag ${index + 1}`} variant="outlined"
+                    value={name} onChange={(e) => changeTag(e.target.value, index)} sx={{ my: 1 }} />
+                    <Box>
+                      <IconButton
+                        aria-label="remove element"
+                        onClick={(e) => removeTag(index)}
+                      >
+                        <RemoveCircleIcon />
+                      </IconButton>
                     </Box>
+                  </Box>
+                ))}
+                <Box sx={{ width: '100%', my: 1 }}>
+                  <Box sx={{ mx: 'auto', width: 116 }}>
+                    <Button
+                      onClick={() => {
+                        addTag();
+                      }}
+                      variant="contained" startIcon={<AddIcon />}>Add Tag</Button>
                   </Box>
                 </Box>
               </Grid>
