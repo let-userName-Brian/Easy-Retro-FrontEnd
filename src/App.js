@@ -16,7 +16,7 @@ export default function App() {
 
   const [user, setUser] = useState()
   const [userRetro, setUserRetro] = useState()
-  const [darkMode, setDarkMode] = useState('dark'); //darkMode state -- passed to NavBar
+  const [darkMode, setDarkMode] = useState(true); //darkMode state -- passed to NavBar
 
   //Floyd's userID to be used for testing
   //its gonna need to be pulled from the header and then set if the user isnt in the db
@@ -32,13 +32,18 @@ export default function App() {
       .then(userProfileRetro => setUserRetro(userProfileRetro))
   }, [])
 
+  // useEffect((user) => {
+  //   setDarkMode(user?.is_dark_mode)
+  // }, [user])
+  // console.log(user?.is_dark_mode)
 
   const theme = createTheme({
     palette: {
       mode: darkMode ? 'dark' : 'light',
     }
+    
   })
-
+  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline>

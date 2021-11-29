@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Grid} from '@mui/material'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -14,15 +14,14 @@ export default function RetroCards( retros ) {
   const retroInfo = retros.retros
 
    const handleClick = (id) => {
-      console.log(id);
       window.location.href = `/retros/${id}`;   
   }
-  
+
   return (
    <>
     {retroInfo?.map((retro, index) => (   
-      <Grid key={index} item xs={12} sm={6} md={4.5} lg={4} sx={{ flexGrow: 1}}>
-        <Card key={index} sx={{ maxWidth: 345, marginBottom: 2}}>
+      <Grid key={index} item xs={12} sm={6} md={6} lg={3} sx={{ flexGrow: 1}}>
+        <Card key={index} sx={{ maxWidth: 350, marginBottom: 2}}>
           <CardMedia
             component="img"
             href={retro?.retro_id}
@@ -34,7 +33,11 @@ export default function RetroCards( retros ) {
               {retro?.retro_name}
             </Typography>
             <Typography gutterBottom variant="p" component="div">
-              #{retro?.tags.join(' #')}
+              {/*if no tags are entered return nothing */}
+              {retro?.tags[0] === '' 
+                ? null
+                : <span>#{retro?.tags?.join(' #')}</span>
+              }
             </Typography>
           </CardContent>
           <CardActions>

@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { postRetro } from '../Fetch';
 import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
@@ -34,7 +34,6 @@ export default function RetroModal({ user_id }) {
   const [tag1, setTag1] = useState('');
   const [tag2, setTag2] = useState('');
   const [tag3, setTag3] = useState('');
-  const [retro, setRetro] = useState();
 
   const handleOpen = () => setOpen(true);
   //reset the state to default

@@ -1,9 +1,9 @@
-import React from 'react'
 import {Grid} from '@mui/material'
 import Typography from '@mui/material/Typography';
 import RetroCards from './RetroCards';
 import SearchBar from './SearchBar';
 import RetroModal from './RetroModal';
+
 
 export default function Dashboard({user, retros, user_id }) {
 
