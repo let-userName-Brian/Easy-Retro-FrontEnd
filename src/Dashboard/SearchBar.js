@@ -80,7 +80,6 @@ export default function SearchBar({ retros, searchedRetros, setSearchedRetros })
           onChange={async (e) => await handleSearch(e.target.value)}
         />
       </Search>
-      Hey im {JSON.stringify(searchedRetros)}
     </>
   )
 }
