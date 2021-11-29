@@ -9,7 +9,7 @@ export default function Card({ c }) {
   const { comments: initComments } = useContext(RetroContext)
   const [card, setCard] = useState(c)
   const [cardText, setCardText] = useState(card.card_text)
-  const [author, setAuthor] = useState(card.user_id)//needs to be converted to user_name
+  const [author, setAuthor] = useState(card.user_name)//needs to be converted to user_name
   const [votes, setVotes] = useState([])//fix this, card.votes
   const [comments, setComments] = useState(initComments.filter(comment => comment.card_id === card.card_id))
 
