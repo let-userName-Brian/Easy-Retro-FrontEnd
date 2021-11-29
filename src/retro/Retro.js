@@ -19,7 +19,7 @@ export default function Retro() {
   const [cards, setCards] = useState([])
   const [comments, setComments] = useState([])
 
-  console.log('socket', socket)
+  // console.log('socket', socket)
 
   let userId = 'c1ad74ae-b651-4fa0-9820-833193797964'
 
@@ -28,7 +28,6 @@ export default function Retro() {
     socket.emit('joinRetro', { userId, retroId });
 
     socket.on('columnUpdated', (columns) => {
-      console.log('Columns Updated', columns)
       setRetro({ ...retro, column_ids: columns.map(col => col.column_id) })
       setColumns(columns)
     })
@@ -41,7 +40,7 @@ export default function Retro() {
       setCards(retroPayload.cards)
       setComments(retroPayload.comments)
     })
-  }, [userId, retroId])
+  }, [userId, retroId])//adding retro induces infinite loop. do a functional update 'setRetro(r => ...)'
 
   function addColumn() {
     socket.emit('columnAdded', retroId);
@@ -62,9 +61,8 @@ export default function Retro() {
     </Stack>
     <Box sx={{ height: '100vh', display: 'flex' }} >
       {/* hard coded userId needs refactored */}
-      <RetroContext.Provider value={{ retro, columns, cards, comments, userId }}>
-        {console.log('state columns:', columns)}
-        {retro.column_ids.map(id => (<Column key={id} column_id={id} />))}
+      <RetroContext.Provider value={{ retro, cards, comments, userId }}>
+        {columns.map(column => (<Column key={column.column_id} col={column} />))}
       </RetroContext.Provider>
     </Box>
   </Container>
