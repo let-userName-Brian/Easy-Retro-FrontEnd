@@ -52,24 +52,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function SearchBar({ retros, searchedRetros, setSearchedRetros }) {
 
-  let [searchText, setSearchText] = useState('')
 
   let timer = 0;
-  useEffect(() => {
-    let handleSearch = async () => {
-      clearTimeout(timer)
-      console.log(searchText)
-      timer = setTimeout(() => {
-        let filteredRetros = retros?.filter(retro => {
-          return retro.retro_name?.toLowerCase()?.includes(searchText?.toLowerCase()) || retro.tags?.includes(searchText?.toLowerCase())
-        })
-        console.log(filteredRetros);
-        setSearchedRetros(filteredRetros);
-      }, 400)
-    }
-    handleSearch();
-  }, [searchText])
 
+  let handleSearch = async (searchText) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      let filteredRetros = retros?.filter(retro => {
+        return retro.retro_name?.toLowerCase()?.includes(searchText?.toLowerCase()) || retro.tags?.includes(searchText?.toLowerCase())
+      })
+      console.log(filteredRetros);
+      setSearchedRetros(filteredRetros);
+    }, 400)
+  }
+  
   return (
     <>
       <Search>
@@ -81,8 +77,7 @@ export default function SearchBar({ retros, searchedRetros, setSearchedRetros })
           className="search-input"
           placeholder="Search..."
           inputProps={{ 'aria-label': 'search' }}
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
+          onChange={async (e) => await handleSearch(e.target.value)}
         />
       </Search>
       Hey im {JSON.stringify(searchedRetros)}
