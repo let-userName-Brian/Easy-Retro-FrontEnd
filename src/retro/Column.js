@@ -8,10 +8,7 @@ export default function Column({ col }) {
   const { cards: retroCards, retro, userId } = useContext(RetroContext)
   const [column, setColumn] = useState(col)
 
-  let c = retroCards.filter(card => column.card_ids?.includes(card.card_id))//is the ? necessary
-  const [cards, setCards] = useState([c])//run (c) and nothing renders(undefined?), run it with brackets and an empty card renders. remove the brackets without refreshing the page, and the cards load, but they disappear if you refresh the page??? after restarting server it no longer works...
-
-  console.log('state: ', c, '-', cards, 'wtf?')
+  const [cards, setCards] = useState()
 
   useEffect(() => {
     // Received when the server sends us a card update
@@ -24,10 +21,14 @@ export default function Column({ col }) {
       }
     })
 
+    let c = retroCards.filter(card => column?.card_ids.includes(card.card_id))
+    setCards(c)
+    console.log('retroCards: ', retroCards, 'state: ', c)
+
     return () => {
       socket.removeAllListeners('cardUpdated')
     }
-  }, [column])
+  }, [column, retroCards])
 
   function addCard() {
     let retro_id = retro.retro_id;
@@ -49,7 +50,7 @@ export default function Column({ col }) {
           }} />
           <Icon sx={{}} onClick={() => { addCard() }}>add_circle</Icon>
         </Box>
-        {cards.map((card) => (<Card key={card.card_id} c={card} />))}
+        {cards?.map((card) => (<Card key={card.card_id} c={card} />))}
       </Paper>
     </Box>
   )
