@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {Grid} from '@mui/material'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -33,7 +33,6 @@ export default function RetroCards( retros ) {
               {retro?.retro_name}
             </Typography>
             <Typography gutterBottom variant="p" component="div">
-              {/*if no tags are entered return nothing */}
               {retro?.tags[0] === '' 
                 ? null
                 : <span>#{retro?.tags?.join(' #')}</span>

@@ -31,6 +31,8 @@ export default function RetroModal({ user_id }) {
   const [columnName2, setColumnName2] = useState('');
   const [columnName3, setColumnName3] = useState('');
 
+  const [maxVotes, setMaxVotes]  = useState ();
+
   const [tag1, setTag1] = useState('');
   const [tag2, setTag2] = useState('');
   const [tag3, setTag3] = useState('');
@@ -56,7 +58,8 @@ export default function RetroModal({ user_id }) {
     const newRetro = {
       retro_name: retroName,
       column_names: [columnName1, columnName2, columnName3],
-      tags: [tag1, tag2, tag3]
+      tags: [tag1, tag2, tag3],
+      max_votes: maxVotes
     }
 
     postRetro(newRetro, user_id).then((retro_id) => {
@@ -65,15 +68,20 @@ export default function RetroModal({ user_id }) {
     })
   }
 
-  // useEffect(() => {
-  //   async function sendRetro() {
-  //     let output = 
-  //     navigate(`/retros/${output}`)
-  //   }
-  //   if (retro) {
-  //     sendRetro();
-  //   }
-  // }, [retro])
+  //set max number of votes function 
+  const handleMaxVotes = (e) => {
+    console.log('max votes set', e.target.value)
+    setMaxVotes(e.target.value)
+  }
+
+  //add extra columns with a button click
+  const handleAddColumn = () => {
+    console.log('add column?')
+  }
+
+  //add extra tags with a button click
+
+
 
   return (
     <div>
@@ -111,6 +119,17 @@ export default function RetroModal({ user_id }) {
                   <TextField fullWidth id="column_3" label="Column 3 name" variant="outlined"
                     value={columnName3} onChange={(e) => setColumnName3(e.target.value)} sx={{ marginBottom: 1 }} />
                 </Grid>
+                <Grid item >
+                  <TextField
+                    id="outlined-number"
+                    label="Set Max Votes"
+                    type="number"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    onClick={(e)=>handleMaxVotes(e)}
+                  />
+                  </Grid>
                 <Grid item >
                   <TextField fullWidth id="tag_1" label="Tag1" variant="outlined"
                     value={tag1} onChange={(e) => setTag1(e.target.value)} sx={{ marginBottom: 1 }} />
