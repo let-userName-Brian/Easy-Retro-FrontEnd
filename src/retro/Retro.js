@@ -4,6 +4,7 @@ import { socket } from '../SocketClient';
 import Column from "./Column";
 import { Box, Container } from '@mui/material/';
 import { Button, Stack } from '@mui/material/';
+import AddIcon from '@mui/icons-material/Add';
 
 
 
@@ -18,7 +19,7 @@ export default function Retro() {
   const [cards, setCards] = useState([])
   const [comments, setComments] = useState([])
 
-  console.log('socket', socket)
+  // console.log('socket', socket)
 
   let userId = 'c1ad74ae-b651-4fa0-9820-833193797964'
 
@@ -26,8 +27,7 @@ export default function Retro() {
     // Ask the server to join the room with name retroId
     socket.emit('joinRetro', { userId, retroId });
 
-    socket.on('columnsUpdated', (columns) => {
-      console.log('Columns Updated', columns)
+    socket.on('columnUpdated', (columns) => {
       setRetro({ ...retro, column_ids: columns.map(col => col.column_id) })
       setColumns(columns)
     })
@@ -40,10 +40,10 @@ export default function Retro() {
       setCards(retroPayload.cards)
       setComments(retroPayload.comments)
     })
-  }, [userId, retroId])
+  }, [userId, retroId])//adding retro induces infinite loop. do a functional update 'setRetro(r => ...)'
 
   function addColumn() {
-    socket.emit('createColumn', retroId);
+    socket.emit('columnAdded', retroId);
   }
 
   if (!retro) {
@@ -57,12 +57,12 @@ export default function Retro() {
         onClick={() => {
           addColumn();
         }}
-        variant="contained">+Add Column</Button>
+        variant="contained" startIcon={<AddIcon />}>Add Column</Button>
     </Stack>
     <Box sx={{ height: '100vh', display: 'flex' }} >
-      <RetroContext.Provider value={{ retro, columns, cards, comments }}>
-        {console.log('state columns:', columns)}
-        {retro.column_ids.map(id => (<Column key={id} column_id={id} />))}
+      {/* hard coded userId needs refactored */}
+      <RetroContext.Provider value={{ retro, cards, comments, userId }}>
+        {columns.map(column => (<Column key={column.column_id} col={column} />))}
       </RetroContext.Provider>
     </Box>
   </Container>
