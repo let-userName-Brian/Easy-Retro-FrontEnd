@@ -27,8 +27,8 @@ export default function Retro() {
     // Ask the server to join the room with name retroId
     socket.emit('joinRetro', { userId, retroId });
 
-    socket.on('columnUpdated', (columns) => {
-      setRetro({ ...retro, column_ids: columns.map(col => col.column_id) })
+    socket.on('columnUpdated', ({ columns, column_ids }) => {
+      setRetro({ ...retro, column_ids })
       setColumns(columns)
     })
 
