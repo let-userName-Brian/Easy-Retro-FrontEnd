@@ -9,6 +9,11 @@ import { useState } from 'react';
 import { postRetro } from '../Fetch';
 import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import IconButton from '@mui/material/IconButton';
+import { Input } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
 const style = {
   position: 'absolute',
@@ -26,27 +31,16 @@ export default function RetroModal({ user_id }) {
 
   const [open, setOpen] = useState(false);
   const [retroName, setRetroName] = useState('');
-
-  const [columnName1, setColumnName1] = useState('');
-  const [columnName2, setColumnName2] = useState('');
-  const [columnName3, setColumnName3] = useState('');
-
+  const [columnNames, setColumnNames] = useState(['Went Well', 'To Improve', 'Action Items'])
   const [maxVotes, setMaxVotes] = useState();
-
-  const [tag1, setTag1] = useState('');
-  const [tag2, setTag2] = useState('');
-  const [tag3, setTag3] = useState('');
+  const [tags, setTags] = useState([])
 
   const handleOpen = () => setOpen(true);
   //reset the state to default
   const handleClose = () => {
     setRetroName('');
-    setColumnName1('');
-    setColumnName2('');
-    setColumnName3('');
-    setTag1('');
-    setTag2('');
-    setTag3('');
+    setColumnNames(['Went Well', 'To Improve', 'Action Items'])
+    setTags([])
     setOpen(false);
   }
   const navigate = useNavigate();
@@ -57,8 +51,8 @@ export default function RetroModal({ user_id }) {
 
     const newRetro = {
       retro_name: retroName,
-      column_names: [columnName1, columnName2, columnName3],
-      tags: [tag1, tag2, tag3],
+      column_names: columnNames,
+      tags,
       max_votes: maxVotes
     }
 
@@ -86,7 +80,41 @@ export default function RetroModal({ user_id }) {
   }
   //add extra tags with a button click
 
+  function changeColumnName(name, index) {
+    let newColumnNames = [...columnNames]
+    newColumnNames[index] = name
+    setColumnNames(newColumnNames)
+  }
 
+  function removeColumnName(index) {
+    let newColumnNames = [...columnNames]
+    newColumnNames.splice(index, 1)
+    setColumnNames(newColumnNames)
+  }
+
+  function addColumnName() {
+    let newColumnNames = [...columnNames]
+    newColumnNames.push('New Column')
+    setColumnNames(newColumnNames)
+  }
+
+  function changeTag(name, index) {
+    let newTags = [...tags]
+    newTags[index] = name
+    setTags(newTags)
+  }
+
+  function removeTag(index) {
+    let newTags = [...tags]
+    newTags.splice(index, 1)
+    setTags(newTags)
+  }
+
+  function addTag() {
+    let newTags = [...tags]
+    newTags.push('New Tag')
+    setTags(newTags)
+  }
 
   return (
     <div>
@@ -103,7 +131,7 @@ export default function RetroModal({ user_id }) {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box sx={style} component='form' onSubmit={(e) => { e.preventDefault(); openNewRetro() }}>
             <Typography id="transition-modal-title" variant="h6" component="h2" sx={{ fontWeight: 'bold' }}>
               Retro Options
               <Divider />
@@ -111,55 +139,89 @@ export default function RetroModal({ user_id }) {
             <Typography id="transition-modal-description" sx={{ mt: 2, fontStyle: 'oblique', marginBottom: 1 }}>
               Please select your Retro's options
             </Typography>
-            <FormControl>
-              <Grid container spacing={3}>
-                <Grid item >
-                  <TextField fullWidth required id='retro_name' label="Retro Name?" variant="outlined"
-                    value={retroName} onChange={(e) => setRetroName(e.target.value)} />
-                </Grid>
-                <Grid item >
-                  <Typography id="transition-modal-description" sx={{ fontStyle: 'oblique', marginBottom: 1}}>
-                    Need more columns? Don't worry, you can add them inside the retro!
-                  </Typography>
-                  <TextField fullWidth id="column_1" label="Column 1 name" variant="outlined"
-                    value={columnName1} onChange={(e) => setColumnName1(e.target.value)} sx={{ marginBottom: 1 }} />
-                  <TextField fullWidth id="column_2" label="Column 2 name" variant="outlined"
-                    value={columnName2} onChange={(e) => setColumnName2(e.target.value)} sx={{ marginBottom: 1 }} />
-                  <TextField fullWidth id="column_3" label="Column 3 name" variant="outlined"
-                    value={columnName3} onChange={(e) => setColumnName3(e.target.value)} sx={{ marginBottom: 1 }} />
-                  {/* <Button variant="outlined" onClick={()=> handleAddColumn()} sx={{ marginLeft: 2 }}>Add column</Button>
-                    <Button variant="outlined" onClick={()=> handleRemoveColumn()} sx={{ marginLeft: 2 }}>Remove column</Button> */}
-                </Grid>
-                <Grid item >
-                <Typography id="transition-modal-description" sx={{ fontStyle: 'oblique', marginBottom: 2}}>
-                    Set the max number of votes for each user to vote on ideas or cards!
-                  </Typography>
-                  <TextField
-                    id="outlined-number"
-                    label="Set Max Votes"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    onClick={(e) => handleMaxVotes(e)}
-                  />
-                </Grid>
-                <Grid item >
-                <Typography id="transition-modal-description" sx={{ fontStyle: 'oblique', marginBottom: 1 }}>
-                    Set your Tags to easily search for this retro in the future!
-                  </Typography>
-                  <TextField fullWidth id="tag_1" label="Tag1" variant="outlined"
-                    value={tag1} onChange={(e) => setTag1(e.target.value)} sx={{ marginBottom: 1 }} />
-                  <TextField fullWidth id="tag_2" label="Tag2" variant="outlined"
-                    value={tag2} onChange={(e) => setTag2(e.target.value)} sx={{ marginBottom: 1 }} />
-                  <TextField fullWidth id="tag_3" label="Tag3" variant="outlined"
-                    value={tag3} onChange={(e) => setTag3(e.target.value)} sx={{ marginBottom: 2 }} />
-                </Grid>
+            <Grid container spacing={3}>
+              <Grid item >
+                <TextField fullWidth required id='retro_name' label="Retro Name?" variant="outlined"
+                  value={retroName} onChange={(e) => setRetroName(e.target.value)} />
               </Grid>
-            </FormControl>
-            <Divider sx={{ marginBottom: 1 }}/>
+              <Grid item >
+                <Typography id="transition-modal-description" sx={{ fontStyle: 'oblique', marginBottom: 1 }}>
+                  Need more columns? Don't worry, you can add them inside the retro!
+                </Typography>
+                <Box component='form'>
+                  {columnNames.map((name, index) => (
+                    <Input fullWidth id={`column_${index}`} label={`Column ${index + 1}`} variant="outlined"
+                      value={name} onChange={(e) => changeColumnName(e.target.value, index)} sx={{ marginBottom: 1 }} key={index}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="remove element"
+                            onClick={(e) => removeColumnName(index)}
+                          >
+                            <RemoveCircleIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      } />
+                  ))}
+                  <Box sx={{ width: '100%', my: 1 }}>
+                    <Box sx={{ mx: 'auto', width: 150 }}>
+                      <Button
+                        onClick={() => {
+                          addColumnName();
+                        }}
+                        variant="contained" startIcon={<AddIcon />}>Add Column</Button>
+                    </Box>
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid item >
+                <Typography id="transition-modal-description" sx={{ fontStyle: 'oblique', marginBottom: 2 }}>
+                  Set the max number of votes for each user to vote on ideas or cards!
+                </Typography>
+                <TextField
+                  id="outlined-number"
+                  label="Set Max Votes"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onClick={(e) => handleMaxVotes(e)}
+                />
+              </Grid>
+              <Grid item >
+                <Typography id="transition-modal-description" sx={{ fontStyle: 'oblique', marginBottom: 1 }}>
+                  Set your Tags to easily search for this retro in the future!
+                </Typography>
+                <Box component='form'>
+                  {tags?.map((name, index) => (
+                    <Input fullWidth id={`tag_${index}`} label={`Tag ${index + 1}`} variant="outlined"
+                      value={name} onChange={(e) => changeTag(e.target.value, index)} sx={{ marginBottom: 1 }} key={index}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="remove element"
+                            onClick={(e) => removeTag(index)}
+                          >
+                            <RemoveCircleIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      } />
+                  ))}
+                  <Box sx={{ width: '100%', my: 1 }}>
+                    <Box sx={{ mx: 'auto', width: 116 }}>
+                      <Button
+                        onClick={() => {
+                          addTag();
+                        }}
+                        variant="contained" startIcon={<AddIcon />}>Add Tag</Button>
+                    </Box>
+                  </Box>
+                </Box>
+              </Grid>
+            </Grid>
+            <Divider sx={{ marginBottom: 1 }} />
             <Button variant="outlined" label='cancel' onClick={() => handleClose()} sx={{ marginLeft: 8 }}>Cancel</Button>
-            <Button variant="outlined" label="create" onClick={(e) => openNewRetro()} sx={{ marginLeft: 2 }}>Create</Button>
+            <Button variant="outlined" type='submit' label="create" sx={{ marginLeft: 2 }}>Create</Button>
           </Box>
         </Fade>
       </Modal>
