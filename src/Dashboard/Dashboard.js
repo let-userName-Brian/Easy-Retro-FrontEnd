@@ -1,4 +1,5 @@
 import {Grid} from '@mui/material'
+import {useState, useEffect} from 'react'
 import Typography from '@mui/material/Typography';
 import RetroCards from './RetroCards';
 import SearchBar from './SearchBar';
@@ -7,6 +8,11 @@ import RetroModal from './RetroModal';
 
 export default function Dashboard({user, retros, user_id }) {
 
+  const [searchedRetros, setSearchedRetros] = useState([])
+
+  //useEffect
+
+
   return (
     <div>
       <Grid container spacing={2} margin={0} sx={{overflow: 'hidden'}}>
@@ -14,7 +20,7 @@ export default function Dashboard({user, retros, user_id }) {
           <Typography>Welcome back {user?.user_name}!</Typography>
         </Grid> 
         <Grid item xs={5}>
-          <SearchBar user={user} retros={retros} user_id={user_id}/>
+          <SearchBar  retros={retros} searchedRetros={searchedRetros} setSearchedRetros={setSearchedRetros}/>
         </Grid>
       </Grid>
         <Grid container padding={2} justifyContent="center" alignItems="center">
@@ -25,7 +31,7 @@ export default function Dashboard({user, retros, user_id }) {
           <Typography variant="h6">Your Active Retros</Typography>
         </Grid>
         <Grid container spacing={2} margin={0} > 
-          <RetroCards retros={retros} />
+          <RetroCards retros={retros} searchedRetros={searchedRetros}/>
         </Grid>
     </div>
   )
