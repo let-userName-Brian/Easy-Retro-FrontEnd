@@ -4,13 +4,18 @@ import Typography from '@mui/material/Typography';
 import RetroCards from './RetroCards';
 import SearchBar from './SearchBar';
 import RetroModal from './RetroModal';
+import { getRetrosByUserId } from '../Fetch';
 
 
 export default function Dashboard({user, retros, user_id }) {
 
   const [searchedRetros, setSearchedRetros] = useState([])
 
-  //useEffect
+ //use effect with get user Retro by user ID
+  useEffect(() => {
+    getRetrosByUserId(user_id)
+  }, [])
+
 
 
   return (
