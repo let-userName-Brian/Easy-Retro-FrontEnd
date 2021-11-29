@@ -131,7 +131,7 @@ export default function RetroModal({ user_id }) {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box sx={style} component='form' onSubmit={(e) => { e.preventDefault(); openNewRetro() }}>
             <Typography id="transition-modal-title" variant="h6" component="h2" sx={{ fontWeight: 'bold' }}>
               Retro Options
               <Divider />
@@ -221,7 +221,7 @@ export default function RetroModal({ user_id }) {
             </Grid>
             <Divider sx={{ marginBottom: 1 }} />
             <Button variant="outlined" label='cancel' onClick={() => handleClose()} sx={{ marginLeft: 8 }}>Cancel</Button>
-            <Button variant="outlined" label="create" onClick={(e) => openNewRetro()} sx={{ marginLeft: 2 }}>Create</Button>
+            <Button variant="outlined" type='submit' label="create" sx={{ marginLeft: 2 }}>Create</Button>
           </Box>
         </Fade>
       </Modal>
