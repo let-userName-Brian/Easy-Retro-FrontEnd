@@ -1,5 +1,5 @@
 import Backdrop from '@mui/material/Backdrop';
-import { FormControl, Grid } from '@mui/material';
+import { Divider, FormControl, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
@@ -31,7 +31,7 @@ export default function RetroModal({ user_id }) {
   const [columnName2, setColumnName2] = useState('');
   const [columnName3, setColumnName3] = useState('');
 
-  const [maxVotes, setMaxVotes]  = useState ();
+  const [maxVotes, setMaxVotes] = useState();
 
   const [tag1, setTag1] = useState('');
   const [tag2, setTag2] = useState('');
@@ -77,8 +77,13 @@ export default function RetroModal({ user_id }) {
   //add extra columns with a button click
   const handleAddColumn = () => {
     console.log('add column?')
+
   }
 
+  //handle remove column 
+  const handleRemoveColumn = () => {
+    console.log('remove column?')
+  }
   //add extra tags with a button click
 
 
@@ -99,10 +104,11 @@ export default function RetroModal({ user_id }) {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
+            <Typography id="transition-modal-title" variant="h6" component="h2" sx={{ fontWeight: 'bold' }}>
               Retro Options
+              <Divider />
             </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+            <Typography id="transition-modal-description" sx={{ mt: 2, fontStyle: 'oblique', marginBottom: 1 }}>
               Please select your Retro's options
             </Typography>
             <FormControl>
@@ -112,14 +118,22 @@ export default function RetroModal({ user_id }) {
                     value={retroName} onChange={(e) => setRetroName(e.target.value)} />
                 </Grid>
                 <Grid item >
+                  <Typography id="transition-modal-description" sx={{ fontStyle: 'oblique', marginBottom: 1}}>
+                    Need more columns? Don't worry, you can add them inside the retro!
+                  </Typography>
                   <TextField fullWidth id="column_1" label="Column 1 name" variant="outlined"
                     value={columnName1} onChange={(e) => setColumnName1(e.target.value)} sx={{ marginBottom: 1 }} />
                   <TextField fullWidth id="column_2" label="Column 2 name" variant="outlined"
                     value={columnName2} onChange={(e) => setColumnName2(e.target.value)} sx={{ marginBottom: 1 }} />
                   <TextField fullWidth id="column_3" label="Column 3 name" variant="outlined"
                     value={columnName3} onChange={(e) => setColumnName3(e.target.value)} sx={{ marginBottom: 1 }} />
+                  {/* <Button variant="outlined" onClick={()=> handleAddColumn()} sx={{ marginLeft: 2 }}>Add column</Button>
+                    <Button variant="outlined" onClick={()=> handleRemoveColumn()} sx={{ marginLeft: 2 }}>Remove column</Button> */}
                 </Grid>
                 <Grid item >
+                <Typography id="transition-modal-description" sx={{ fontStyle: 'oblique', marginBottom: 2}}>
+                    Set the max number of votes for each user to vote on ideas or cards!
+                  </Typography>
                   <TextField
                     id="outlined-number"
                     label="Set Max Votes"
@@ -127,10 +141,13 @@ export default function RetroModal({ user_id }) {
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    onClick={(e)=>handleMaxVotes(e)}
+                    onClick={(e) => handleMaxVotes(e)}
                   />
-                  </Grid>
+                </Grid>
                 <Grid item >
+                <Typography id="transition-modal-description" sx={{ fontStyle: 'oblique', marginBottom: 1 }}>
+                    Set your Tags to easily search for this retro in the future!
+                  </Typography>
                   <TextField fullWidth id="tag_1" label="Tag1" variant="outlined"
                     value={tag1} onChange={(e) => setTag1(e.target.value)} sx={{ marginBottom: 1 }} />
                   <TextField fullWidth id="tag_2" label="Tag2" variant="outlined"
@@ -140,7 +157,8 @@ export default function RetroModal({ user_id }) {
                 </Grid>
               </Grid>
             </FormControl>
-            <Button variant="outlined" label='cancel' onClick={() => handleClose()}>Cancel</Button>
+            <Divider sx={{ marginBottom: 1 }}/>
+            <Button variant="outlined" label='cancel' onClick={() => handleClose()} sx={{ marginLeft: 8 }}>Cancel</Button>
             <Button variant="outlined" label="create" onClick={(e) => openNewRetro()} sx={{ marginLeft: 2 }}>Create</Button>
           </Box>
         </Fade>
