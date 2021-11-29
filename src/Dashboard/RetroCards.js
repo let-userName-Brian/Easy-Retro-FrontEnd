@@ -22,7 +22,7 @@ console.log('searched retros@ retrocards',searchedRetros)
     return (
       <>
         {retroInfo?.map((retro, index) => (
-          <Grid key={index} item xs={12} sm={6} md={6} lg={3} sx={{ flexGrow: 1 }}>
+          <Grid key={index} item xs={12} sm={6} md={6} lg={4} sx={{ flexGrow: 1 }}>
             <Card key={index} sx={{ maxWidth: 350, marginBottom: 2 }}>
               <CardMedia
                 component="img"
