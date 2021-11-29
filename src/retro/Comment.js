@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react"
 import { RetroContext } from "./Retro"
-import { Box, Paper } from '@mui/material/';
+import { Paper, TextField, Typography } from '@mui/material/';
 
 export default function Comment({ comment_id }) {
 
@@ -11,7 +11,8 @@ export default function Comment({ comment_id }) {
 
   useEffect(() => {
     let comment = initComments?.find(c => c.comment_id === comment_id)
-    if (!initComments) {
+    console.log('comment', comment)
+    if (!initComments || !comment) {
       return
     }
     setCommentText(comment.comment_text)
@@ -21,12 +22,12 @@ export default function Comment({ comment_id }) {
 
   return (
     <Paper variant="outlined" sx={{ m: 1, p: 1 }} >
-      <ul>
-        <div> Comment ID: {comment_id}</div>
-        <div> Comment Text: {commentText}</div>
-        <div> Author: {author}</div>
-        <div> Reactions: {reactions.length}</div>
-      </ul>
+      <Typography> Comment ID: {comment_id}</Typography>
+      <TextField fullWidth label={commentText} id="commentText" InputProps={{
+        inputProps: { style: { textAlign: "left" } }
+      }} />
+      <Typography>Author: {author}</Typography>
+      <Typography>Reactions: {reactions.length}</Typography>
     </Paper>
   )
 }
