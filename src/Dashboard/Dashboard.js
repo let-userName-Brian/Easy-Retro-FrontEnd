@@ -14,7 +14,7 @@ export default function Dashboard({user, retros, user_id }) {
           <Typography>Welcome back {user?.user_name}!</Typography>
         </Grid> 
         <Grid item xs={5}>
-          <SearchBar />
+          <SearchBar user={user} retros={retros} user_id={user_id}/>
         </Grid>
       </Grid>
         <Grid container padding={2} justifyContent="center" alignItems="center">
