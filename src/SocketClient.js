@@ -2,8 +2,8 @@ import { io } from "socket.io-client";
 
 const sockets = {
   test: "",
-  development: "http://localhost:8080",
-  production: "https://sdi07-03.staging.dso.mil/api"
+  development: "http://localhost:8080/",
+  production: "https://sdi07-03.staging.dso.mil/api/"
 }
 
 const serverURL = sockets[process.env.NODE_ENV]
@@ -20,7 +20,7 @@ function init() {
   console.log('connecting to socket.io at: ', serverURL)
   socket = io(serverURL, {
     path: "/socket.io/",
-    transport: ['websocket', 'polling', 'flashsocket']
+    transport: ['polling', 'flashsocket']
   });
 
   connected = true
