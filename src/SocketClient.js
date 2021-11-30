@@ -6,7 +6,14 @@ const sockets = {
   production: "https://sdi07-03.staging.dso.mil/api/"
 }
 
+const paths = {
+  test: "",
+  development: "/socket.io/",
+  production: "/api/socket.io/"
+}
+
 const serverURL = sockets[process.env.NODE_ENV]
+const path = paths[process.env.NODE_ENV]
 
 let connected = false
 export let socket
@@ -19,7 +26,7 @@ function init() {
 
   console.log('connecting to socket.io at: ', serverURL)
   socket = io(serverURL, {
-    path: "/socket.io/",
+    path,
     transport: ['polling', 'flashsocket']
   });
 
