@@ -1,12 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { useState, useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import { Button } from '@mui/material';
-import { Grid, Card, CardMedia, CardContent, CardActions } from '@mui/material';
-import { Typography } from '@mui/material';
-import bar2 from "./bar2.png";
-
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -37,7 +31,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -51,7 +44,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchBar({ retros, setSearchedRetros }) {
-
 
   let timer = 0;
 
