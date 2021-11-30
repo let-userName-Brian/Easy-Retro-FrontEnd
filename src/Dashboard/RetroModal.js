@@ -1,5 +1,5 @@
 import Backdrop from '@mui/material/Backdrop';
-import { Divider, FormControl, Grid } from '@mui/material';
+import { Divider, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
@@ -9,10 +9,8 @@ import { useState } from 'react';
 import { postRetro } from '../Fetch';
 import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import IconButton from '@mui/material/IconButton';
-import { Input } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 const style = {
@@ -48,8 +46,6 @@ export default function RetroModal({ user_id }) {
 
   //opens a new retro and generates a new UUID for it
   const openNewRetro = async () => {
-    //setRetro()
-
     const newRetro = {
       retro_name: retroName,
       column_names: columnNames,
@@ -58,7 +54,6 @@ export default function RetroModal({ user_id }) {
     }
 
     postRetro(newRetro, user_id).then((retro_id) => {
-      console.log("new retro response:", retro_id)
       navigate(`/retros/${retro_id}`)
     })
   }
@@ -68,19 +63,8 @@ export default function RetroModal({ user_id }) {
     console.log('max votes set', e.target.value)
     setMaxVotes(e.target.value)
   }
-
-  //add extra columns with a button click
-  const handleAddColumn = () => {
-    console.log('add column?')
-
-  }
-
-  //handle remove column 
-  const handleRemoveColumn = () => {
-    console.log('remove column?')
-  }
+  
   //add extra tags with a button click
-
   function changeColumnName(name, index) {
     let newColumnNames = [...columnNames]
     newColumnNames[index] = name

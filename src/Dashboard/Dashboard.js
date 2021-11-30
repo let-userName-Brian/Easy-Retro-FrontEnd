@@ -11,13 +11,9 @@ export default function Dashboard({user, retros, user_id }) {
 
   const [searchedRetros, setSearchedRetros] = useState([])
 
-  console.log('app level ', searchedRetros)
- //use effect with get user Retro by user ID
   useEffect(() => {
     getRetrosByUserId(user_id)
   }, [])
-
-
 
   return (
     <div>
