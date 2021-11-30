@@ -2,9 +2,7 @@ import { ThemeProvider } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
-import {
-  Route, Routes
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import './App.css';
 import Dashboard from './Dashboard/Dashboard';
 import { getRetrosByUserId, getUserById } from './Fetch';
@@ -31,11 +29,6 @@ export default function App() {
     getRetrosByUserId(user_id)
       .then(userProfileRetro => setUserRetro(userProfileRetro))
   }, [])
-
-  // useEffect((user) => {
-  //   setDarkMode(user?.is_dark_mode)
-  // }, [user])
-  // console.log(user?.is_dark_mode)
 
   const theme = createTheme({
     palette: {
