@@ -50,7 +50,7 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
         <Toolbar>
           <div style={{ flexGrow: 1, m: 0, p: 0 }}>
             <Link to="/">
-              <img src={mjolnirImage} style={{ height: 90 }} alt="Logo" />
+              <img src={mjolnirImage} style={{ height: 70 }} alt="Logo" />
             </Link>
           </div>
           <IconButton sx={{ ml: 1 }}

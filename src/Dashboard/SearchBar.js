@@ -50,7 +50,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchBar({ retros, searchedRetros, setSearchedRetros }) {
+export default function SearchBar({ retros, setSearchedRetros }) {
 
 
   let timer = 0;
