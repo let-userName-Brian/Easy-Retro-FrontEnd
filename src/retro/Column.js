@@ -4,6 +4,7 @@ import { Box, Paper, Icon, TextField, Skeleton, IconButton } from '@mui/material
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { RetroContext } from './Retro'
 import Card from "./Card"
+import AddCardButton from './AddCardButton'
 
 export default function Column({ col }) {
   const { cards: retroCards, retro, userId } = useContext(RetroContext)
@@ -96,9 +97,9 @@ export default function Column({ col }) {
           ) : (
             <Skeleton variant="rectangular" width={210} height={118} />
           )}
-          <Icon sx={{}} onClick={() => { addCard() }}>add_circle</Icon>
         </Box>
         {cards?.map((card) => (<Card key={card.card_id} c={card} />))}
+        <AddCardButton addCardFunc={addCard}/>
       </Paper>
     </Box>
   )
