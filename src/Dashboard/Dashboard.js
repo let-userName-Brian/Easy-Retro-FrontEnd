@@ -11,6 +11,7 @@ export default function Dashboard({user, retros, user_id }) {
 
   const [searchedRetros, setSearchedRetros] = useState([])
 
+  console.log('app level ', searchedRetros)
  //use effect with get user Retro by user ID
   useEffect(() => {
     getRetrosByUserId(user_id)
@@ -25,7 +26,7 @@ export default function Dashboard({user, retros, user_id }) {
           <Typography>Welcome back {user?.user_name}!</Typography>
         </Grid> 
         <Grid item xs={5}>
-          <SearchBar  retros={retros} searchedRetros={searchedRetros} setSearchedRetros={setSearchedRetros}/>
+          <SearchBar  retros={retros} setSearchedRetros={setSearchedRetros}/>
         </Grid>
       </Grid>
         <Grid container padding={2} justifyContent="center" alignItems="center">

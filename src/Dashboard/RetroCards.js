@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import bar2 from './bar2.png';
 
-export default function RetroCards(retros, { searchedRetros }) {
+export default function RetroCards({retros, searchedRetros})  {
 
   //retros comes back as a object within an object, this destructures it
   const retroInfo = retros.retros
@@ -19,34 +19,67 @@ export default function RetroCards(retros, { searchedRetros }) {
     window.location.href = `/retros/${id}`;
   }
 
-  return (
-    <>
-      {retroInfo?.map((retro, index) => (
-        <Grid key={index} item xs={12} sm={6} md={6} lg={3} sx={{ flexGrow: 1 }}>
-          <Card key={index} sx={{ maxWidth: 350, marginBottom: 2 }}>
-            <CardMedia
-              component="img"
-              href={retro?.retro_id}
-              height="140"
-              image={bar2}
-            />
-            <CardContent>
-              <Typography gutterBottom id="1" variant="h6" component="div">
-                {retro?.retro_name}
-              </Typography>
-              <Typography gutterBottom variant="p" component="div">
-                {retro.tags ? <span>{retro.tags.reduce((prev, curr) => prev + ' #' + curr, '')}</span>
-                  : <></>
-                }
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small" onClick={() => handleClick(retro?.retro_id)}>Open retro</Button>
-            </CardActions>
-          </Card>
-        </Grid>
-      ))}
-    </>
-  )
+  if (searchedRetros?.length >= 1) {
+    return (
+      <>
+        {searchedRetros.map((retro, index) => {
+          return (
+            <Grid key={index} item xs={12} sm={6} md={6} lg={3} sx={{ flexGrow: 1 }}>
+              <Card key={index} sx={{ maxWidth: 350, marginBottom: 2 }}>
+                <CardMedia
+                  component="img"
+                  href={retro?.retro_id}
+                  height="140"
+                  image={bar2}
+                />
+                <CardContent>
+                  <Typography gutterBottom id="1" variant="h6" component="div">
+                    {retro?.retro_name}
+                  </Typography>
+                  <Typography gutterBottom variant="p" component="div">
+                    {retro.tags ? <span>{retro.tags.reduce((prev, curr) => prev + ' #' + curr, '')}</span>
+                      : <></>
+                    }
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" onClick={() => handleClick(retro?.retro_id)}>Open retro</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          )
+        })}
+      </>
+    )
+  } else {
+    return (
+      <>
+        {retroInfo?.map((retro, index) => (
+          <Grid key={index} item xs={12} sm={6} md={6} lg={3} sx={{ flexGrow: 1 }}>
+            <Card key={index} sx={{ maxWidth: 350, marginBottom: 2 }}>
+              <CardMedia
+                component="img"
+                href={retro?.retro_id}
+                height="140"
+                image={bar2}
+              />
+              <CardContent>
+                <Typography gutterBottom id="1" variant="h6" component="div">
+                  {retro?.retro_name}
+                </Typography>
+                <Typography gutterBottom variant="p" component="div">
+                  {retro.tags ? <span>{retro.tags.reduce((prev, curr) => prev + ' #' + curr, '')}</span>
+                    : <></>
+                  }
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" onClick={() => handleClick(retro?.retro_id)}>Open retro</Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </>
+    )
+  }
 }
-
