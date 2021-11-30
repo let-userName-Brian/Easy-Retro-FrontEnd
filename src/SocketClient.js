@@ -20,7 +20,7 @@ function init() {
   console.log('connecting to socket.io at: ', serverURL)
   socket = io(serverURL, {
     path: "/socket.io/",
-    transport: ['websocket', 'polling', 'flashsocket']
+    transport: ['polling', 'flashsocket']
   });
 
   connected = true
