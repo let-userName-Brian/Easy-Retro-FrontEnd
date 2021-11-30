@@ -10,11 +10,6 @@ import bar2 from './bar2.png';
 
 export default function RetroCards({retros, searchedRetros})  {
 
-  //retros comes back as a object within an object, this destructures it
-  const retroInfo = retros.retros
-
-  console.log('searched retros@ retrocards', searchedRetros)
-
   const handleClick = (id) => {
     window.location.href = `/retros/${id}`;
   }
@@ -54,7 +49,7 @@ export default function RetroCards({retros, searchedRetros})  {
   } else {
     return (
       <>
-        {retroInfo?.map((retro, index) => (
+        {retros?.map((retro, index) => (
           <Grid key={index} item xs={12} sm={6} md={6} lg={3} sx={{ flexGrow: 1 }}>
             <Card key={index} sx={{ maxWidth: 350, marginBottom: 2 }}>
               <CardMedia
