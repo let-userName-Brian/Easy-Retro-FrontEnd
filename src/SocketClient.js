@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 const sockets = {
   test: "",
   development: "http://localhost:8080/",
-  production: "https://sdi07-03.staging.dso.mil/api/"
+  production: "https://sdi07-03.staging.dso.mil/"
 }
 
 const paths = {
