@@ -10,12 +10,26 @@ export default function Column({ col }) {
   const [column, setColumn] = useState()
   const [cards, setCards] = useState()
   const [colName, setColName] = useState()
+  const [retroId, setRetroId] = useState()
+  console.log('after rendering cols: ', retro.retro_id, retroId)
 
   useEffect(() => {
     if (!col) return;
     setColumn(col)
     setColName(col.column_name)
   }, [col])
+
+  useEffect(() => {
+    if (!retro) return;
+    setRetroId(retro.retro_id)
+    console.log('useffect: ', retro.retro_id, retroId)
+  }, [])
+
+  function submitColumnNameChange() {
+    // let retro_id = retro.retro_id;
+    let column_id = column.column_id
+    socket.emit('columnRenamed', { retroId, column_id, colName })
+  }
 
   useEffect(() => {
     socket.on('columnNameUpdated', ({ column_id, newName }) => {
@@ -30,19 +44,18 @@ export default function Column({ col }) {
     }
   }, [column])
 
-  async function submitColumnNameChange() {
-    let retro_id = retro.retro_id;
-    let column_id = column.column_id
-    console.log('retro_id: ', retro_id)
-    console.log('column_id: ', column_id)
-    console.log('colName: ', colName)
-    socket.emit('columnRenamed', { retro_id, column_id, colName })
+  function removeColumn() {
+    // let retro_id = retro.retro_id;
+    let column_id = column.column_id;
+    console.log('del col:', retroId, column_id)
+    socket.emit('columnDeleted', { retroId, column_id })
   }
 
-  // function removeColumn() {
-  //   let column_id = column.column_id;
-
-  // }
+  function addCard() {
+    // let retro_id = retro.retro_id;
+    let column_id = column.column_id;
+    socket.emit('cardAdded', { retroId, column_id, userId });
+  }
 
   useEffect(() => {
     // Received when the server sends us a card update
@@ -51,25 +64,17 @@ export default function Column({ col }) {
       if (column_id === column.column_id) {
         setColumn({ ...column, card_ids: cards.map(card => card.card_id) })
         setCards(cards)
-        console.log(cards)
+        console.log('card updated - setCards: ', cards)
       }
     })
 
-    let c = retroCards.filter(card => column?.card_ids.includes(card.card_id))
-    setCards(c)
-    console.log('retroCards: ', retroCards, 'state: ', c)
+    //initialize cards from context
+    setCards(retroCards.filter(card => column?.card_ids.includes(card.card_id)))
 
     return () => {
       socket.removeAllListeners('cardUpdated')
     }
   }, [column, retroCards])
-
-
-  function addCard() {
-    let retro_id = retro.retro_id;
-    let column_id = column.column_id;
-    socket.emit('cardAdded', { retro_id, column_id, userId });
-  }
 
   return (
     <Box
@@ -88,7 +93,7 @@ export default function Column({ col }) {
               <Box>
                 <IconButton
                   aria-label="remove element"
-                // onClick={(e) => removeColumn()}
+                  onClick={(e) => removeColumn()}
                 >
                   <RemoveCircleIcon />
                 </IconButton>

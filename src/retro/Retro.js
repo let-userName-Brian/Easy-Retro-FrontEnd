@@ -6,8 +6,6 @@ import { Box, Container } from '@mui/material/';
 import { Button, Stack } from '@mui/material/';
 import AddIcon from '@mui/icons-material/Add';
 
-
-
 export const RetroContext = createContext()
 
 export default function Retro() {
@@ -18,8 +16,6 @@ export default function Retro() {
   const [columns, setColumns] = useState([])
   const [cards, setCards] = useState([])
   const [comments, setComments] = useState([])
-
-  // console.log('socket', socket)
 
   let userId = 'c1ad74ae-b651-4fa0-9820-833193797964'
 
