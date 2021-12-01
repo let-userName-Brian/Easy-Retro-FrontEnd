@@ -44,6 +44,25 @@ export default function Column({ col, column_id }) {
     }
   }, [column])
 
+  useEffect(() => {
+    // Received when the server sends us a card update
+    socket.on('cardUpdated', ({ cards, column }) => {
+      if (column.column_id === column_id) {
+        console.log('card updated?', cards,)
+        console.log('column Updated??????', column)
+        setColumn(column)
+        setCards(cards)
+      }
+    })
+
+    //initialize cards from context
+    setCards(retroCards?.filter(card => column?.card_ids.includes(card.card_id)))
+
+    return () => {
+      socket.removeAllListeners('cardUpdated')
+    }
+  }, [column, retroCards])
+
   function removeColumn() {
     // let retro_id = retro.retro_id;
     let column_id = column.column_id;
@@ -59,22 +78,6 @@ export default function Column({ col, column_id }) {
     socket.emit('cardAdded', { retro_id, column_id, user_id });
   }
 
-  useEffect(() => {
-    // Received when the server sends us a card update
-    socket.on('cardUpdated', ({ cards, column }) => {
-      if (column.column_id === column_id) {
-        setColumn(column)
-        setCards(cards)
-      }
-    })
-
-    //initialize cards from context
-    setCards(retroCards?.filter(card => column?.card_ids.includes(card.card_id)))
-
-    return () => {
-      socket.removeAllListeners('cardUpdated')
-    }
-  }, [column, retroCards])
 
   return (
     <Box
@@ -97,7 +100,7 @@ export default function Column({ col, column_id }) {
             <Skeleton variant="rectangular" width={210} height={118} />
           )}
         </Box>
-        {cards?.map((card) => (<Card key={card.card_id} c={card} />))}
+        {column?.card_ids.map((card_id) => (<Card key={card_id} card_id={card_id} cards={cards} />))}
         <AddCardButton addCardFunc={addCard} />
       </Paper>
     </Box>
