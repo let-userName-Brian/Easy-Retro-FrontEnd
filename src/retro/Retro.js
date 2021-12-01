@@ -15,7 +15,7 @@ export const RetroContext = createContext()
 export default function Retro({ user_id }) {
 
   const params = useParams()
-  const retroId = params.retro_id
+  const retro_id = params.retro_id
   const [retro, setRetro] = useState()
   const [columns, setColumns] = useState([])
   const [cards, setCards] = useState([])
@@ -30,7 +30,7 @@ export default function Retro({ user_id }) {
 
   useEffect(() => {
     // Ask the server to join the room with name retroId
-    socket.emit('joinRetro', { user_id, retroId });
+    socket.emit('joinRetro', { user_id, retro_id });
 
     socket.on('columnUpdated', ({ retro, columns, column_ids }) => {
       setRetro(retro)
@@ -55,7 +55,7 @@ export default function Retro({ user_id }) {
 
 
   function addColumn() {
-    socket.emit('columnAdded', retroId);
+    socket.emit('columnAdded', { retro_id });
   }
 
   if (!retro) {
@@ -71,7 +71,7 @@ export default function Retro({ user_id }) {
           <div>Retro Name: {retro.retro_name}</div>
           {userVotes > 0 ?
             <div>You have {userVotes} votes left!</div>
-          : <></>}
+            : <></>}
         </Grid>
         <Grid item xs={4} md={4} lg={4} sx={{ flex: '1', textAlign: 'center', marginTop: '5%' }}>
           <Button
