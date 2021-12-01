@@ -7,7 +7,7 @@ import Card from "./Card";
 import ColumnMenu from './ColumnMenu';
 import { RetroContext } from './Retro';
 
-export default function Column({ col, column_id, user }) {
+export default function Column({ column_id, user }) {
   const { cards: initCards, columns: initColumns, retro, user_id } = useContext(RetroContext)
   const [column, setColumn] = useState()
   const [cards, setCards] = useState()
@@ -15,24 +15,23 @@ export default function Column({ col, column_id, user }) {
   const [retro_id, setRetroId] = useState()
 
   useEffect(() => {
-    socket.on('columnNameUpdated', ({ column_id, newName }) => {
-      console.log('newName in UseEffect:', newName)
-      if (column_id === column.column_id) {
-        setColumn({ ...column, column_name: newName });
-        setColName(newName)
+    // Received when the server sends us a name update
+    socket.on('columnNameUpdated', ({ column }) => {
+      if (column.column_id === column_id) {
+        setColumn(column);
+        setColName(column.column_name)
       }
     })
 
     // Received when the server sends us a card update
     socket.on('cardUpdated', ({ cards, column }) => {
-      console.log('cardUpdated column id:', column_id)
       if (column.column_id === column_id) {
-        console.log('card updated?', cards,)
-        console.log('column Updated??????', column)
-        setColumn(column)
+        console.log('cardUpdated', cards, column)
         setCards(cards)
+        setColumn(column)
       }
     })
+
     return () => {
       socket.off('columnNameUpdated')
       socket.off('cardUpdated')
@@ -41,10 +40,13 @@ export default function Column({ col, column_id, user }) {
 
 
   useEffect(() => {
-    if (!col) return;
+    if (!column_id) return
+    if (initColumns.length === 0) return
+    let col = initColumns.find(column => column.column_id === column_id)
+    if (!col) return
     setColumn(col)
     setColName(col.column_name)
-  }, [col])
+  }, [initColumns, column_id])
 
   useEffect(() => {
     if (!retro) return;
@@ -54,7 +56,7 @@ export default function Column({ col, column_id, user }) {
   function submitColumnNameChange() {
     // let retro_id = retro.retro_id;
     let column_id = column.column_id
-    socket.emit('columnRenamed', { retro_id, column_id, colName })
+    socket.emit('columnRenamed', { retro_id, column_id, column_name: colName })
   }
 
   useEffect(() => {
@@ -73,6 +75,10 @@ export default function Column({ col, column_id, user }) {
     socket.emit('cardAdded', { retro_id, column_id, user_id });
   }
 
+  if (!column) {
+    return <>Loading Column</>
+  }
+
   return (
     <Box
       sx={{
@@ -80,21 +86,16 @@ export default function Column({ col, column_id, user }) {
         minWidth: 240,
         height: "90vh",
       }}>
-      <Paper elevation={12} sx={{ p: 1, borderRadius: '20px' }} >
-        <Box container sx={{ display: 'flex', alignItems: 'center', textAlign: 'center',  }}>
-          {column ? (
-            <>
-              <TextField fullWidth label={colName} id="columnName" value={colName} onChange={(e) => setColName(e.target.value)} onBlur={submitColumnNameChange} sx={{ my: 1 }} InputProps={{
-                inputProps: { style: { textAlign: "center" } }
-              }} />
-              <Box>
-                <ColumnMenu removeColumnFunc={removeColumn} />
-              </Box></>
-          ) : (
-            <Skeleton variant="rectangular" width={210} height={118} />
-          )}
-        </Box >
-        {column?.card_ids.map((card_id) => (<Card key={card_id} card_id={card_id} cards={cards} user={user} />))}
+      <Paper elevation={12} sx={{ p: 1,  borderRadius: '20px'  }} >
+        <Box container sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+          <TextField fullWidth label={colName} id="columnName" value={colName} onChange={(e) => setColName(e.target.value)} onBlur={submitColumnNameChange} sx={{ my: 1 }} InputProps={{
+            inputProps: { style: { textAlign: "center" } }
+          }} />
+          <Box>
+            <ColumnMenu removeColumnFunc={removeColumn} />
+          </Box>
+        </Box>
+        {column.card_ids.map((card_id) => (<Card key={card_id} card_id={card_id} cards={cards} user={user} />))}
         <AddCardButton addCardFunc={() => addCard(column_id)} />
       </Paper>
     </Box>

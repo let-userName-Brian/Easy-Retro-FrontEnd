@@ -18,25 +18,28 @@ export default function Card({ card_id, cards, user }) {
 
 
   useEffect(() => {
-    if (!cards) return;
-    if (cards.length === 0) return;
-    if (!card_id) return;
-    // console.log('cards', cards)
-    let newCard = cards.find(card => card.card_id === card_id)
+    let newCard = cards?.find(card => card.card_id === card_id)
     if (!newCard) return;
     setCard(newCard)
     setCardText(newCard.card_text)
     setAuthor(newCard.user_name)
   }, [cards, card_id]);
 
-
   useEffect(() => {
+    socket.on('cardTextUpdated', ({ card }) => {
+      if (card_id === card.card_id) {
+        setCard(card);
+        setCardText(card.card_text)
+      }
+    })
+
     socket.on('votesChanged', ({ card_id, vote_type }) => {
       if (card_id === card.card_id) {
         setCardVotes(vote_type)
       }
     })
     return () => {
+      socket.off('cardTextUpdated')
       socket.off('votesChanged')
     }
   }, [])
@@ -47,6 +50,10 @@ export default function Card({ card_id, cards, user }) {
     }
   }, [initComments])
 
+  //console.log('cardVotes', cardVotes)
+  function submitCardTextChange() {
+    socket.emit('changeCardText', { card_id, card_text: cardText })
+  }
 
   //add vote to card
   const addVote = () => {
@@ -85,10 +92,10 @@ console.log('comments', comments)
         display: 'flex',
         borderRadius: '10',
       }}>
-      <Paper elevation={3} sx={{ m: 1, p: 1, borderRadius: '15px', border: 'solid', borderColor: '#90caf9'  }}>
-        <TextField fullWidth label={cardText} id="cardText" InputProps={{
-          inputProps: { style: { textAlign: "center" } }
-        }} />
+      <Paper elevation={3} sx={{ m: 1, p: 1, borderRadius: '15px', border: 'solid', borderColor: '#90caf9'   }}>
+        <div>card id: {card_id}</div>
+        <TextField fullWidth label={cardText} id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={submitCardTextChange} sx={{ my: 1 }}
+        />
         <Box sx={{ m: 1 }}>
           <Typography>-{author}</Typography>
           {userVotes === 0
