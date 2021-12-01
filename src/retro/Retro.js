@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { socket } from '../SocketClient';
 import Column from "./Column";
 import { Box, Container } from '@mui/material/';
-import { Button, Grid } from '@mui/material/';
+import { Button, Grid, Stack } from '@mui/material/';
 import AddIcon from '@mui/icons-material/Add';
 
 export const RetroContext = createContext()
