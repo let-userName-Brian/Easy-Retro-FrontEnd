@@ -8,6 +8,7 @@ import RecommendIcon from '@mui/icons-material/Recommend';
 
 
 export default function Card({ card_id, cards, user }) {
+  
   const { comments: initComments, user_id, userVotes, setUserVotes } = useContext(RetroContext)
   const [card, setCard] = useState()
   const [cardText, setCardText] = useState('')
