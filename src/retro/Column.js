@@ -7,14 +7,12 @@ import ColumnMenu from './ColumnMenu';
 import { RetroContext } from './Retro';
 
 export default function Column({ col }) {
-  const { cards: retroCards, retro, user_id } = useContext(RetroContext)
+  const { cards: retroCards, columns: retroColumns, retro, user_id } = useContext(RetroContext)
   const [column, setColumn] = useState()
   const [cards, setCards] = useState()
   const [colName, setColName] = useState()
   const [retroId, setRetroId] = useState()
 
-
-  console.log('after rendering cols: ', retro.retro_id, retroId)
 
   useEffect(() => {
     if (!col) return;
@@ -25,7 +23,6 @@ export default function Column({ col }) {
   useEffect(() => {
     if (!retro) return;
     setRetroId(retro.retro_id)
-    console.log('useffect: ', retro.retro_id, retroId)
   }, [])
 
   function submitColumnNameChange() {
@@ -62,17 +59,15 @@ export default function Column({ col }) {
 
   useEffect(() => {
     // Received when the server sends us a card update
-    socket.on('cardUpdated', (cards, column_id) => {
-
+    socket.on('cardUpdated', ({ cards, card_ids, column_id }) => {
       if (column_id === column.column_id) {
-        setColumn({ ...column, card_ids: cards.map(card => card.card_id) })
+        setColumn({ ...column, card_ids })
         setCards(cards)
-        console.log('card updated - setCards: ', cards)
       }
     })
 
     //initialize cards from context
-    setCards(retroCards.filter(card => column?.card_ids.includes(card.card_id)))
+    setCards(retroCards?.filter(card => column?.card_ids.includes(card.card_id)))
 
     return () => {
       socket.removeAllListeners('cardUpdated')
@@ -94,12 +89,6 @@ export default function Column({ col }) {
                 inputProps: { style: { textAlign: "center" } }
               }} />
               <Box>
-                {/* <IconButton
-                  aria-label="remove element"
-                  onClick={(e) => removeColumn()}
-                >
-                  <RemoveCircleIcon />
-                </IconButton> */}
                 <ColumnMenu removeColumnFunc={removeColumn} />
               </Box></>
           ) : (
