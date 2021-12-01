@@ -20,11 +20,7 @@ export default function Card({ card_id, cards }) {
   //console.log("userVotes", userVotes ) // set from the context of the payload @ max_votes
 
   useEffect(() => {
-    if (!cards) return;
-    if (cards.length === 0) return;
-    if (!card_id) return;
-    // console.log('cards', cards)
-    let newCard = cards.find(card => card.card_id === card_id)
+    let newCard = cards?.find(card => card.card_id === card_id)
     if (!newCard) return;
     setCard(newCard)
     setCardText(newCard.card_text)
@@ -33,7 +29,6 @@ export default function Card({ card_id, cards }) {
 
   useEffect(() => {
     socket.on('cardTextUpdated', ({ card }) => {
-      console.log('cardTextUpdated', card)
       if (card_id === card.card_id) {
         setCard(card);
         setCardText(card.card_text)
@@ -93,6 +88,7 @@ export default function Card({ card_id, cards }) {
         borderRadius: '10',
       }}>
       <Paper elevation={3} sx={{ m: 1, p: 1 }}>
+        <div>card id: {card_id}</div>
         <TextField fullWidth label={cardText} id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={submitCardTextChange} sx={{ my: 1 }}
         />
         <Box sx={{ m: 1 }}>
