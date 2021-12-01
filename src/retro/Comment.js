@@ -12,11 +12,11 @@ export default function Comment({ comment_id }) {
   const [reactions, setReactions] = useState([])
   const { comments: initComments } = useContext(RetroContext)
 
-console.log("comment ID:",comment_id)
+  // console.log("comment ID:",comment_id)
 
   useEffect(() => {
     let comment = initComments?.find(c => c.comment_id === comment_id)
-    console.log('comment', comment)
+    // console.log('comment', comment)
     if (!initComments || !comment) {
       return
     }
