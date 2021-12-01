@@ -32,7 +32,7 @@ export default function Retro({ user_id }) {
     // Ask the server to join the room with name retroId
     socket.emit('joinRetro', { user_id, retro_id });
 
-    socket.on('columnUpdated', ({ retro, columns, column_ids }) => {
+    socket.on('columnUpdated', ({ retro, columns }) => {
       setRetro(retro)
       setColumns(columns)
     })
@@ -48,8 +48,8 @@ export default function Retro({ user_id }) {
     })
 
     return () => {
-      socket.removeAllListeners('columnUpdated')
-      socket.removeAllListeners('initRetro')
+      socket.off('columnUpdated')
+      socket.off('initRetro')
     }
   }, [])
 

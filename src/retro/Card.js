@@ -9,9 +9,9 @@ import RecommendIcon from '@mui/icons-material/Recommend';
 
 
 export default function Card({ card_id, cards }) {
-  const { comments: initComments, vote_type, user_id, userVotes, setUserVotes } = useContext(RetroContext)
+  const { comments: initComments, user_id, userVotes, setUserVotes } = useContext(RetroContext)
   const [card, setCard] = useState()
-  const [cardText, setCardText] = useState()
+  const [cardText, setCardText] = useState('')
   const [author, setAuthor] = useState()//needs to be converted to user_name
   const [cardVotes, setCardVotes] = useState([])
   const [voted, setVoted] = useState(false)
@@ -23,13 +23,12 @@ export default function Card({ card_id, cards }) {
     if (!cards) return;
     if (cards.length === 0) return;
     if (!card_id) return;
-    console.log('cards', cards)
+    // console.log('cards', cards)
     let newCard = cards.find(card => card.card_id === card_id)
     if (!newCard) return;
     setCard(newCard)
     setCardText(newCard.card_text)
     setAuthor(newCard.user_name)
-    setComments(initComments.filter(comment => comment.card_id === card.card_id))
   }, [cards, card_id]);
 
 
@@ -43,6 +42,12 @@ export default function Card({ card_id, cards }) {
       socket.off('votesChanged')
     }
   }, [])
+
+  useEffect(() => {
+    if (initComments) {
+      setComments(initComments.filter(comment => comment.card_id === card_id))
+    }
+  }, [initComments])
 
   //console.log('cardVotes', cardVotes)
 
@@ -78,7 +83,7 @@ export default function Card({ card_id, cards }) {
         borderRadius: '10',
       }}>
       <Paper elevation={3} sx={{ m: 1, p: 1 }}>
-        <TextField fullWidth label={card?.card_text} id="cardText" InputProps={{
+        <TextField fullWidth label={cardText} id="cardText" InputProps={{
           inputProps: { style: { textAlign: "center" } }
         }} />
         <Box sx={{ m: 1 }}>
@@ -91,7 +96,7 @@ export default function Card({ card_id, cards }) {
                 : <Button onClick={() => addVote()}><RecommendIcon /></Button>
               }
             </Typography>}
-          {comments.map((comment) => (<Comment key={comment.comment_id} comment={comment} />))}
+          {comments?.map((comment) => (<Comment key={comment.comment_id} comment_id={comment.comment_id} comment={comment} />))}
         </Box>
       </Paper>
     </Box>
