@@ -3,12 +3,11 @@ import { useParams } from "react-router-dom";
 import { socket } from '../SocketClient';
 import Column from "./Column";
 import { Box, Container } from '@mui/material/';
-import { Button, Grid, Stack } from '@mui/material/';
+import { Button, Grid } from '@mui/material/';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsContext from "./SettingsContext";
 import Timer from "./Timer";
 import Settings from "./Settings";
-import { flexbox } from "@mui/system";
 
 
 export const RetroContext = createContext()
@@ -57,13 +56,13 @@ export default function Retro({ user_id }) {
 
   //need to redo styling lost it on merge somehow and now I cant log in to see a screen
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       <Grid container spacing={3} sx={{display: 'flex'}}>
-        <Grid item xs={4} md={4} lg={4} sx={{flex: '1', textAlign: 'center', marginTop: '40px'}}>
+        <Grid item xs={4} md={4} lg={4} sx={{flex: '1', textAlign: 'center', marginTop: '60px'}}>
           {/* <Stack spacing={2} direction="row"> */}
           <div>Retro Name: {retro.retro_name}</div>
         </Grid>
-        <Grid item xs={4} md={4} lg={4} sx={{flex: '1', textAlign: 'center', marginTop: '40px'}}>
+        <Grid item xs={4} md={4} lg={4} sx={{flex: '1', textAlign: 'center', marginTop: '70px'}}>
           <Button
             onClick={() => {
               addColumn();

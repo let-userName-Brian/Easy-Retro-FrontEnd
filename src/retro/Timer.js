@@ -65,7 +65,7 @@ export default function Timer() {
   if(seconds < 10) seconds = '0'+seconds;
 
   return (
-    <div style={{marginTop: '-125px'}}>
+    <div style={{marginTop: '-155px'}}>
       <div style={{transform: 'scale(0.3, 0.3)', marginTop: '0px'}}>
       <CircularProgressbar
         value={percentage}
@@ -76,7 +76,7 @@ export default function Timer() {
         tailColor:'rgba(255,255,255,.2)',
       })} />
       </div>
-      <div style={{marginTop:'10px', marginTop: '-160px'}}>
+      <div style={{marginTop:'10px', marginTop: '-190px'}}>
         {isPaused
           ? <PlayButton onClick={() => { setIsPaused(false); isPausedRef.current = false; }} />
           : <PauseButton onClick={() => { setIsPaused(true); isPausedRef.current = true; }} />}
