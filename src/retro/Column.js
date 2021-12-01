@@ -55,7 +55,7 @@ export default function Column({ col }) {
   function addCard() {
     // let retro_id = retro.retro_id;
     let column_id = column.column_id;
-    socket.emit('cardAdded', { retroId, column_id, userId });
+    socket.emit('cardAdded', { retroId, column_id, user_id });
   }
 
   useEffect(() => {
