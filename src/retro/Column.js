@@ -11,7 +11,7 @@ export default function Column({ col }) {
   const [column, setColumn] = useState()
   const [cards, setCards] = useState()
   const [colName, setColName] = useState()
-  const [retroId, setRetroId] = useState()
+  const [retro_id, setRetroId] = useState()
 
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function Column({ col }) {
   function submitColumnNameChange() {
     // let retro_id = retro.retro_id;
     let column_id = column.column_id
-    socket.emit('columnRenamed', { retroId, column_id, colName })
+    socket.emit('columnRenamed', { retro_id, column_id, colName })
   }
 
   useEffect(() => {
@@ -47,14 +47,16 @@ export default function Column({ col }) {
   function removeColumn() {
     // let retro_id = retro.retro_id;
     let column_id = column.column_id;
-    console.log('del col:', retroId, column_id)
-    socket.emit('columnDeleted', { retroId, column_id })
+    console.log('del col:', retro_id, column_id)
+    socket.emit('columnDeleted', { retro_id, column_id })
   }
 
+
+  //our issue is in here-------
   function addCard() {
     // let retro_id = retro.retro_id;
     let column_id = column.column_id;
-    socket.emit('cardAdded', { retroId, column_id, user_id });
+    socket.emit('cardAdded', { retro_id, column_id, user_id });
   }
 
   useEffect(() => {
