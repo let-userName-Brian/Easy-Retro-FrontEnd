@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import { socket } from '../SocketClient';
 import Column from "./Column";
 import { Box, Container } from '@mui/material/';
-import { Button, Stack } from '@mui/material/';
+import { Button, Grid } from '@mui/material/';
 import AddIcon from '@mui/icons-material/Add';
-
+import Timer from "./Timer";
+import Settings from "./Settings";
+import SettingsContext from "./SettingsContext";
 
 
 export const RetroContext = createContext()
@@ -19,7 +21,10 @@ export default function Retro() {
   const [cards, setCards] = useState([])
   const [comments, setComments] = useState([])
 
-  // console.log('socket', socket)
+  //timer states 
+  const [showSettings, setShowSettings] = useState(false);
+  const [workMinutes, setWorkMinutes] = useState(5);
+  const [breakMinutes, setBreakMinutes] = useState(15);
 
   let userId = 'c1ad74ae-b651-4fa0-9820-833193797964'
 
@@ -50,21 +55,39 @@ export default function Retro() {
     return <div>Loading Retro!</div>
   }
 
-  return (<Container maxWidth="lg">
-    <Stack spacing={2} direction="row">
-      <div>Retro Name: {retro.retro_name}</div>
-      <Button
-        onClick={() => {
-          addColumn();
-        }}
-        variant="contained" startIcon={<AddIcon />}>Add Column</Button>
-    </Stack>
-    <Box sx={{ height: '100vh', display: 'flex' }} >
-      {/* hard coded userId needs refactored */}
-      <RetroContext.Provider value={{ retro, cards, comments, userId }}>
-        {retro.column_ids.map(column_id => (<Column key={column_id} col={columns.find(column => column.column_id === column_id)} />))}
-      </RetroContext.Provider>
-    </Box>
-  </Container>
+
+  return (
+    <Container maxWidth="lg">
+      <Grid container  display={'flex'} spacing={3} paddingTop={'3px'}>
+        <Grid item spacing={6} xs={6} md={4} lg={4}>
+          <div>Retro Name: {retro.retro_name}</div>
+          <Grid item xs={6} md={4} lg={4} sx={{ flex: '1' }}>
+            <Button 
+              onClick={() => {addColumn()}}
+              variant="contained" startIcon={<AddIcon />}>Add Column</Button>
+          </Grid>
+        </Grid>
+        <Grid item xs={6} md={4} lg={4} sx={{ maxWidth: '150px', marginLeft: 'auto', textAlign: 'center' }}>
+          <Box sx={{ maxWidth: '150px', marginLeft: 'auto', textAlign: 'center' }}>
+            <SettingsContext.Provider value={{
+              showSettings,
+              setShowSettings,
+              workMinutes,
+              breakMinutes,
+              setWorkMinutes,
+              setBreakMinutes,
+            }} >
+              {showSettings ? <Settings /> : <Timer />}
+            </SettingsContext.Provider>
+          </Box>
+        </Grid>
+      </Grid>
+      <Box sx={{ height: '100vh', display: 'flex' }} >
+        {/* hard coded userId needs refactored */}
+        <RetroContext.Provider value={{ retro, cards, comments, userId }}>
+          {retro.column_ids.map(column_id => (<Column key={column_id} col={columns.find(column => column.column_id === column_id)} />))}
+        </RetroContext.Provider>
+      </Box>
+    </Container>
   )
 }
