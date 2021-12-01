@@ -13,18 +13,9 @@ import { Divider } from '@mui/material';
 export default function App() {
 
   const [user, setUser] = useState()
-  const [userRetro, setUserRetro] = useState()
   const [darkMode, setDarkMode] = useState(true); //darkMode state -- passed to NavBar
 
   useEffect(() => { login().then(user => setUser(user)) }, [])
-
-  useEffect(() => {
-    if (!user) {
-      return
-    }
-    getRetrosByUserId(user.user_id)
-      .then(userProfileRetro => setUserRetro(userProfileRetro))
-  }, [user])
 
   const theme = createTheme({
     palette: {
@@ -46,7 +37,7 @@ export default function App() {
           <Divider color="gray" />
         </nav>
         <Routes>
-          <Route path="/" element={<Dashboard user={user} retros={userRetro} user_id={user.user_id} />} />
+          <Route path="/" element={<Dashboard user={user} user_id={user.user_id} />} />
           <Route path="/retros/:retro_id" element={<Retro user_id={user.user_id} />} />
         </Routes>
       </CssBaseline>
