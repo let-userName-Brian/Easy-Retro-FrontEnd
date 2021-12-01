@@ -8,6 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import SettingsContext from "./SettingsContext";
 import Timer from "./Timer";
 import Settings from "./Settings";
+import { flexbox } from "@mui/system";
 
 
 export const RetroContext = createContext()
@@ -56,30 +57,38 @@ export default function Retro({ user_id }) {
 
   //need to redo styling lost it on merge somehow and now I cant log in to see a screen
   return (
-  <Container maxWidth="lg">
-    <Stack spacing={2} direction="row">
-      <div>Retro Name: {retro.retro_name}</div>
-      <Button
-        onClick={() => {
-          addColumn();
-        }}
-        variant="contained" startIcon={<AddIcon />}>Add Column</Button>
-    </Stack>
-    <SettingsContext.Provider value={{
-      showSettings,
-      setShowSettings,
-      workMinutes,
-      breakMinutes,
-      setWorkMinutes,
-      setBreakMinutes,
-    }}>
-      {showSettings ? <Settings /> : <Timer />}
-    </SettingsContext.Provider>
-    <Box sx={{ height: '100vh', display: 'flex' }} >
-      <RetroContext.Provider value={{ retro, cards, comments, user_id }}>
-        {retro.column_ids.map(column_id => (<Column key={column_id} col={columns.find(column => column.column_id === column_id)} />))}
-      </RetroContext.Provider>
-    </Box>
-  </Container>
+    <Container maxWidth="lg">
+      <Grid container spacing={3} sx={{display: 'flex'}}>
+        <Grid item xs={4} md={4} lg={4} sx={{flex: '1', textAlign: 'center', marginTop: '40px'}}>
+          {/* <Stack spacing={2} direction="row"> */}
+          <div>Retro Name: {retro.retro_name}</div>
+        </Grid>
+        <Grid item xs={4} md={4} lg={4} sx={{flex: '1', textAlign: 'center', marginTop: '40px'}}>
+          <Button
+            onClick={() => {
+              addColumn();
+            }}
+            variant="contained" startIcon={<AddIcon />}>Add Column</Button>
+        </Grid>
+        {/* </Stack> */}
+        <Grid item xs={4} md={4} lg={4} sx={{ marginLeft: '0 auto',  marginTop: '0px', flexDirection: 'column', order: '1', textAlign: 'right'}}>
+          <SettingsContext.Provider value={{
+            showSettings,
+            setShowSettings,
+            workMinutes,
+            breakMinutes,
+            setWorkMinutes,
+            setBreakMinutes,
+          }}>
+            {showSettings ? <Settings /> : <Timer sx ={{ marginTop: '0px', flexDirection: 'column', order: '1', textAlign: 'right'}}/>}
+          </SettingsContext.Provider>
+        </Grid>
+      </Grid>
+      <Box sx={{ height: '100vh', display: 'flex' }} >
+        <RetroContext.Provider value={{ retro, cards, comments, user_id }}>
+          {retro.column_ids.map(column_id => (<Column key={column_id} col={columns.find(column => column.column_id === column_id)} />))}
+        </RetroContext.Provider>
+      </Box>
+    </Container>
   )
 }
