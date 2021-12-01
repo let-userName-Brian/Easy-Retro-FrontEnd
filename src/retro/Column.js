@@ -7,7 +7,7 @@ import Card from "./Card"
 import AddCardButton from './AddCardButton'
 
 export default function Column({ col }) {
-  const { cards: retroCards, retro, userId } = useContext(RetroContext)
+  const { cards: retroCards, retro, user_id } = useContext(RetroContext)
   const [column, setColumn] = useState()
   const [cards, setCards] = useState()
   const [colName, setColName] = useState()
@@ -69,7 +69,7 @@ export default function Column({ col }) {
   function addCard() {
     let retro_id = retro.retro_id;
     let column_id = column.column_id;
-    socket.emit('cardAdded', { retro_id, column_id, userId });
+    socket.emit('cardAdded', { retro_id, column_id, user_id });
   }
 
   return (
@@ -99,7 +99,7 @@ export default function Column({ col }) {
           )}
         </Box>
         {cards?.map((card) => (<Card key={card.card_id} c={card} />))}
-        <AddCardButton addCardFunc={addCard}/>
+        <AddCardButton addCardFunc={addCard} />
       </Paper>
     </Box>
   )
