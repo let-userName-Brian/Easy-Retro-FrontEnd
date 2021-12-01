@@ -14,11 +14,11 @@ export default function Column({ col, column_id }) {
   const [retro_id, setRetroId] = useState()
 
   useEffect(() => {
-    socket.on('columnNameUpdated', ({ column_id, newName }) => {
-      console.log('newName in UseEffect:', newName)
+    socket.on('columnNameUpdated', ({ column_id, column_name }) => {
+      console.log('column_name in UseEffect:', column_name)
       if (column_id === column.column_id) {
-        setColumn({ ...column, column_name: newName });
-        setColName(newName)
+        setColumn({ ...column, column_name });
+        setColName(column_name)
       }
     })
 
@@ -53,7 +53,7 @@ export default function Column({ col, column_id }) {
   function submitColumnNameChange() {
     // let retro_id = retro.retro_id;
     let column_id = column.column_id
-    socket.emit('columnRenamed', { retro_id, column_id, colName })
+    socket.emit('columnRenamed', { retro_id, column_id, column_name: colName })
   }
 
   useEffect(() => {
