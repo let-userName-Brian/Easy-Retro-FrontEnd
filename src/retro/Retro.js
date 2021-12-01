@@ -20,6 +20,8 @@ export default function Retro({ user_id }) {
   const [columns, setColumns] = useState([])
   const [cards, setCards] = useState([])
   const [comments, setComments] = useState([])
+  const [userVotes, setUserVotes] = useState([]) //state set from the payload of max_votes
+
 
   //timer state
   const [showSettings, setShowSettings] = useState(false);
@@ -42,6 +44,7 @@ export default function Retro({ user_id }) {
       setColumns(retroPayload.columns)
       setCards(retroPayload.cards)
       setComments(retroPayload.comments)
+      setUserVotes(retroPayload.retro.max_votes)
     })
 
     return () => {
@@ -89,7 +92,7 @@ export default function Retro({ user_id }) {
         </Grid>
       </Grid>
       <Box sx={{ height: '100vh', display: 'flex' }} >
-        <RetroContext.Provider value={{ retro, columns, cards, comments, user_id }}>
+        <RetroContext.Provider value={{ retro, columns, cards, comments, user_id, userVotes, setUserVotes }}>
           {retro.column_ids.map(column_id => (<Column key={column_id} column_id={column_id} col={columns.find(column => column.column_id === column_id)} />))}
         </RetroContext.Provider>
       </Box>
