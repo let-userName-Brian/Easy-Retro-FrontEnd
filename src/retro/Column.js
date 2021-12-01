@@ -6,7 +6,7 @@ import Card from "./Card";
 import ColumnMenu from './ColumnMenu';
 import { RetroContext } from './Retro';
 
-export default function Column({ col }) {
+export default function Column({ col, column_id }) {
   const { cards: retroCards, columns: retroColumns, retro, user_id } = useContext(RetroContext)
   const [column, setColumn] = useState()
   const [cards, setCards] = useState()
@@ -61,9 +61,9 @@ export default function Column({ col }) {
 
   useEffect(() => {
     // Received when the server sends us a card update
-    socket.on('cardUpdated', ({ cards, card_ids, column_id }) => {
-      if (column_id === column.column_id) {
-        setColumn({ ...column, card_ids })
+    socket.on('cardUpdated', ({ cards, column }) => {
+      if (column.column_id === column_id) {
+        setColumn(column)
         setCards(cards)
       }
     })
