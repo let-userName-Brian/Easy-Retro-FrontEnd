@@ -3,12 +3,16 @@ import { useParams } from "react-router-dom";
 import { socket } from '../SocketClient';
 import Column from "./Column";
 import { Box, Container } from '@mui/material/';
-import { Button, Stack } from '@mui/material/';
+import { Button, Grid, Stack } from '@mui/material/';
 import AddIcon from '@mui/icons-material/Add';
+import SettingsContext from "./SettingsContext";
+import Timer from "./Timer";
+import Settings from "./Settings";
+
 
 export const RetroContext = createContext()
 
-export default function Retro() {
+export default function Retro({ user_id }) {
 
   const params = useParams()
   const retroId = params.retro_id
@@ -17,11 +21,14 @@ export default function Retro() {
   const [cards, setCards] = useState([])
   const [comments, setComments] = useState([])
 
-  let userId = 'c1ad74ae-b651-4fa0-9820-833193797964'
+  //timer state
+  const [showSettings, setShowSettings] = useState(false);
+  const [workMinutes, setWorkMinutes] = useState(5);
+  const [breakMinutes, setBreakMinutes] = useState(5);
 
   useEffect(() => {
     // Ask the server to join the room with name retroId
-    socket.emit('joinRetro', { userId, retroId });
+    socket.emit('joinRetro', { user_id, retroId });
 
     socket.on('columnUpdated', ({ columns, column_ids }) => {
       setRetro({ ...retro, column_ids })
@@ -36,7 +43,7 @@ export default function Retro() {
       setCards(retroPayload.cards)
       setComments(retroPayload.comments)
     })
-  }, [userId, retroId])//adding retro induces infinite loop. do a functional update 'setRetro(r => ...)'
+  }, [user_id, retroId])//adding retro induces infinite loop. do a functional update 'setRetro(r => ...)'
 
   function addColumn() {
     socket.emit('columnAdded', retroId);
@@ -46,7 +53,10 @@ export default function Retro() {
     return <div>Loading Retro!</div>
   }
 
-  return (<Container maxWidth="lg">
+
+  //need to redo styling lost it on merge somehow and now I cant log in to see a screen
+  return (
+  <Container maxWidth="lg">
     <Stack spacing={2} direction="row">
       <div>Retro Name: {retro.retro_name}</div>
       <Button
@@ -55,9 +65,18 @@ export default function Retro() {
         }}
         variant="contained" startIcon={<AddIcon />}>Add Column</Button>
     </Stack>
+    <SettingsContext.Provider value={{
+      showSettings,
+      setShowSettings,
+      workMinutes,
+      breakMinutes,
+      setWorkMinutes,
+      setBreakMinutes,
+    }}>
+      {showSettings ? <Settings /> : <Timer />}
+    </SettingsContext.Provider>
     <Box sx={{ height: '100vh', display: 'flex' }} >
-      {/* hard coded userId needs refactored */}
-      <RetroContext.Provider value={{ retro, cards, comments, userId }}>
+      <RetroContext.Provider value={{ retro, cards, comments, user_id }}>
         {retro.column_ids.map(column_id => (<Column key={column_id} col={columns.find(column => column.column_id === column_id)} />))}
       </RetroContext.Provider>
     </Box>

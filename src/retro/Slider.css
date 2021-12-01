@@ -1,0 +1,25 @@
+:root{
+  --red: #f54e4e;
+  --green: #4aec8c;
+}
+
+.slider{
+  height: 34px;
+  border: 2px solid var(--red);
+  border-radius: 20px;
+}
+
+.thumb{
+  background-color: var(--green);
+  cursor:pointer;
+  width:30px;
+  height: 30px;
+  border-radius: 40px;
+}
+
+.slider.green{
+  border: 2px solid var(--green);
+}
+.slider.green .thumb{
+  background-color: 'white';
+}
