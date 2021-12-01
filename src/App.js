@@ -38,7 +38,7 @@ export default function App() {
         </nav>
         <Routes>
           <Route path="/" element={<Dashboard user={user} user_id={user.user_id} />} />
-          <Route path="/retros/:retro_id" element={<Retro user_id={user.user_id} />} />
+          <Route path="/retros/:retro_id" element={<Retro user_id={user.user_id} user={user}/>} />
         </Routes>
       </CssBaseline>
     </ThemeProvider>
