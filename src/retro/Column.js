@@ -14,11 +14,11 @@ export default function Column({ col, column_id }) {
   const [retro_id, setRetroId] = useState()
 
   useEffect(() => {
-    socket.on('columnNameUpdated', ({ column_id, column_name }) => {
-      console.log('column_name in UseEffect:', column_name)
-      if (column_id === column.column_id) {
-        setColumn({ ...column, column_name });
-        setColName(column_name)
+    socket.on('columnNameUpdated', ({ column }) => {
+      console.log('columnNameUpdated', column)
+      if (column.column_id === column_id) {
+        setColumn(column);
+        setColName(column.column_name)
       }
     })
 

@@ -32,11 +32,11 @@ export default function Card({ card_id, cards }) {
   }, [cards, card_id]);
 
   useEffect(() => {
-    socket.on('cardTextUpdated', ({ card_id, card_text }) => {
-      console.log('card_text in UseEffect:', card_text)
+    socket.on('cardTextUpdated', ({ card }) => {
+      console.log('cardTextUpdated', card)
       if (card_id === card.card_id) {
-        setCard({ ...card, card_text });
-        setCardText(card_text)
+        setCard(card);
+        setCardText(card.card_text)
       }
     })
 
