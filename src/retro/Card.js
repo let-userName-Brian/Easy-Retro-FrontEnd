@@ -33,9 +33,9 @@ export default function Card({ card_id, cards, user }) {
       }
     })
 
-    socket.on('votesChanged', ({ card_id, vote_type }) => {
-      if (card_id === card.card_id) {
-        setCardVotes(vote_type)
+    socket.on('votesChanged', ({ card_id: id, votes }) => {
+      if (card_id === id) {
+        setCardVotes(votes)
       }
     })
     return () => {
@@ -59,7 +59,7 @@ export default function Card({ card_id, cards, user }) {
   const addVote = () => {
     if (userVotes > 0) {
       console.log("vote up")
-      socket.emit('addVote', { card_id: card.card_id, vote_type: 'up', user_id })
+      socket.emit('addVote', { card_id, vote_type: 'up', user_id })
       setVoted(true)
       setCardVotes(cardVotes.concat({ user_id, vote_type: 'up' }))
       setUserVotes(userVotes - 1)
@@ -69,7 +69,7 @@ export default function Card({ card_id, cards, user }) {
   //remove vote from card
   const removeVote = () => {
     // console.log("vote down", card_id, user_id, cardVotes)
-    socket.emit('removeVote', { card_id: card.card_id, vote_type: 'up', user_id })
+    socket.emit('removeVote', { card_id, vote_type: 'up', user_id })
     setVoted(false)
     setCardVotes(cardVotes.filter(v => v.user_id !== user_id))
     setUserVotes(userVotes + 1)
@@ -78,7 +78,7 @@ export default function Card({ card_id, cards, user }) {
 
   //add comment to card
   const addComment = () => {
-    setComments(comments.concat({ card_id: card.card_id, comment_text: cardText, user_id }))
+    setComments(comments.concat({ card_id, comment_text: cardText, user_id }))
   }
 
 console.log('comments', comments)
