@@ -58,11 +58,11 @@ export default function Retro({ user_id }) {
   return (
     <Container maxWidth="xl">
       <Grid container spacing={3} sx={{display: 'flex'}}>
-        <Grid item xs={4} md={4} lg={4} sx={{flex: '1', textAlign: 'center', marginTop: '60px'}}>
+        <Grid item xs={4} md={4} lg={4} sx={{flex: '1', textAlign: 'center', marginTop: '5%'}}>
           {/* <Stack spacing={2} direction="row"> */}
           <div>Retro Name: {retro.retro_name}</div>
         </Grid>
-        <Grid item xs={4} md={4} lg={4} sx={{flex: '1', textAlign: 'center', marginTop: '70px'}}>
+        <Grid item xs={4} md={4} lg={4} sx={{flex: '1', textAlign: 'center', marginTop: '5%'}}>
           <Button
             onClick={() => {
               addColumn();
@@ -70,7 +70,7 @@ export default function Retro({ user_id }) {
             variant="contained" startIcon={<AddIcon />}>Add Column</Button>
         </Grid>
         {/* </Stack> */}
-        <Grid item xs={4} md={4} lg={4} sx={{ marginLeft: '0 auto',  marginTop: '0px', flexDirection: 'column', order: '1', textAlign: 'right'}}>
+        <Grid item xs={4} md={4} lg={4} sx={{ marginLeft: '0 auto',  marginTop: '0%', flexDirection: 'column', textAlign: 'right'}}>
           <SettingsContext.Provider value={{
             showSettings,
             setShowSettings,
@@ -79,7 +79,7 @@ export default function Retro({ user_id }) {
             setWorkMinutes,
             setBreakMinutes,
           }}>
-            {showSettings ? <Settings /> : <Timer sx ={{ marginTop: '0px', flexDirection: 'column', order: '1', textAlign: 'right'}}/>}
+            {showSettings ? <Settings /> : <Timer />}
           </SettingsContext.Provider>
         </Grid>
       </Grid>
