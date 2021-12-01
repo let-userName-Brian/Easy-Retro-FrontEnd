@@ -96,7 +96,7 @@ export default function Retro({ user_id }) {
       </Grid>
       <Box sx={{ height: '100vh', display: 'flex' }} >
         <RetroContext.Provider value={{ retro, columns, cards, comments, user_id, userVotes, setUserVotes }}>
-          {retro.column_ids.map(column_id => (<Column key={column_id} column_id={column_id} col={columns.find(column => column.column_id === column_id)} />))}
+          {retro.column_ids.map(column_id => (<Column key={column_id} column_id={column_id} />))}
         </RetroContext.Provider>
       </Box>
     </Container>
