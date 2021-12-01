@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid } from '@mui/material'
+import { Grid, Stack } from '@mui/material'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -7,11 +7,16 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import bar2 from './bar2.png';
-
-export default function RetroCards({retros, searchedRetros})  {
+import RetroCardMenu from './RetroCardMenu';
+import { Box } from '@mui/system';
+export default function RetroCards({ retros, searchedRetros }) {
 
   const handleClick = (id) => {
     window.location.href = `/retros/${id}`;
+  }
+
+  function removeRetro() {
+
   }
 
   if (searchedRetros?.length >= 1) {
@@ -69,7 +74,11 @@ export default function RetroCards({retros, searchedRetros})  {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" onClick={() => handleClick(retro?.retro_id)}>Open retro</Button>
+                <Stack direction='row' width='100%' justifyContent="space-between">
+                  <Button size="small" onClick={() => handleClick(retro?.retro_id)}>Open retro</Button >
+                  <Box />
+                  <RetroCardMenu removeRetroFunc={removeRetro} />
+                </Stack>
               </CardActions>
             </Card>
           </Grid>
