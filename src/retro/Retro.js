@@ -69,6 +69,9 @@ export default function Retro({ user_id }) {
         <Grid item xs={4} md={4} lg={4} sx={{ flex: '1', textAlign: 'center', marginTop: '5%' }}>
           {/* <Stack spacing={2} direction="row"> */}
           <div>Retro Name: {retro.retro_name}</div>
+          {userVotes > 0 ?
+            <div>You have {userVotes} votes left!</div>
+          : <></>}
         </Grid>
         <Grid item xs={4} md={4} lg={4} sx={{ flex: '1', textAlign: 'center', marginTop: '5%' }}>
           <Button
