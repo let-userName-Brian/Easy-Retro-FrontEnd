@@ -27,7 +27,7 @@ export default function App() {
     return <>Unable to establish connection...</>
   }
 
-  console.log('user:', user)
+  // console.log('user:', user)
 
   return (
     <ThemeProvider theme={theme}>
