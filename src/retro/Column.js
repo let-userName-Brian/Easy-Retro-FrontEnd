@@ -1,10 +1,10 @@
-import { useEffect, useState, useContext } from "react"
-import { socket } from "../SocketClient"
-import { Box, Paper, Icon, TextField, Skeleton, IconButton } from '@mui/material/';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { RetroContext } from './Retro'
-import Card from "./Card"
-import AddCardButton from './AddCardButton'
+import { Box, Paper, Skeleton, TextField } from '@mui/material/';
+import { useContext, useEffect, useState } from "react";
+import { socket } from "../SocketClient";
+import AddCardButton from './AddCardButton';
+import Card from "./Card";
+import ColumnMenu from './ColumnMenu';
+import { RetroContext } from './Retro';
 
 export default function Column({ col }) {
   const { cards: retroCards, retro, user_id } = useContext(RetroContext)
@@ -12,6 +12,8 @@ export default function Column({ col }) {
   const [cards, setCards] = useState()
   const [colName, setColName] = useState()
   const [retroId, setRetroId] = useState()
+
+
   console.log('after rendering cols: ', retro.retro_id, retroId)
 
   useEffect(() => {
@@ -92,12 +94,13 @@ export default function Column({ col }) {
                 inputProps: { style: { textAlign: "center" } }
               }} />
               <Box>
-                <IconButton
+                {/* <IconButton
                   aria-label="remove element"
                   onClick={(e) => removeColumn()}
                 >
                   <RemoveCircleIcon />
-                </IconButton>
+                </IconButton> */}
+                <ColumnMenu removeColumnFunc={removeColumn} />
               </Box></>
           ) : (
             <Skeleton variant="rectangular" width={210} height={118} />
