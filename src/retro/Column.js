@@ -1,4 +1,5 @@
 import { Box, Paper, Skeleton, TextField } from '@mui/material/';
+import { borderRadius } from '@mui/system';
 import { useContext, useEffect, useState } from "react";
 import { socket } from "../SocketClient";
 import AddCardButton from './AddCardButton';
@@ -6,7 +7,7 @@ import Card from "./Card";
 import ColumnMenu from './ColumnMenu';
 import { RetroContext } from './Retro';
 
-export default function Column({ col, column_id }) {
+export default function Column({ col, column_id, user }) {
   const { cards: initCards, columns: initColumns, retro, user_id } = useContext(RetroContext)
   const [column, setColumn] = useState()
   const [cards, setCards] = useState()
@@ -77,10 +78,10 @@ export default function Column({ col, column_id }) {
       sx={{
         m: 1,
         minWidth: 240,
-        height: "90vh"
+        height: "90vh",
       }}>
-      <Paper elevation={12} sx={{ p: 1 }} >
-        <Box container sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+      <Paper elevation={12} sx={{ p: 1, borderRadius: '20px' }} >
+        <Box container sx={{ display: 'flex', alignItems: 'center', textAlign: 'center',  }}>
           {column ? (
             <>
               <TextField fullWidth label={colName} id="columnName" value={colName} onChange={(e) => setColName(e.target.value)} onBlur={submitColumnNameChange} sx={{ my: 1 }} InputProps={{
@@ -92,8 +93,8 @@ export default function Column({ col, column_id }) {
           ) : (
             <Skeleton variant="rectangular" width={210} height={118} />
           )}
-        </Box>
-        {column?.card_ids.map((card_id) => (<Card key={card_id} card_id={card_id} cards={cards} />))}
+        </Box >
+        {column?.card_ids.map((card_id) => (<Card key={card_id} card_id={card_id} cards={cards} user={user} />))}
         <AddCardButton addCardFunc={() => addCard(column_id)} />
       </Paper>
     </Box>

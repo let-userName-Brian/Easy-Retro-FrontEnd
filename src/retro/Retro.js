@@ -12,7 +12,7 @@ import Settings from "./Settings";
 
 export const RetroContext = createContext()
 
-export default function Retro({ user_id }) {
+export default function Retro({ user_id, user }) {
 
   const params = useParams()
   const retro_id = params.retro_id
@@ -96,7 +96,7 @@ export default function Retro({ user_id }) {
       </Grid>
       <Box sx={{ height: '100vh', display: 'flex' }} >
         <RetroContext.Provider value={{ retro, columns, cards, comments, user_id, userVotes, setUserVotes }}>
-          {retro.column_ids.map(column_id => (<Column key={column_id} column_id={column_id} col={columns.find(column => column.column_id === column_id)} />))}
+          {retro.column_ids.map(column_id => (<Column key={column_id} column_id={column_id} col={columns.find(column => column.column_id === column_id)} user={user}/>))}
         </RetroContext.Provider>
       </Box>
     </Container>
