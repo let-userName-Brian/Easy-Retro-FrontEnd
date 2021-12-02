@@ -6,6 +6,7 @@ import { socket } from "../SocketClient";
 import UserAvatar from '../UserAvatar';
 import Comment from './Comment';
 import { RetroContext } from "./Retro";
+import CardMenu from './CardMenu';
 
 export default function Card({ cards, card_id, user }) {// cards,
   const { cards: initCards, comments: initComments, user_id, userVotes, setUserVotes } = useContext(RetroContext)
@@ -49,6 +50,7 @@ export default function Card({ cards, card_id, user }) {// cards,
     //does not yet use setCard since card is new card on line 20/initialization useEffect
     socket.on('commentUpdated', ({ card, comments }) => {
       if (card_id === card.card_id) {
+        console.log('commentUpdated', card, comments)
         setComments(comments)
       }
     })
@@ -63,6 +65,10 @@ export default function Card({ cards, card_id, user }) {// cards,
   //console.log('cardVotes', cardVotes)
   function changeCardText() {
     socket.emit('changeCardText', { card_id, card_text: cardText })
+  }
+
+  function removeCard() {
+    socket.emit('removeCard', { card_id })
   }
 
   function addComment() {
@@ -95,15 +101,16 @@ export default function Card({ cards, card_id, user }) {// cards,
         width: "100%",
         display: 'flex',
         borderRadius: '10',
+        '.react-reveal': { width: "100%" }
       }}>
       <Bounce bottom>
-        <Paper elevation={3} sx={{ width: '100%', my: 1, p: 1, borderRadius: '15px', border: 'solid', borderColor: '#90caf9' }}>
-          <TextField fullWidth multiline id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={changeCardText} sx={{ my: 1 }}
+        <Paper sx={{ width: '100%', my: 1, p: 1, borderRadius: '10px', border: 'solid', borderWidth: '.1em', borderColor: '#90caf9', boxShadow: 3 }}>
+
+          <TextField fullWidth multiline id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={changeCardText} sx={{ mb: 1 }}
           />
           <Box sx={{ m: 1 }}>
             <Stack direction='row' justifyContent="space-between" alignItems='center'>
               <Tooltip title={author || ''}><IconButton><UserAvatar user_name={author || ''} size={30} /></IconButton></Tooltip>
-              <Button onClick={() => addComment()}>Add Comment</Button>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography >{cardVotes.length}</Typography>
                 <Button
@@ -113,8 +120,12 @@ export default function Card({ cards, card_id, user }) {// cards,
                   <RecommendIcon style={{ width: 30, height: 30, fill: (voted ? "orange" : null) }} />
                 </Button>
               </Box>
+              <CardMenu removeCardFunc={removeCard} />
             </Stack>
             {comments?.map((comment, index) => (<Comment key={index} comment_id={comment.comment_id} comment={comment} index={index} user={user} />))}
+            <Stack direction='row' justifyContent="center" alignItems='center'>
+              <Button onClick={() => addComment()} sx={{ mx: 'auto', mt: 2 }}>Add Comment</Button>
+            </Stack>
           </Box>
         </Paper >
       </Bounce>

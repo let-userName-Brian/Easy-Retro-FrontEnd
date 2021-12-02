@@ -6,7 +6,7 @@ export default function AddColumnButton({ addColumnFunc }) {
       m: 1,
       justifySelf: 'stretch',
     }} >
-      <Paper elevation={12} sx={{ borderRadius: '20px', width: '100' }}>
+      <Paper elevation={12} sx={{ width: '100%', borderRadius: '18px', border: 'solid', borderColor: '#aaa', borderWidth: '.12em' }} >
         <Button onClick={addColumnFunc} sx={{ borderRadius: '20px', height: '100%' }}>
           <Stack sx={{
             width: 90,

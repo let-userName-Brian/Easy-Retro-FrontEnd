@@ -1,4 +1,4 @@
-import { Divider, ThemeProvider } from '@mui/material';
+import { Divider, ThemeProvider, Box } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
@@ -8,6 +8,8 @@ import Dashboard from './Dashboard/Dashboard';
 import Navbar from './Dashboard/Navbar';
 import { login } from './Fetch';
 import Retro from './retro/Retro';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 export default function App() {
 
@@ -23,7 +25,21 @@ export default function App() {
   })
 
   if (!user) {
-    return <>Unable to establish connection...</>
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline>
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: '600px'
+          }}>
+            <CircularProgress />
+          </Box>
+        </CssBaseline>
+      </ThemeProvider>
+    );
   }
 
   // console.log('user:', user)
