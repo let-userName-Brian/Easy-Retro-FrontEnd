@@ -1,5 +1,4 @@
-import { Box, Paper, Skeleton, TextField } from '@mui/material/';
-import { borderRadius } from '@mui/system';
+import { Box, Paper, TextField } from '@mui/material/';
 import { useContext, useEffect, useState } from "react";
 import { socket } from "../SocketClient";
 import AddCardButton from './AddCardButton';
@@ -36,7 +35,7 @@ export default function Column({ column_id, user }) {
       socket.off('columnNameUpdated')
       socket.off('cardUpdated')
     }
-  }, [])
+  }, [column_id])
 
 
   useEffect(() => {
@@ -51,7 +50,7 @@ export default function Column({ column_id, user }) {
   useEffect(() => {
     if (!retro) return;
     setRetroId(retro.retro_id)
-  }, [])
+  }, [retro])
 
   function submitColumnNameChange() {
     // let retro_id = retro.retro_id;
@@ -86,7 +85,7 @@ export default function Column({ column_id, user }) {
         minWidth: 240,
         height: "90vh",
       }}>
-      <Paper elevation={12} sx={{ p: 1,  borderRadius: '20px'  }} >
+      <Paper elevation={12} sx={{ p: 1, borderRadius: '20px' }} >
         <Box container sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
           <TextField fullWidth label={colName} id="columnName" value={colName} onChange={(e) => setColName(e.target.value)} onBlur={submitColumnNameChange} sx={{ my: 1 }} InputProps={{
             inputProps: { style: { textAlign: "center" } }

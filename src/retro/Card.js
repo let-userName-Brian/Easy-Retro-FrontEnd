@@ -1,16 +1,14 @@
-import { useContext, useState, useEffect } from "react"
-import { RetroContext } from "./Retro"
-import Comment from './Comment'
-import { Box, Paper, Typography, TextField, Button } from '@mui/material/';
-import { socket } from "../SocketClient"
 import RecommendIcon from '@mui/icons-material/Recommend';
-
-
+import { Box, Button, Paper, TextField, Typography } from '@mui/material/';
+import { useContext, useEffect, useState } from "react";
+import { socket } from "../SocketClient";
+import Comment from './Comment';
+import { RetroContext } from "./Retro";
 
 export default function Card({ card_id, cards, user }) {
-  
+
   const { comments: initComments, user_id, userVotes, setUserVotes } = useContext(RetroContext)
-  const [card, setCard] = useState()
+  // const [card, setCard] = useState()
   const [cardText, setCardText] = useState('')
   const [author, setAuthor] = useState()//needs to be converted to user_name
   const [cardVotes, setCardVotes] = useState([])
@@ -21,7 +19,7 @@ export default function Card({ card_id, cards, user }) {
   useEffect(() => {
     let newCard = cards?.find(card => card.card_id === card_id)
     if (!newCard) return;
-    setCard(newCard)
+    // setCard(newCard)
     setCardText(newCard.card_text)
     setAuthor(newCard.user_name)
   }, [cards, card_id]);
@@ -29,7 +27,7 @@ export default function Card({ card_id, cards, user }) {
   useEffect(() => {
     socket.on('cardTextUpdated', ({ card }) => {
       if (card_id === card.card_id) {
-        setCard(card);
+        // setCard(card);
         setCardText(card.card_text)
       }
     })
@@ -43,13 +41,13 @@ export default function Card({ card_id, cards, user }) {
       socket.off('cardTextUpdated')
       socket.off('votesChanged')
     }
-  }, [])
+  }, [card_id])
 
   useEffect(() => {
     if (initComments) {
       setComments(initComments.filter(comment => comment.card_id === card_id))
     }
-  }, [initComments])
+  }, [initComments, card_id])
 
   //console.log('cardVotes', cardVotes)
   function submitCardTextChange() {
@@ -82,8 +80,6 @@ export default function Card({ card_id, cards, user }) {
     setComments(comments.concat({ card_id, comment_text: cardText, user_id }))
   }
 
-console.log('comments', comments)
-
   return (
     <Box
       sx={{
@@ -93,7 +89,7 @@ console.log('comments', comments)
         display: 'flex',
         borderRadius: '10',
       }}>
-      <Paper elevation={3} sx={{ m: 1, p: 1, borderRadius: '15px', border: 'solid', borderColor: '#90caf9'   }}>
+      <Paper elevation={3} sx={{ m: 1, p: 1, borderRadius: '15px', border: 'solid', borderColor: '#90caf9' }}>
         <div>card id: {card_id}</div>
         <TextField fullWidth label={cardText} id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={submitCardTextChange} sx={{ my: 1 }}
         />
@@ -108,9 +104,9 @@ console.log('comments', comments)
               }
             </Typography>}
           <Box>
-              <Button onClick={() => addComment()}>Add Comment</Button>
+            <Button onClick={() => addComment()}>Add Comment</Button>
           </Box>
-          {comments?.map((comment, index) => (<Comment key={comment.comment_id} comment_id={comment.comment_id} comment={comment} index={index} user={user}/>))}
+          {comments?.map((comment, index) => (<Comment key={comment.comment_id} comment_id={comment.comment_id} comment={comment} index={index} user={user} />))}
         </Box>
       </Paper>
     </Box>

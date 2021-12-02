@@ -97,7 +97,6 @@ export function login() {
       })
       .then(res => res.json())
       .then(json => {
-        console.log('response', json)
         return json
       })
       .then(retro => resolve(retro))

@@ -1,4 +1,4 @@
-import { Box, Paper, Icon, TextField, Skeleton, IconButton } from '@mui/material/';
+import { Box, Icon, IconButton } from '@mui/material/';
 
 export default function AddCardButton({ addCardFunc }) {
   return (
