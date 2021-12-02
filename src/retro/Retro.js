@@ -47,9 +47,16 @@ export default function Retro({ user_id, user }) {
       setUserVotes(retroPayload.retro.max_votes - currentUsedVotes)
     })
 
-    socket.on('columnUpdated', ({ retro, columns }) => {
+    socket.on('columnUpdated', ({ retro, columns, user_id: updatedByUserId, column_id }) => {
       setRetro(retro)
       setColumns(columns)
+
+      if (column_id && updatedByUserId === user_id) {
+        let column = document.getElementById(`column-${column_id}`)
+        if (column) {
+          column.select()
+        }
+      }
     })
 
     return () => {

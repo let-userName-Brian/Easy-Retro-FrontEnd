@@ -91,7 +91,7 @@ export default function Column({ column_id, user }) {
       }}>
       <Paper elevation={9} sx={{ width: '100%', p: 1, px: 1.3, borderRadius: '15px', border: 'solid', borderColor: '#999', borderWidth: '.1em' }} >
         <Box container sx={{ width: '100%', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-          <TextField fullWidth className={"columnName"} value={colName} onChange={(e) => setColName(e.target.value)} onBlur={renameColumn} sx={{
+          <TextField fullWidth id={`column-${column_id}`} className={"columnName"} value={colName} onChange={(e) => setColName(e.target.value)} onBlur={renameColumn} sx={{
             '& fieldset': {
               borderRadius: '6px',
               borderStartStartRadius: '10px',
