@@ -25,7 +25,8 @@ export default function UserAvatar({ user_name, size }) {
       sx: {
         bgcolor: stringToColor(name),
         width: size || 48,
-        height: size || 48
+        height: size || 48,
+        fontSize: size / 2 || 24
       },
       children: initials,
     };
