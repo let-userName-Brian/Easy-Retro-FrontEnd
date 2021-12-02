@@ -81,7 +81,8 @@ export default function Column({ column_id, user }) {
   return (
     <Box
       sx={{
-        m: 1
+        m: 1,
+        minWidth: 300
       }}>
       <Paper elevation={12} sx={{ width: '100%', p: 1, borderRadius: '20px' }} >
         <Box container sx={{ width: '100%', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
