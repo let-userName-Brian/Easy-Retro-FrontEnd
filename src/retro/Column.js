@@ -36,7 +36,7 @@ export default function Column({ column_id, user }) {
 
   useEffect(() => {
     // Received when the server sends us a name update
-    socket.on('columnNameUpdated', ({ column }) => {
+    socket.on('columnRenamed', ({ column }) => {
       if (column.column_id === column_id) {
         setColumn(column);
         setColName(column.column_name)
@@ -53,24 +53,24 @@ export default function Column({ column_id, user }) {
     })
 
     return () => {
-      socket.off('columnNameUpdated')
+      socket.off('columnRenamed')
       socket.off('cardUpdated')
     }
   }, [column_id])
 
-  function submitColumnNameChange() {
+  function renameColumn() {
     // let retro_id = retro.retro_id;
     let column_id = column.column_id
-    socket.emit('columnRenamed', { retro_id, column_id, column_name: colName })
+    socket.emit('renameColumn', { retro_id, column_id, column_name: colName })
   }
 
   function removeColumn() {
     console.log('del col:', retro_id, column_id)
-    socket.emit('columnDeleted', { retro_id, column_id })
+    socket.emit('removeColumn', { retro_id, column_id })
   }
 
   function addCard(column_id) {
-    socket.emit('cardAdded', { retro_id, column_id, user_id });
+    socket.emit('addCard', { retro_id, column_id, user_id });
   }
 
   if (!column) {
@@ -85,7 +85,7 @@ export default function Column({ column_id, user }) {
       }}>
       <Paper elevation={12} sx={{ width: '100%', p: 1, borderRadius: '20px' }} >
         <Box container sx={{ width: '100%', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-          <TextField fullWidth id="columnName" value={colName} onChange={(e) => setColName(e.target.value)} onBlur={submitColumnNameChange} sx={{
+          <TextField fullWidth id="columnName" value={colName} onChange={(e) => setColName(e.target.value)} onBlur={renameColumn} sx={{
             '& fieldset': {
               borderStartStartRadius: '20px',
             }

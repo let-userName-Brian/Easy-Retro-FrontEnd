@@ -53,7 +53,7 @@ export default function Retro({ user_id, user }) {
   }, [retro_id, user_id])
 
   function addColumn() {
-    socket.emit('columnAdded', { retro_id });
+    socket.emit('addColumn', { retro_id });
   }
 
   if (!retro) {
