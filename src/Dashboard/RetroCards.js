@@ -19,10 +19,8 @@ export default function RetroCards({ retros, searchedRetros, setUserRetros, user
   }
   
   async function removeRetro(retro_id, user_id) {
-    console.log('Sent this retroID:', retro_id);
     deleteRetro(retro_id, user_id)
     .then(res => {
-      console.log('returning retros:', res);
       setUserRetros(res);
     })
   }

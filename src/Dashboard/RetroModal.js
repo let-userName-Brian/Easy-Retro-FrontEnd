@@ -44,7 +44,6 @@ export default function RetroModal({ user_id }) {
   }
   const navigate = useNavigate();
 
-  //opens a new retro and generates a new UUID for it
   const openNewRetro = async () => {
     const newRetro = {
       retro_name: retroName,
