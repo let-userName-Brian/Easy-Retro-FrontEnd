@@ -9,6 +9,7 @@ import SettingsContext from "./SettingsContext";
 import Timer from "./Timer";
 import RetroTitle from './RetroTitle'
 import Fade from 'react-reveal/Fade';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export const RetroContext = createContext()
 
@@ -58,31 +59,41 @@ export default function Retro({ user_id, user }) {
   }
 
   if (!retro) {
-    return <div>Loading Retro!</div>
+    return (
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '600px'
+      }}>
+        <CircularProgress />
+      </Box>
+    )
   }
 
   //need to redo styling lost it on merge somehow and now I cant log in to see a screen
   return (
     <Container maxWidth="xl">
       <Fade right>
-      <Grid container spacing={3} sx={{ display: 'flex'}}>
-        <Grid item xs={8} md={8} lg={8} sx={{ flex: '1', textAlign: 'left', mt: 2 }}>
-          <RetroTitle title={retro.retro_name} />
-          <Typography>You have {userVotes} votes left!</Typography>
+        <Grid container spacing={3} sx={{ display: 'flex' }}>
+          <Grid item xs={8} md={8} lg={8} sx={{ flex: '1', textAlign: 'left', mt: 2 }}>
+            <RetroTitle title={retro.retro_name} />
+            <Typography>You have {userVotes} votes left!</Typography>
+          </Grid>
+          <Grid item xs={4} md={4} lg={4} sx={{ marginLeft: '0 auto', marginTop: '0%', flexDirection: 'column', textAlign: 'right' }}>
+            <SettingsContext.Provider value={{
+              showSettings,
+              setShowSettings,
+              workMinutes,
+              breakMinutes,
+              setWorkMinutes,
+              setBreakMinutes,
+            }}>
+              {showSettings ? <Settings /> : <Timer />}
+            </SettingsContext.Provider>
+          </Grid>
         </Grid>
-        <Grid item xs={4} md={4} lg={4} sx={{ marginLeft: '0 auto', marginTop: '0%', flexDirection: 'column', textAlign: 'right' }}>
-          <SettingsContext.Provider value={{
-            showSettings,
-            setShowSettings,
-            workMinutes,
-            breakMinutes,
-            setWorkMinutes,
-            setBreakMinutes,
-          }}>
-            {showSettings ? <Settings /> : <Timer />}
-          </SettingsContext.Provider>
-        </Grid>
-      </Grid>
       </Fade>
       {/* <Fade left> */}
       <Box sx={{ display: 'flex' }} >
