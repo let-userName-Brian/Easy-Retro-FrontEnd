@@ -4,7 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from "react";
 
-export default function ColumnMenu({ removeColumnFunc }) {
+export default function ColumnMenu({ removeColumnFunc, addCardFunc }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
   const toggleMenu = (event) => {
@@ -17,6 +17,11 @@ export default function ColumnMenu({ removeColumnFunc }) {
   function deleteColumn() {
     handleClose()
     removeColumnFunc()
+  }
+
+  function addCard() {
+    handleClose()
+    addCardFunc()
   }
 
   return (
@@ -47,6 +52,7 @@ export default function ColumnMenu({ removeColumnFunc }) {
         }}
       >
         <MenuItem onClick={deleteColumn}>Delete Column</MenuItem>
+        <MenuItem onClick={addCard}>Add Card</MenuItem>
       </Menu>
     </div>
   )
