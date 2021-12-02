@@ -14,9 +14,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 export default function App() {
 
   const [user, setUser] = useState()
-  const [darkMode, setDarkMode] = useState(true); //darkMode state -- passed to NavBar
+  const [darkMode, setDarkMode] = useState(false); //darkMode state -- passed to NavBar
 
-  useEffect(() => { login().then(user => setUser(user)) }, [])
+
+  useEffect(() => { 
+    login()
+    .then(user => setUser(user)) 
+  }, [])
+
+  useEffect(() => {
+    setDarkMode(user?.is_dark_mode)
+  }, [user])
 
   const theme = createTheme({
     palette: {
@@ -41,8 +49,8 @@ export default function App() {
       </ThemeProvider>
     );
   }
-
-  // console.log('user:', user)
+  
+  console.log('user:', user)
 
   return (
     <ThemeProvider theme={theme}>
