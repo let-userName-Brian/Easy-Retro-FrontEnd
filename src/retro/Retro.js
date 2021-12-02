@@ -44,7 +44,8 @@ export default function Retro({ user_id, user }) {
       setColumns(retroPayload.columns)
       setCards(retroPayload.cards)
       setComments(retroPayload.comments)
-      setUserVotes(retroPayload.retro.max_votes)
+      let currentUsedVotes = retroPayload.cards.reduce((acc, card) => acc + card.votes.filter(vote => vote.user_id === user_id).length, 0)
+      setUserVotes(retroPayload.retro.max_votes - currentUsedVotes)
     })
 
     return () => {
