@@ -1,14 +1,10 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import { Stack } from '@mui/material';
-import { IconButton, TextField } from '@mui/material';
-import ShareIcon from '@mui/icons-material/Share';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { Alert } from '@mui/material';
+import ShareIcon from '@mui/icons-material/Share';
+import { Alert, IconButton, Stack, TextField, Tooltip } from '@mui/material';
 import AlertTitle from '@mui/material/AlertTitle';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 
 const style = {
   position: 'absolute',
@@ -23,8 +19,8 @@ const style = {
 };
 
 export default function ShareRetroModal({ url }) {
-  const [open, setOpen] = React.useState(false);
-  const [buttonClicked, setButtonClicked] = React.useState(false)
+  const [open, setOpen] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false)
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false)
@@ -37,7 +33,7 @@ export default function ShareRetroModal({ url }) {
 
   return (
     <div>
-      <IconButton onClick={handleOpen}><ShareIcon /></IconButton>
+      <Tooltip title='Share Retro'><IconButton onClick={handleOpen}><ShareIcon /></IconButton></Tooltip>
       <Modal
         open={open}
         onClose={handleClose}
