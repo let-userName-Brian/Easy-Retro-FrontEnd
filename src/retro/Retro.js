@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from '@mui/material/';
+import { Box, Container, Grid, Typography } from '@mui/material/';
 import { createContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { socket } from '../SocketClient';
@@ -7,6 +7,7 @@ import Column from "./Column";
 import Settings from "./Settings";
 import SettingsContext from "./SettingsContext";
 import Timer from "./Timer";
+import RetroTitle from './RetroTitle'
 
 export const RetroContext = createContext()
 
@@ -65,13 +66,10 @@ export default function Retro({ user_id, user }) {
   return (
     <Container maxWidth="xl">
       <Grid container spacing={3} sx={{ display: 'flex' }}>
-        <Grid item xs={4} md={4} lg={4} sx={{ flex: '1', textAlign: 'center', marginTop: '5%' }}>
-          {/* <Stack spacing={2} direction="row"> */}
-          <div>Retro Name: {retro.retro_name}</div>
-          <div>You have {userVotes} votes left!</div>
+        <Grid item xs={8} md={8} lg={8} sx={{ flex: '1', textAlign: 'left', mt: 2 }}>
+          <RetroTitle title={retro.retro_name} />
+          <Typography>You have {userVotes} votes left!</Typography>
         </Grid>
-        <Grid item xs={4} md={4} lg={4} sx={{ flex: '1', textAlign: 'center', marginTop: '5%' }} />
-        {/* </Stack> */}
         <Grid item xs={4} md={4} lg={4} sx={{ marginLeft: '0 auto', marginTop: '0%', flexDirection: 'column', textAlign: 'right' }}>
           <SettingsContext.Provider value={{
             showSettings,
