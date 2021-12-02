@@ -10,6 +10,7 @@ export default function Comment({ comment_id, comment, user_id, retro_id, user }
   const { comments: initComments } = useContext(RetroContext)
   const [commentText, setCommentText] = useState('')
   const [author, setAuthor] = useState('')
+  const [timer, setTimer] = useState()
 
   useEffect(() => {
     let comment = initComments?.find(c => c.comment_id === comment_id)
@@ -35,17 +36,19 @@ export default function Comment({ comment_id, comment, user_id, retro_id, user }
     }
   }, [comment_id])
 
+  async function updateCommentText(commentText) {
+    setCommentText(commentText)
+    clearTimeout(timer)
+    setTimer(setTimeout(() => {
+      socket.emit('changeCommentText', { comment_id, commentText })
+    }, 500))
+  }
+
   function removeComment() {
     let card_id = comment.card_id
     console.log('removeComment:', comment_id, card_id)
     socket.emit('removeColumn', { comment_id, card_id })
   }
-
-  function changeCommentText() {
-    socket.emit('changeCommentText', { comment_id, commentText })
-  }
-
-
 
   // //send to Dustin--------------------------------------------------------------------
   // function removeCommentFunc() {
@@ -88,12 +91,10 @@ export default function Comment({ comment_id, comment, user_id, retro_id, user }
   return (
     <Paper variant="outlined" sx={{ m: 1, p: 1, borderRadius: '15px' }} >
       <Typography variant='h5'> Comment ID: {comment_id}</Typography>
-      <TextField fullWidth multiline id="commentText" value={commentText} onChange={(e) => setCommentText(e.target.value)} onBlur={changeCommentText} sx={{ my: 1 }} />
+      <TextField fullWidth multiline id="commentText" value={commentText} onChange={(e) => updateCommentText(e.target.value)} sx={{ my: 1 }} />
       <Box>
         <Typography >Author: {author}</Typography>
         <CommentMenu removeCommentFunc={removeComment} />
-        {author ? <Button onClick={() => console.log('submit comment')}>Submit Comment</Button>
-          : <></>}
       </Box>
     </Paper>
   )
