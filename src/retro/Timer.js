@@ -67,8 +67,8 @@ export default function Timer() {
   if (seconds < 10) seconds = '0' + seconds;
 
   return (
-    <Box style={{ marginTop: '-30%', marginRight: '10%' }}>
-      <div style={{ display: 'flex', transform: 'scale(0.3, 0.3)', marginTop: '0px', flex: '-1', }}>
+    <>
+      <div style={{ display: 'flex', transform: 'scale(0.3, 0.3)', marginTop: '-30%', marginBottom: '5%'}}>
         <CircularProgressbar
           value={percentage}
           text={minutes + ':' + seconds}
@@ -84,6 +84,6 @@ export default function Timer() {
               : <PauseButton onClick={() => { setIsPaused(true); isPausedRef.current = true; }} />}
             <SettingsButton onClick={() => settingsInfo.setShowSettings(true)} />
           </div>
-    </Box>
+    </>
   );
 }
