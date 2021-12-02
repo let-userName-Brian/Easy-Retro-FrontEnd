@@ -17,14 +17,25 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(true); //darkMode state -- passed to NavBar
 
 
-  useEffect(() => { 
+  useEffect(() => {
     login()
-    .then(user => setUser(user)) 
+      .then(user => setUser(user))
   }, [])
 
   useEffect(() => {
     setDarkMode(user?.is_dark_mode)
   }, [user])
+
+  useEffect(() => {
+    if (darkMode) {
+      console.log('and then there was night')
+      document.body.setAttribute('style', 'background: #1e1e1e')
+    }
+    else {
+      console.log('RIP eyes')
+      document.body.setAttribute('style', 'background: #f8f8f8')
+    }
+  }, [darkMode])
 
   const theme = createTheme({
     palette: {
@@ -49,7 +60,7 @@ export default function App() {
       </ThemeProvider>
     );
   }
-  
+
 
   return (
     <ThemeProvider theme={theme}>
