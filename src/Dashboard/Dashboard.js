@@ -24,27 +24,27 @@ export default function Dashboard({ user, user_id }) {
 
   return (
     <div>
-        <Fade top>
-      <Grid container spacing={2} margin={0} sx={{ overflow: 'hidden' }}>
-        <Grid item xs={6}>
-          <Typography>Welcome back {user?.user_name}!</Typography>
+      <Fade top>
+        <Grid container spacing={2} margin={0} sx={{ overflow: 'hidden' }}>
+          <Grid item xs={6}>
+            <Typography>Welcome back {user?.user_name}!</Typography>
+          </Grid>
+          <Grid item xs={5}>
+            <SearchBar retros={userRetros} setSearchedRetros={setSearchedRetros} />
+          </Grid>
         </Grid>
-        <Grid item xs={5}>
-          <SearchBar retros={userRetros} setSearchedRetros={setSearchedRetros} />
+      </Fade>
+      <RubberBand>
+        <Grid container padding={2} justifyContent="center" alignItems="center">
+          <RetroModal user_id={user_id} />
         </Grid>
-      </Grid>
-        </Fade>
-        <RubberBand>
-      <Grid container padding={2} justifyContent="center" alignItems="center">
-        <RetroModal user_id={user_id} />
-      </Grid>
-        </RubberBand>
+      </RubberBand>
       <Grid item xs={12} sm={12} md={12} lg={12}>
-        <Typography variant="h6" sx={{marginLeft: '1%'}}>Your Active Retros</Typography>
+        <Typography variant="h6" sx={{ marginLeft: '1%' }}>Your Active Retros</Typography>
       </Grid>
       <Fade bottom>
         <Grid container spacing={2} margin={0} >
-          <RetroCards retros={userRetros} searchedRetros={searchedRetros} setUserRetros={setUserRetros} userRetros={userRetros} user_id={user_id}/>
+          <RetroCards retros={userRetros} searchedRetros={searchedRetros} setUserRetros={setUserRetros} userRetros={userRetros} user_id={user_id} />
         </Grid>
       </Fade>
     </div>

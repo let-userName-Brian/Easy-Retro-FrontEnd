@@ -23,8 +23,8 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
 
 
   return (
-    <Box sx={{ flexGrow: 1, color: 'inherit', width: '100vw', overflow: 'hidden' }}>
-      <AppBar position="static" style={{ backgroundColor: '#121212', height: 80}}>
+    <Box sx={{ flexGrow: 1, color: 'inherit', width: '100vw', overflow: 'hidden', boxShadow: 3 }}>
+      <AppBar position="static" style={{ backgroundColor: (darkMode ? '#121212' : '#356f99'), height: 80 }}>
         <Toolbar>
           <div style={{ flexGrow: 1, m: 0, p: 0 }}>
             <Bounce left>
