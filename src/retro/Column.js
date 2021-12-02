@@ -83,7 +83,7 @@ export default function Column({ column_id, user }) {
         m: 1,
         minWidth: 300
       }}>
-      <Paper elevation={12} sx={{ width: '100%', p: 1, borderRadius: '20px', border: 'solid', borderColor: 'black' }} >
+      <Paper elevation={12} sx={{ width: '100%', p: 1, borderRadius: '18px', border: 'solid', borderColor: '#aaa', borderWidth: '.12em' }} >
         <Box container sx={{ width: '100%', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
           <TextField fullWidth className={"columnName"} value={colName} onChange={(e) => setColName(e.target.value)} onBlur={renameColumn} sx={{
             '& fieldset': {
@@ -94,7 +94,7 @@ export default function Column({ column_id, user }) {
           }} InputProps={{
             inputProps: { style: { textAlign: "center" } }
           }} />
-          <ColumnMenu removeColumnFunc={removeColumn} />
+          <ColumnMenu removeColumnFunc={removeColumn} addCardFunc={() => addCard(column_id)} />
         </Box>
         {column.card_ids.map((card_id) => (<Card key={card_id} card_id={card_id} cards={cards} user={user} />))}
         <AddCardButton addCardFunc={() => addCard(column_id)} />
