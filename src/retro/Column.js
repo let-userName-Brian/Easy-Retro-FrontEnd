@@ -14,6 +14,27 @@ export default function Column({ column_id, user }) {
   const [retro_id, setRetroId] = useState()
 
   useEffect(() => {
+    if (!retro) return;
+    setRetroId(retro.retro_id)
+  }, [retro])
+
+  useEffect(() => {
+    if (!column_id) return
+    if (initColumns.length === 0) return
+    let col = initColumns.find(column => column.column_id === column_id)
+    if (!col) return
+    setColumn(col)
+    setColName(col.column_name)
+  }, [initColumns, column_id])
+
+  useEffect(() => {
+    if (!column) return
+    if (!initCards) return
+    //initialize cards from context
+    setCards(initCards?.filter(card => column?.card_ids.includes(card.card_id)))
+  }, [column, initCards])
+
+  useEffect(() => {
     // Received when the server sends us a name update
     socket.on('columnNameUpdated', ({ column }) => {
       if (column.column_id === column_id) {
@@ -37,33 +58,11 @@ export default function Column({ column_id, user }) {
     }
   }, [column_id])
 
-
-  useEffect(() => {
-    if (!column_id) return
-    if (initColumns.length === 0) return
-    let col = initColumns.find(column => column.column_id === column_id)
-    if (!col) return
-    setColumn(col)
-    setColName(col.column_name)
-  }, [initColumns, column_id])
-
-  useEffect(() => {
-    if (!retro) return;
-    setRetroId(retro.retro_id)
-  }, [retro])
-
   function submitColumnNameChange() {
     // let retro_id = retro.retro_id;
     let column_id = column.column_id
     socket.emit('columnRenamed', { retro_id, column_id, column_name: colName })
   }
-
-  useEffect(() => {
-    if (!column) return
-    if (!initCards) return
-    //initialize cards from context
-    setCards(initCards?.filter(card => column?.card_ids.includes(card.card_id)))
-  }, [column, initCards])
 
   function removeColumn() {
     console.log('del col:', retro_id, column_id)

@@ -21,8 +21,6 @@ export default function Retro({ user_id, user }) {
   const [cards, setCards] = useState([])
   const [comments, setComments] = useState([])
   const [userVotes, setUserVotes] = useState([]) //state set from the payload of max_votes
-
-
   //timer state
   const [showSettings, setShowSettings] = useState(false);
   const [workMinutes, setWorkMinutes] = useState(5);
@@ -31,11 +29,6 @@ export default function Retro({ user_id, user }) {
   useEffect(() => {
     // Ask the server to join the room with name retroId
     socket.emit('joinRetro', { user_id, retro_id });
-
-    socket.on('columnUpdated', ({ retro, columns }) => {
-      setRetro(retro)
-      setColumns(columns)
-    })
 
     // Received when the server sends us a retro
     socket.on('initRetro', (retroPayload) => {
@@ -47,12 +40,16 @@ export default function Retro({ user_id, user }) {
       setUserVotes(retroPayload.retro.max_votes)
     })
 
+    socket.on('columnUpdated', ({ retro, columns }) => {
+      setRetro(retro)
+      setColumns(columns)
+    })
+
     return () => {
-      socket.off('columnUpdated')
       socket.off('initRetro')
+      socket.off('columnUpdated')
     }
   }, [retro_id, user_id])
-
 
   function addColumn() {
     socket.emit('columnAdded', { retro_id });
