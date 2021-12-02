@@ -63,7 +63,7 @@ export default function RetroModal({ user_id }) {
     console.log('max votes set', e.target.value)
     setMaxVotes(e.target.value)
   }
-  
+
   //add extra tags with a button click
   function changeColumnName(name, index) {
     let newColumnNames = [...columnNames]
@@ -168,7 +168,7 @@ export default function RetroModal({ user_id }) {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  onClick={(e) => handleMaxVotes(e)}
+                  onChange={(e) => handleMaxVotes(e)}
                 />
               </Grid>
               <Grid item >

@@ -20,7 +20,7 @@ export default function Retro({ user_id, user }) {
   const [columns, setColumns] = useState([])
   const [cards, setCards] = useState([])
   const [comments, setComments] = useState([])
-  const [userVotes, setUserVotes] = useState([]) //state set from the payload of max_votes
+  const [userVotes, setUserVotes] = useState(0) //state set from the payload of max_votes
 
 
   //timer state
@@ -44,7 +44,8 @@ export default function Retro({ user_id, user }) {
       setColumns(retroPayload.columns)
       setCards(retroPayload.cards)
       setComments(retroPayload.comments)
-      setUserVotes(retroPayload.retro.max_votes)
+      let currentUsedVotes = retroPayload.cards.reduce((acc, card) => acc + card.votes.filter(vote => vote.user_id === user_id).length, 0)
+      setUserVotes(retroPayload.retro.max_votes - currentUsedVotes)
     })
 
     return () => {
@@ -69,9 +70,7 @@ export default function Retro({ user_id, user }) {
         <Grid item xs={4} md={4} lg={4} sx={{ flex: '1', textAlign: 'center', marginTop: '5%' }}>
           {/* <Stack spacing={2} direction="row"> */}
           <div>Retro Name: {retro.retro_name}</div>
-          {userVotes > 0 ?
-            <div>You have {userVotes} votes left!</div>
-            : <></>}
+          <div>You have {userVotes} votes left!</div>
         </Grid>
         <Grid item xs={4} md={4} lg={4} sx={{ flex: '1', textAlign: 'center', marginTop: '5%' }}>
           <Button
