@@ -18,7 +18,7 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
   }
 
   return (
-    <Box sx={{ flexGrow: 1, color: 'inherit', width: '100vw', overflow: 'hidden', /*adjust as the screen adjusts*/ }}>
+    <Box sx={{ flexGrow: 1, color: 'inherit', width: '100vw', overflow: 'hidden' }}>
       <AppBar position="static" style={{ backgroundColor: '#121212', height: 80 }}>
         <Toolbar>
           <div style={{ flexGrow: 1, m: 0, p: 0 }}>

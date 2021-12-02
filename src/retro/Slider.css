@@ -1,11 +1,11 @@
 :root{
-  --red: #f54e4e;
+  --blue: #90caf9;
   --green: #4aec8c;
 }
 
 .slider{
   height: 34px;
-  border: 2px solid var(--red);
+  border: 2px solid var(--blue);
   border-radius: 20px;
 }
 
