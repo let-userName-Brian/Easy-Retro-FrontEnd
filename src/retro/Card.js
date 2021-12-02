@@ -7,6 +7,7 @@ import UserAvatar from '../UserAvatar';
 import Comment from './Comment';
 import { RetroContext } from "./Retro";
 import CardMenu from './CardMenu';
+import CommentIcon from '@mui/icons-material/Comment';
 
 export default function Card({ cards, card_id, user }) {// cards,
   const { cards: initCards, comments: initComments, user_id, userVotes, setUserVotes } = useContext(RetroContext)
@@ -16,6 +17,7 @@ export default function Card({ cards, card_id, user }) {// cards,
   const [cardVotes, setCardVotes] = useState([])
   const [voted, setVoted] = useState(false)
   const [comments, setComments] = useState([])
+  const [renderComments, setRenderComments] = useState(false)
 
   useEffect(() => {
     let newCard = cards?.find(card => card.card_id === card_id)
@@ -48,10 +50,14 @@ export default function Card({ cards, card_id, user }) {// cards,
     })
 
     //does not yet use setCard since card is new card on line 20/initialization useEffect
-    socket.on('commentUpdated', ({ card, comments }) => {
+    socket.on('commentUpdated', ({ card, comments, user_id, comment_id }) => {
       if (card_id === card.card_id) {
         console.log('commentUpdated', card, comments)
         setComments(comments)
+
+        if (user_id && comment_id) {
+          document.getElementById(`comment-${comment_id}`).select()
+        }
       }
     })
 
@@ -74,6 +80,10 @@ export default function Card({ cards, card_id, user }) {// cards,
   function addComment() {
     console.log('addComment emit: ', card_id, user_id)
     socket.emit('addComment', { card_id, user_id });
+  }
+
+  function toggleComments() {
+    setRenderComments(!renderComments)
   }
 
   //add vote to card
@@ -104,28 +114,43 @@ export default function Card({ cards, card_id, user }) {// cards,
         '.react-reveal': { width: "100%" }
       }}>
       <Bounce bottom>
-        <Paper sx={{ width: '100%', my: 1, p: 1, borderRadius: '10px', border: 'solid', borderWidth: '.1em', borderColor: '#90caf9', boxShadow: 3 }}>
+        <Paper sx={{ width: '100%', my: 1, p: 1, borderRadius: '10px', border: 'solid', borderWidth: '.12em', borderColor: '#90caf9', boxShadow: 7 }}>
 
-          <TextField fullWidth multiline id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={changeCardText} sx={{ mb: 1 }}
+          <TextField fullWidth multiline id={`card-${card_id}`} value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={changeCardText} sx={{ mb: 1 }}
           />
           <Box sx={{ m: 1 }}>
             <Stack direction='row' justifyContent="space-between" alignItems='center'>
-              <Tooltip title={author || ''}><IconButton><UserAvatar user_name={author || ''} size={30} /></IconButton></Tooltip>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography >{cardVotes.length}</Typography>
+              <Box>
+                <Tooltip title={author || ''}><IconButton><UserAvatar user_name={author || ''} size={30} /></IconButton></Tooltip>
+              </Box>
+              <Box>
+                <Stack direction='row' alignItems='center'>
+                  <Typography >{cardVotes.length}</Typography>
+                  <Button
+                    disabled={(!voted && userVotes < 1)}
+                    onClick={() => voted ? removeVote() : addVote()}
+                    sx={{ minWidth: 30, width: 30, height: 30, p: 0, borderRadius: '16px' }}>
+                    <RecommendIcon style={{ width: 30, height: 30, fill: (voted ? "orange" : null) }} />
+                  </Button>
+                </Stack>
+              </Box>
+              <Box>
                 <Button
-                  disabled={(!voted && userVotes < 1)}
-                  onClick={() => voted ? removeVote() : addVote()}
+                  onClick={() => toggleComments()}
                   sx={{ minWidth: 30, width: 30, height: 30, p: 0, borderRadius: '16px' }}>
-                  <RecommendIcon style={{ width: 30, height: 30, fill: (voted ? "orange" : null) }} />
+                  <CommentIcon style={{ width: 30, height: 30, fill: (renderComments ? "orange" : null) }} />
                 </Button>
               </Box>
-              <CardMenu removeCardFunc={removeCard} />
+              <Box>
+                <CardMenu removeCardFunc={removeCard} />
+              </Box>
             </Stack>
-            {comments?.map((comment, index) => (<Comment key={index} comment_id={comment.comment_id} comment={comment} index={index} user={user} />))}
-            <Stack direction='row' justifyContent="center" alignItems='center'>
-              <Button onClick={() => addComment()} sx={{ mx: 'auto', mt: 2 }}>Add Comment</Button>
-            </Stack>
+            {renderComments &&
+              <>{comments?.map((comment, index) => (<Comment key={index} comment_id={comment.comment_id} comment={comment} index={index} user={user} />))}
+                <Stack direction='row' justifyContent="center" alignItems='center'>
+                  <Button onClick={() => addComment()} sx={{ mx: 'auto', mt: 2 }}>Add Comment</Button>
+                </Stack></>
+            }
           </Box>
         </Paper >
       </Bounce>

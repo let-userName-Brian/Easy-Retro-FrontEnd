@@ -44,11 +44,14 @@ export default function Column({ column_id, user }) {
     })
 
     // Received when the server sends us a card update
-    socket.on('cardUpdated', ({ cards, column }) => {
+    socket.on('cardUpdated', ({ cards, column, user_id, card_id }) => {
       if (column.column_id === column_id) {
         console.log('cardUpdated', cards, column)
         setCards(cards)
         setColumn(column)
+        if (user_id && card_id) {
+          document.getElementById(`card-${card_id}`).select()
+        }
       }
     })
 
@@ -83,16 +86,17 @@ export default function Column({ column_id, user }) {
         m: 1,
         minWidth: 300
       }}>
-      <Paper elevation={12} sx={{ width: '100%', p: 1, borderRadius: '18px', border: 'solid', borderColor: '#aaa', borderWidth: '.12em' }} >
+      <Paper elevation={9} sx={{ width: '100%', p: 1, borderRadius: '15px', border: 'solid', borderColor: '#999', borderWidth: '.1em' }} >
         <Box container sx={{ width: '100%', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
           <TextField fullWidth className={"columnName"} value={colName} onChange={(e) => setColName(e.target.value)} onBlur={renameColumn} sx={{
             '& fieldset': {
               borderRadius: '6px',
               borderStartStartRadius: '10px',
-              boxShadow: 3
-            }
+              boxShadow: 3,
+            },
+
           }} InputProps={{
-            inputProps: { style: { textAlign: "center" } }
+            inputProps: { style: { textAlign: "center", fontWeight: 'bold', fontSize: 18 } }
           }} />
           <ColumnMenu removeColumnFunc={removeColumn} addCardFunc={() => addCard(column_id)} />
         </Box>
