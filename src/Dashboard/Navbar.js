@@ -10,12 +10,17 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import UserAvatar from '../UserAvatar';
 import Bounce from 'react-reveal/Bounce';
 import Flip from 'react-reveal/Flip';
+import { changeDarkModePreferences } from '../Fetch'
 
 export default function Navbar({ user, darkMode, setDarkMode }) {
 
+  const user_id = user.user_id;
+
   const handleDarkMode = () => {
+    changeDarkModePreferences(user_id, !darkMode);
     setDarkMode(!darkMode);
   }
+
 
   return (
     <Box sx={{ flexGrow: 1, color: 'inherit', width: '100vw', overflow: 'hidden' }}>

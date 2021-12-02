@@ -122,7 +122,30 @@ export function deleteRetro(retro_id, user_id) {
       })
       .then(res => res.json())
       .then(json => {
-        console.log('json',json)
+        return json
+      })
+      .then(retro => resolve(retro))
+      .catch(err => resolve(null))
+  })
+}
+
+
+export function changeDarkModePreferences(user_id, darkMode) {
+  return new Promise((resolve, _) => {
+    fetch(`${serverURL}/users/patch/${user_id}`, {
+      method: 'PATCH',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({is_dark_mode: darkMode})
+    })
+      .then(function (res) {
+        if (res.ok) { return res }
+        else { throw new Error(res.statusText) }
+      })
+      .then(res => res.json())
+      .then(json => {
         return json
       })
       .then(retro => resolve(retro))
