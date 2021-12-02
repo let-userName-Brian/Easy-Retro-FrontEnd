@@ -7,9 +7,8 @@ import Comment from './Comment';
 import { RetroContext } from "./Retro";
 import Bounce from 'react-reveal/Bounce';
 
-export default function Card({ card_id, cards, user }) {
-
-  const { comments: initComments, user_id, userVotes, setUserVotes } = useContext(RetroContext)
+export default function Card({ cards, card_id, user }) {// cards,
+  const { cards: initCards, comments: initComments, user_id, userVotes, setUserVotes } = useContext(RetroContext)
   // const [card, setCard] = useState()
   const [cardText, setCardText] = useState('')
   const [author, setAuthor] = useState()//needs to be converted to user_name
@@ -29,6 +28,12 @@ export default function Card({ card_id, cards, user }) {
   }, [cards, card_id, user_id]);
 
   useEffect(() => {
+    if (initComments) {
+      setComments(initComments.filter(comment => comment.card_id === card_id))
+    }
+  }, [initComments, card_id])
+
+  useEffect(() => {
     socket.on('cardTextUpdated', ({ card }) => {
       if (card_id === card.card_id) {
         // setCard(card);
@@ -41,22 +46,35 @@ export default function Card({ card_id, cards, user }) {
         setCardVotes(votes)
       }
     })
+
+    //does not yet use setCard since card is new card on line 20/initialization useEffect
+    socket.on('commentUpdated', ({ card, comments }) => {
+      if (card_id === card.card_id) {
+        setComments(comments)
+      }
+    })
+
     return () => {
       socket.off('cardTextUpdated')
       socket.off('votesChanged')
+      socket.off('commentUpdated')
     }
-  }, [card_id])
-
-  useEffect(() => {
-    if (initComments) {
-      setComments(initComments.filter(comment => comment.card_id === card_id))
-    }
-  }, [initComments, card_id])
+  }, [card_id])//comments?
 
   //console.log('cardVotes', cardVotes)
-  function submitCardTextChange() {
+  function changeCardText() {
     socket.emit('changeCardText', { card_id, card_text: cardText })
   }
+
+  function addComment(card_id, user_id) {
+    console.log('addComment emit: ', card_id, user_id)
+    socket.emit('addComment', { card_id, user_id });
+  }
+
+  //broken local only - add comment to card
+  // const addComment = () => {
+  //   setComments(comments.concat({ card_id, comment_text: cardText, user_id }))
+  // }
 
   //add vote to card
   const addVote = () => {
@@ -77,11 +95,26 @@ export default function Card({ card_id, cards, user }) {
     setUserVotes(userVotes + 1)
   }
 
+  //just here for strucrture reference
+  // function removeColumn() {
+  //   console.log('del col:', retro_id, column_id)
+  //   socket.emit('removeColumn', { retro_id, column_id })
+  // }
 
-  //add comment to card
-  const addComment = () => {
-    setComments(comments.concat({ card_id, comment_text: cardText, user_id }))
-  }
+  // function renameColumn() {
+  //   // let retro_id = retro.retro_id;
+  //   let column_id = column.column_id
+  //   socket.emit('renameColumn', { retro_id, column_id, column_name: colName })
+  // }
+
+  // function addCard(column_id) {
+  //   socket.emit('addCard', { retro_id, column_id, user_id });
+  // }
+
+  //do we need this?
+  // if (!column) {
+  //   return <>Loading Column</>
+  // }
 
   return (
     <Box
@@ -92,7 +125,7 @@ export default function Card({ card_id, cards, user }) {
       }}>
          <Bounce bottom>
       <Paper elevation={3} sx={{ width: '100%', my: 1, p: 1, borderRadius: '15px', border: 'solid', borderColor: '#90caf9' }}>
-        <TextField fullWidth multiline id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={submitCardTextChange} sx={{ my: 1 }}
+        <TextField fullWidth multiline id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={changeCardText} sx={{ my: 1 }}
         />
         <Box sx={{ m: 1 }}>
           <Stack direction='row' justifyContent="space-between" alignItems='center'>

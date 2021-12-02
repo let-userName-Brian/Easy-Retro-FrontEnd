@@ -7,15 +7,36 @@ import ColumnMenu from './ColumnMenu';
 import { RetroContext } from './Retro';
 
 export default function Column({ column_id, user }) {
-  const { cards: initCards, columns: initColumns, retro, user_id } = useContext(RetroContext)
+  const { columns: initColumns, cards: initCards, retro, user_id } = useContext(RetroContext)//user_id with prop user?
   const [column, setColumn] = useState()
   const [cards, setCards] = useState()
   const [colName, setColName] = useState()
   const [retro_id, setRetroId] = useState()
 
   useEffect(() => {
+    if (!retro) return;
+    setRetroId(retro.retro_id)
+  }, [retro])
+
+  useEffect(() => {
+    if (!column_id) return
+    if (initColumns.length === 0) return
+    let col = initColumns.find(column => column.column_id === column_id)
+    if (!col) return
+    setColumn(col)
+    setColName(col.column_name)
+  }, [initColumns, column_id])
+
+  useEffect(() => {
+    if (!column) return
+    if (!initCards) return
+    //initialize cards from context
+    setCards(initCards?.filter(card => column?.card_ids.includes(card.card_id)))
+  }, [column, initCards])
+
+  useEffect(() => {
     // Received when the server sends us a name update
-    socket.on('columnNameUpdated', ({ column }) => {
+    socket.on('columnRenamed', ({ column }) => {
       if (column.column_id === column_id) {
         setColumn(column);
         setColName(column.column_name)
@@ -32,46 +53,24 @@ export default function Column({ column_id, user }) {
     })
 
     return () => {
-      socket.off('columnNameUpdated')
+      socket.off('columnRenamed')
       socket.off('cardUpdated')
     }
   }, [column_id])
 
-
-  useEffect(() => {
-    if (!column_id) return
-    if (initColumns.length === 0) return
-    let col = initColumns.find(column => column.column_id === column_id)
-    if (!col) return
-    setColumn(col)
-    setColName(col.column_name)
-  }, [initColumns, column_id])
-
-  useEffect(() => {
-    if (!retro) return;
-    setRetroId(retro.retro_id)
-  }, [retro])
-
-  function submitColumnNameChange() {
-    // let retro_id = retro.retro_id;
-    let column_id = column.column_id
-    socket.emit('columnRenamed', { retro_id, column_id, column_name: colName })
-  }
-
-  useEffect(() => {
-    if (!column) return
-    if (!initCards) return
-    //initialize cards from context
-    setCards(initCards?.filter(card => column?.card_ids.includes(card.card_id)))
-  }, [column, initCards])
-
   function removeColumn() {
     console.log('del col:', retro_id, column_id)
-    socket.emit('columnDeleted', { retro_id, column_id })
+    socket.emit('removeColumn', { retro_id, column_id })
+  }
+
+  function renameColumn() {
+    // let retro_id = retro.retro_id;
+    let column_id = column.column_id
+    socket.emit('renameColumn', { retro_id, column_id, column_name: colName })
   }
 
   function addCard(column_id) {
-    socket.emit('cardAdded', { retro_id, column_id, user_id });
+    socket.emit('addCard', { retro_id, column_id, user_id });
   }
 
   if (!column) {
@@ -86,7 +85,7 @@ export default function Column({ column_id, user }) {
       }}>
       <Paper elevation={12} sx={{ width: '100%', p: 1, borderRadius: '20px', border: 'solid', borderColor: 'black' }} >
         <Box container sx={{ width: '100%', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-          <TextField fullWidth id="columnName" value={colName} onChange={(e) => setColName(e.target.value)} onBlur={submitColumnNameChange} sx={{
+          <TextField fullWidth id="columnName" value={colName} onChange={(e) => setColName(e.target.value)} onBlur={renameColumn} sx={{
             '& fieldset': {
               borderStartStartRadius: '20px',
             }
