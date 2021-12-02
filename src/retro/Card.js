@@ -50,10 +50,14 @@ export default function Card({ cards, card_id, user }) {// cards,
     })
 
     //does not yet use setCard since card is new card on line 20/initialization useEffect
-    socket.on('commentUpdated', ({ card, comments }) => {
+    socket.on('commentUpdated', ({ card, comments, user_id, comment_id }) => {
       if (card_id === card.card_id) {
         console.log('commentUpdated', card, comments)
         setComments(comments)
+
+        if (user_id && comment_id) {
+          document.getElementById(`comment-${comment_id}`).select()
+        }
       }
     })
 
@@ -112,7 +116,7 @@ export default function Card({ cards, card_id, user }) {// cards,
       <Bounce bottom>
         <Paper sx={{ width: '100%', my: 1, p: 1, borderRadius: '10px', border: 'solid', borderWidth: '.12em', borderColor: '#90caf9', boxShadow: 7 }}>
 
-          <TextField fullWidth multiline id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={changeCardText} sx={{ mb: 1 }}
+          <TextField fullWidth multiline id={`card-${card_id}`} value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={changeCardText} sx={{ mb: 1 }}
           />
           <Box sx={{ m: 1 }}>
             <Stack direction='row' justifyContent="space-between" alignItems='center'>
