@@ -18,15 +18,15 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
   }
 
   return (
-    <Box sx={{ flexGrow: 1, color: 'inherit', width: '100vw', overflow: 'hidden', /*adjust as the screen adjusts*/}}>
+    <Box sx={{ flexGrow: 1, color: 'inherit', width: '100vw', overflow: 'hidden', /*adjust as the screen adjusts*/ }}>
       <AppBar position="static" style={{ backgroundColor: '#121212', height: 80 }}>
         <Toolbar>
           <div style={{ flexGrow: 1, m: 0, p: 0 }}>
-          <Bounce left>
-            <Link to="/">
-              <img src={mjolnirImage} style={{ height: 70 }} alt="Logo" />
-            </Link>
-          </Bounce>
+            <Bounce left>
+              <Link to="/">
+                <img src={mjolnirImage} style={{ height: 70 }} alt="Logo" />
+              </Link>
+            </Bounce>
           </div>
           <IconButton sx={{ ml: 1 }}
             onClick={handleDarkMode}
@@ -35,17 +35,17 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
             {darkMode === true ? <Brightness4Icon /> : <Brightness7Icon />}
           </IconButton>
           <Flip bottom>
-          <div alt='Avatar'>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <UserAvatar user_name={user.user_name} />
-            </IconButton>
-          </div>
+            <div alt='Avatar'>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <UserAvatar user_name={user.user_name} />
+              </IconButton>
+            </div>
           </Flip>
         </Toolbar>
       </AppBar>
