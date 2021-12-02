@@ -81,7 +81,7 @@ export default function Retro({ user_id, user }) {
             <RetroTitle title={retro.retro_name} />
             <Typography>You have {userVotes} votes left!</Typography>
           </Grid>
-          <Grid item xs={4} md={4} lg={4} sx={{ marginLeft: '0 auto', marginTop: '0%', flexDirection: 'column', textAlign: 'right' }}>
+          <Grid item xs={4} md={4} lg={4} sx={{ marginLeft: 'auto', textAlign: 'center', alignItems: 'flex-end' }}>
             <SettingsContext.Provider value={{
               showSettings,
               setShowSettings,
