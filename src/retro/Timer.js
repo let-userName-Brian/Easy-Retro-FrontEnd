@@ -76,12 +76,12 @@ export default function Timer() {
             tailColor: 'rgba(255,255,255,.2)',
           })} />
       </div>
-      <div style={{ marginTop: '-40%' }}>
-        {isPaused
-          ? <PlayButton onClick={() => { setIsPaused(false); isPausedRef.current = false; }} />
-          : <PauseButton onClick={() => { setIsPaused(true); isPausedRef.current = true; }} />}
-        <SettingsButton onClick={() => settingsInfo.setShowSettings(true)} />
-      </div>
+          <div style={{ marginTop: '-40%', marginRight: '25%' }}>
+            {isPaused
+              ? <PlayButton onClick={() => { setIsPaused(false); isPausedRef.current = false; }} />
+              : <PauseButton onClick={() => { setIsPaused(true); isPausedRef.current = true; }} />}
+            <SettingsButton onClick={() => settingsInfo.setShowSettings(true)} />
+          </div>
     </div>
   );
 }

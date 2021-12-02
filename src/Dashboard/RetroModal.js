@@ -60,7 +60,6 @@ export default function RetroModal({ user_id }) {
 
   //set max number of votes function 
   const handleMaxVotes = (e) => {
-    console.log('max votes set', e.target.value)
     setMaxVotes(e.target.value)
   }
 

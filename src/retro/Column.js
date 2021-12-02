@@ -83,7 +83,7 @@ export default function Column({ column_id, user }) {
         m: 1,
         minWidth: 300
       }}>
-      <Paper elevation={12} sx={{ width: '100%', p: 1, borderRadius: '20px' }} >
+      <Paper elevation={12} sx={{ width: '100%', p: 1, borderRadius: '20px', border: 'solid', borderColor: 'black' }} >
         <Box container sx={{ width: '100%', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
           <TextField fullWidth id="columnName" value={colName} onChange={(e) => setColName(e.target.value)} onBlur={renameColumn} sx={{
             '& fieldset': {

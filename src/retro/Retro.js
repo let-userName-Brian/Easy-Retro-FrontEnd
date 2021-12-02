@@ -8,6 +8,7 @@ import Settings from "./Settings";
 import SettingsContext from "./SettingsContext";
 import Timer from "./Timer";
 import RetroTitle from './RetroTitle'
+import Fade from 'react-reveal/Fade';
 
 export const RetroContext = createContext()
 
@@ -63,7 +64,8 @@ export default function Retro({ user_id, user }) {
   //need to redo styling lost it on merge somehow and now I cant log in to see a screen
   return (
     <Container maxWidth="xl">
-      <Grid container spacing={3} sx={{ display: 'flex' }}>
+      <Fade right>
+      <Grid container spacing={3} sx={{ display: 'flex'}}>
         <Grid item xs={8} md={8} lg={8} sx={{ flex: '1', textAlign: 'left', mt: 2 }}>
           <RetroTitle title={retro.retro_name} />
           <Typography>You have {userVotes} votes left!</Typography>
@@ -81,12 +83,15 @@ export default function Retro({ user_id, user }) {
           </SettingsContext.Provider>
         </Grid>
       </Grid>
+      </Fade>
+      {/* <Fade left> */}
       <Box sx={{ display: 'flex' }} >
         <RetroContext.Provider value={{ retro, columns, cards, comments, user_id, userVotes, setUserVotes }}>
           {retro.column_ids.map(column_id => (<Column key={column_id} column_id={column_id} user={user} />))}
           <AddColumnButton addColumnFunc={() => addColumn()} />
         </RetroContext.Provider>
       </Box>
+      {/* </Fade> */}
     </Container>
   )
 }

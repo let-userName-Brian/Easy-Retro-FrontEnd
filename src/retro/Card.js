@@ -5,6 +5,7 @@ import { socket } from "../SocketClient";
 import UserAvatar from '../UserAvatar';
 import Comment from './Comment';
 import { RetroContext } from "./Retro";
+import Bounce from 'react-reveal/Bounce';
 
 export default function Card({ cards, card_id, user }) {// cards,
   const { cards: initCards, comments: initComments, user_id, userVotes, setUserVotes } = useContext(RetroContext)
@@ -122,6 +123,7 @@ export default function Card({ cards, card_id, user }) {// cards,
         display: 'flex',
         borderRadius: '10',
       }}>
+         <Bounce bottom>
       <Paper elevation={3} sx={{ width: '100%', my: 1, p: 1, borderRadius: '15px', border: 'solid', borderColor: '#90caf9' }}>
         <TextField fullWidth multiline id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={changeCardText} sx={{ my: 1 }}
         />
@@ -142,6 +144,7 @@ export default function Card({ cards, card_id, user }) {// cards,
           {comments?.map((comment, index) => (<Comment key={index} comment_id={comment.comment_id} comment={comment} index={index} user={user} />))}
         </Box>
       </Paper >
+      </Bounce>
     </Box >
   )
 }

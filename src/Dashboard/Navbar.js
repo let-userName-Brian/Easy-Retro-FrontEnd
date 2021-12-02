@@ -5,11 +5,11 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import { Link } from 'react-router-dom';
-import { Avatar } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import UserAvatar from '../UserAvatar';
-
+import Bounce from 'react-reveal/Bounce';
+import Flip from 'react-reveal/Flip';
 
 export default function Navbar({ user, darkMode, setDarkMode }) {
 
@@ -18,13 +18,15 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
   }
 
   return (
-    <Box sx={{ flexGrow: 0, color: 'inherit' }}>
-      <AppBar position="static" style={{ backgroundColor: '#121212', overflow: 'hidden', height: 80 }}>
+    <Box sx={{ flexGrow: 1, color: 'inherit', width: '100vw', overflow: 'hidden', /*adjust as the screen adjusts*/}}>
+      <AppBar position="static" style={{ backgroundColor: '#121212', height: 80 }}>
         <Toolbar>
           <div style={{ flexGrow: 1, m: 0, p: 0 }}>
+          <Bounce left>
             <Link to="/">
               <img src={mjolnirImage} style={{ height: 70 }} alt="Logo" />
             </Link>
+          </Bounce>
           </div>
           <IconButton sx={{ ml: 1 }}
             onClick={handleDarkMode}
@@ -32,6 +34,7 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
           >
             {darkMode === true ? <Brightness4Icon /> : <Brightness7Icon />}
           </IconButton>
+          <Flip bottom>
           <div alt='Avatar'>
             <IconButton
               size="large"
@@ -43,6 +46,7 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
               <UserAvatar user_name={user.user_name} />
             </IconButton>
           </div>
+          </Flip>
         </Toolbar>
       </AppBar>
     </Box>
