@@ -114,7 +114,7 @@ export default function Card({ cards, card_id, user }) {// cards,
         '.react-reveal': { width: "100%" }
       }}>
       <Bounce bottom>
-        <Paper sx={{ width: '100%', my: 1, p: 1, borderRadius: '10px', border: 'solid', borderWidth: '1px', borderColor: 'rgb(144 202 249 / 14%)', boxShadow: "0px 4px 5px -2px rgb(144 202 249 / 14%), 0px 7px 10px 1px rgb(144 202 249 / 14%), 0px 2px 16px 1px rgb(144 202 249 / 14%)" }}>
+        <Paper sx={{ width: '100%', my: 1, p: 1, borderRadius: '10px', border: 'solid', borderWidth: '1px', borderColor: 'rgb(144 202 249 / 40%)', boxShadow: "0px 4px 5px -2px rgb(144 202 249 / 14%), 0px 7px 10px 1px rgb(144 202 249 / 14%), 0px 2px 16px 1px rgb(144 202 249 / 14%)" }}>
 
           <TextField fullWidth multiline id={`card-${card_id}`} value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={changeCardText} sx={{ mb: 1 }}
           />
