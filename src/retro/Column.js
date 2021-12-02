@@ -7,7 +7,7 @@ import ColumnMenu from './ColumnMenu';
 import { RetroContext } from './Retro';
 
 export default function Column({ column_id, user }) {
-  const { cards: initCards, columns: initColumns, retro, user_id } = useContext(RetroContext)
+  const { columns: initColumns, cards: initCards, retro, user_id } = useContext(RetroContext)//user_id with prop user?
   const [column, setColumn] = useState()
   const [cards, setCards] = useState()
   const [colName, setColName] = useState()
@@ -58,15 +58,15 @@ export default function Column({ column_id, user }) {
     }
   }, [column_id])
 
+  function removeColumn() {
+    console.log('del col:', retro_id, column_id)
+    socket.emit('removeColumn', { retro_id, column_id })
+  }
+
   function renameColumn() {
     // let retro_id = retro.retro_id;
     let column_id = column.column_id
     socket.emit('renameColumn', { retro_id, column_id, column_name: colName })
-  }
-
-  function removeColumn() {
-    console.log('del col:', retro_id, column_id)
-    socket.emit('removeColumn', { retro_id, column_id })
   }
 
   function addCard(column_id) {

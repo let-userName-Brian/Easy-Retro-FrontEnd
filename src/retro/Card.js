@@ -6,9 +6,8 @@ import UserAvatar from '../UserAvatar';
 import Comment from './Comment';
 import { RetroContext } from "./Retro";
 
-export default function Card({ card_id, cards, user }) {
-
-  const { comments: initComments, user_id, userVotes, setUserVotes } = useContext(RetroContext)
+export default function Card({ cards, card_id, user }) {// cards,
+  const { cards: initCards, comments: initComments, user_id, userVotes, setUserVotes } = useContext(RetroContext)
   // const [card, setCard] = useState()
   const [cardText, setCardText] = useState('')
   const [author, setAuthor] = useState()//needs to be converted to user_name
