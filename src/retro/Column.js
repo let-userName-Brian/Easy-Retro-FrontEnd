@@ -85,9 +85,11 @@ export default function Column({ column_id, user }) {
       }}>
       <Paper elevation={12} sx={{ width: '100%', p: 1, borderRadius: '20px', border: 'solid', borderColor: 'black' }} >
         <Box container sx={{ width: '100%', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-          <TextField fullWidth id="columnName" value={colName} onChange={(e) => setColName(e.target.value)} onBlur={renameColumn} sx={{
+          <TextField fullWidth className={"columnName"} value={colName} onChange={(e) => setColName(e.target.value)} onBlur={renameColumn} sx={{
             '& fieldset': {
-              borderStartStartRadius: '20px',
+              borderRadius: '6px',
+              borderStartStartRadius: '10px',
+              boxShadow: 3
             }
           }} InputProps={{
             inputProps: { style: { textAlign: "center" } }
