@@ -60,7 +60,7 @@ export default function SearchBar({ retros, setSearchedRetros }) {
   
   return (
     <>
-      <Search>
+      <Search sx={{border: 'solid', borderColor: 'black', }}>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>

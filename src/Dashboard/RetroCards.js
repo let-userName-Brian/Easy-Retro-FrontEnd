@@ -9,14 +9,18 @@ import Typography from '@mui/material/Typography';
 import bar2 from './bar2.png';
 import RetroCardMenu from './RetroCardMenu';
 import { Box } from '@mui/system';
+import { socket } from '../SocketClient';
+
+
 export default function RetroCards({ retros, searchedRetros }) {
 
   const handleClick = (id) => {
     window.location.href = `/retros/${id}`;
   }
 
-  function removeRetro() {
-
+  function removeRetro(retro_id) {
+    console.log('Socket emitted this retroID:', retro_id);
+    //socket.emit('removeRetro', { retro_id: retro_id });
   }
 
   if (searchedRetros?.length >= 1) {
@@ -25,7 +29,8 @@ export default function RetroCards({ retros, searchedRetros }) {
         {searchedRetros.map((retro, index) => {
           return (
             <Grid key={index} item xs={12} sm={6} md={6} lg={3} sx={{ flexGrow: 1 }}>
-              <Card key={index} sx={{ maxWidth: 350, marginBottom: 2 }}>
+              <Box sx={{border: 'solid', borderColor: '#90caf9', borderRadius: '8px' }}>
+              <Card key={index} sx={{ maxWidth: 350}}>
                 <CardMedia
                   component="img"
                   href={retro?.retro_id}
@@ -46,6 +51,7 @@ export default function RetroCards({ retros, searchedRetros }) {
                   <Button size="small" onClick={() => handleClick(retro?.retro_id)}>Open retro</Button>
                 </CardActions>
               </Card>
+              </Box>
             </Grid>
           )
         })}
@@ -56,7 +62,8 @@ export default function RetroCards({ retros, searchedRetros }) {
       <>
         {retros?.map((retro, index) => (
           <Grid key={index} item xs={12} sm={6} md={6} lg={3} sx={{ flexGrow: 1 }}>
-            <Card key={index} sx={{ maxWidth: 350, marginBottom: 2 }}>
+            <Box sx={{border: 'solid', borderColor: 'black', borderRadius: '8px' }}>
+            <Card key={index} sx={{ maxWidth: 350}}>
               <CardMedia
                 component="img"
                 href={retro?.retro_id}
@@ -77,10 +84,11 @@ export default function RetroCards({ retros, searchedRetros }) {
                 <Stack direction='row' width='100%' justifyContent="space-between">
                   <Button size="small" onClick={() => handleClick(retro?.retro_id)}>Open retro</Button >
                   <Box />
-                  <RetroCardMenu removeRetroFunc={removeRetro} />
+                  <RetroCardMenu removeRetroFunc={()=>removeRetro(retro.retro_id)} />
                 </Stack>
               </CardActions>
             </Card>
+            </Box>
           </Grid>
         ))}
       </>
