@@ -27,6 +27,12 @@ export default function Card({ cards, card_id, user }) {// cards,
   }, [cards, card_id, user_id]);
 
   useEffect(() => {
+    if (initComments) {
+      setComments(initComments.filter(comment => comment.card_id === card_id))
+    }
+  }, [initComments, card_id])
+
+  useEffect(() => {
     socket.on('cardTextUpdated', ({ card }) => {
       if (card_id === card.card_id) {
         // setCard(card);
@@ -45,15 +51,14 @@ export default function Card({ cards, card_id, user }) {// cards,
     }
   }, [card_id])
 
-  useEffect(() => {
-    if (initComments) {
-      setComments(initComments.filter(comment => comment.card_id === card_id))
-    }
-  }, [initComments, card_id])
-
   //console.log('cardVotes', cardVotes)
   function changeCardText() {
     socket.emit('changeCardText', { card_id, card_text: cardText })
+  }
+
+  //add comment to card
+  const addComment = () => {
+    setComments(comments.concat({ card_id, comment_text: cardText, user_id }))
   }
 
   //add vote to card
@@ -75,11 +80,26 @@ export default function Card({ cards, card_id, user }) {// cards,
     setUserVotes(userVotes + 1)
   }
 
+  //just here for strucrture reference
+  // function removeColumn() {
+  //   console.log('del col:', retro_id, column_id)
+  //   socket.emit('removeColumn', { retro_id, column_id })
+  // }
 
-  //add comment to card
-  const addComment = () => {
-    setComments(comments.concat({ card_id, comment_text: cardText, user_id }))
-  }
+  // function renameColumn() {
+  //   // let retro_id = retro.retro_id;
+  //   let column_id = column.column_id
+  //   socket.emit('renameColumn', { retro_id, column_id, column_name: colName })
+  // }
+
+  // function addCard(column_id) {
+  //   socket.emit('addCard', { retro_id, column_id, user_id });
+  // }
+
+  //do we need this?
+  // if (!column) {
+  //   return <>Loading Column</>
+  // }
 
   return (
     <Box
