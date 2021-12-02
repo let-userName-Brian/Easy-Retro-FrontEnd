@@ -8,37 +8,10 @@ import { Link } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import UserAvatar from '../UserAvatar';
 
 
 export default function Navbar({ user, darkMode, setDarkMode }) {
-
-  const stringToColor = (string) => {
-    let hash = 0;
-    let i;
-    let color = '#';
-
-    for (i = 0; i < string.length; i += 1) {
-      hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-
-    for (i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
-      color += `00${value.toString(16)}`.substr(-2);
-    }
-    return color;
-  }
-
-  const stringAvatar = (name) => {
-    const nameParts = name.split(' ');
-    const initials = `${nameParts?.[0]?.[0] || ''}${nameParts?.[1]?.[0] || ''}`;
-    return {
-      sx: {
-        bgcolor: stringToColor(name),
-      },
-      children: initials,
-    };
-  }
 
   const handleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -67,9 +40,7 @@ export default function Navbar({ user, darkMode, setDarkMode }) {
               aria-haspopup="true"
               color="inherit"
             >
-              <Avatar
-                {...stringAvatar(user?.user_name || "unknown user")}
-              />
+              <UserAvatar user_name={user.user_name} />
             </IconButton>
           </div>
         </Toolbar>
