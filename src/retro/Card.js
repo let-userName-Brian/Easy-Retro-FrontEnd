@@ -52,7 +52,7 @@ export default function Card({ cards, card_id, user }) {// cards,
   }, [initComments, card_id])
 
   //console.log('cardVotes', cardVotes)
-  function submitCardTextChange() {
+  function changeCardText() {
     socket.emit('changeCardText', { card_id, card_text: cardText })
   }
 
@@ -89,7 +89,7 @@ export default function Card({ cards, card_id, user }) {// cards,
         borderRadius: '10',
       }}>
       <Paper elevation={3} sx={{ width: '100%', my: 1, p: 1, borderRadius: '15px', border: 'solid', borderColor: '#90caf9' }}>
-        <TextField fullWidth multiline id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={submitCardTextChange} sx={{ my: 1 }}
+        <TextField fullWidth multiline id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={changeCardText} sx={{ my: 1 }}
         />
         <Box sx={{ m: 1 }}>
           <Stack direction='row' justifyContent="space-between" alignItems='center'>
