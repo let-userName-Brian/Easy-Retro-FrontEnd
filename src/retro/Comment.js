@@ -48,7 +48,7 @@ export default function Comment({ comment_id, comment }) {
       <TextField
         fullWidth
         multiline
-        id="commentText"
+        id={`comment-${comment_id}`}
         value={commentText}
         onChange={(e) => updateCommentText(e.target.value)}
         sx={{ my: 1, mx: 0, width: '100%' }}
