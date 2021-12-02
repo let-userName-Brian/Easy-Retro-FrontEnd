@@ -23,6 +23,7 @@ export default function Card({ card_id, cards, user }) {
     setCardText(newCard.card_text)
     setAuthor(newCard.user_name)
     setCardVotes(newCard.votes)
+    setVoted(newCard.votes.some(vote => vote.user_id === user_id))
   }, [cards, card_id]);
 
   useEffect(() => {
