@@ -1,3 +1,5 @@
+import { blue } from "@mui/material/colors";
+import { Box } from "@mui/system";
 import { useContext, useEffect, useRef, useState } from "react";
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -65,14 +67,14 @@ export default function Timer() {
   if (seconds < 10) seconds = '0' + seconds;
 
   return (
-    <div style={{ marginTop: '-30%' }}>
+    <Box style={{ marginTop: '-30%', marginRight: '10%' }}>
       <div style={{ display: 'flex', transform: 'scale(0.3, 0.3)', marginTop: '0px', flex: '-1', }}>
         <CircularProgressbar
           value={percentage}
           text={minutes + ':' + seconds}
           styles={buildStyles({
-            textColor: '#fff',
-            pathColor: mode === 'work' ? red : green,
+            textColor: '',
+            pathColor: mode === 'work' ? blue : green,
             tailColor: 'rgba(255,255,255,.2)',
           })} />
       </div>
@@ -82,6 +84,6 @@ export default function Timer() {
               : <PauseButton onClick={() => { setIsPaused(true); isPausedRef.current = true; }} />}
             <SettingsButton onClick={() => settingsInfo.setShowSettings(true)} />
           </div>
-    </div>
+    </Box>
   );
 }
