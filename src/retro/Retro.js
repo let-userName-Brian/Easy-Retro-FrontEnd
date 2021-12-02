@@ -1,14 +1,12 @@
+import { Box, Container, Grid } from '@mui/material/';
 import { createContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { socket } from '../SocketClient';
+import AddColumnButton from "./AddColumnButton";
 import Column from "./Column";
-import { Box, Container } from '@mui/material/';
-import { Button, Grid } from '@mui/material/';
-import AddIcon from '@mui/icons-material/Add';
+import Settings from "./Settings";
 import SettingsContext from "./SettingsContext";
 import Timer from "./Timer";
-import Settings from "./Settings";
-
 
 export const RetroContext = createContext()
 
@@ -72,13 +70,7 @@ export default function Retro({ user_id, user }) {
           <div>Retro Name: {retro.retro_name}</div>
           <div>You have {userVotes} votes left!</div>
         </Grid>
-        <Grid item xs={4} md={4} lg={4} sx={{ flex: '1', textAlign: 'center', marginTop: '5%' }}>
-          <Button
-            onClick={() => {
-              addColumn();
-            }}
-            variant="contained" startIcon={<AddIcon />}>Add Column</Button>
-        </Grid>
+        <Grid item xs={4} md={4} lg={4} sx={{ flex: '1', textAlign: 'center', marginTop: '5%' }} />
         {/* </Stack> */}
         <Grid item xs={4} md={4} lg={4} sx={{ marginLeft: '0 auto', marginTop: '0%', flexDirection: 'column', textAlign: 'right' }}>
           <SettingsContext.Provider value={{
@@ -93,9 +85,10 @@ export default function Retro({ user_id, user }) {
           </SettingsContext.Provider>
         </Grid>
       </Grid>
-      <Box sx={{ height: '100vh', display: 'flex' }} >
+      <Box sx={{ display: 'flex' }} >
         <RetroContext.Provider value={{ retro, columns, cards, comments, user_id, userVotes, setUserVotes }}>
           {retro.column_ids.map(column_id => (<Column key={column_id} column_id={column_id} user={user} />))}
+          <AddColumnButton addColumnFunc={() => addColumn()} />
         </RetroContext.Provider>
       </Box>
     </Container>
