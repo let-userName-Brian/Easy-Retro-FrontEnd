@@ -114,7 +114,7 @@ export default function Card({ cards, card_id, user }) {// cards,
         '.react-reveal': { width: "100%" }
       }}>
       <Bounce bottom>
-        <Paper sx={{ width: '100%', my: 1, p: 1, borderRadius: '10px', border: 'solid', borderWidth: '.12em', borderColor: '#90caf9', boxShadow: 7 }}>
+        <Paper sx={{ width: '100%', my: 1, p: 1, borderRadius: '10px', border: 'solid', borderWidth: '1px', borderColor: 'rgb(144 202 249 / 40%)', boxShadow: "0px 4px 5px -2px rgb(144 202 249 / 14%), 0px 7px 10px 1px rgb(144 202 249 / 14%), 0px 2px 16px 1px rgb(144 202 249 / 14%)" }}>
 
           <TextField fullWidth multiline id={`card-${card_id}`} value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={changeCardText} sx={{ mb: 1 }}
           />
@@ -123,24 +123,23 @@ export default function Card({ cards, card_id, user }) {// cards,
               <Box>
                 <Tooltip title={author || ''}><IconButton><UserAvatar user_name={author || ''} size={30} /></IconButton></Tooltip>
               </Box>
-              <Box>
-                <Stack direction='row' alignItems='center'>
-                  <Typography >{cardVotes.length}</Typography>
-                  <Button
-                    disabled={(!voted && userVotes < 1)}
-                    onClick={() => voted ? removeVote() : addVote()}
-                    sx={{ minWidth: 30, width: 30, height: 30, p: 0, borderRadius: '16px' }}>
-                    <RecommendIcon style={{ width: 30, height: 30, fill: (voted ? "orange" : null) }} />
-                  </Button>
-                </Stack>
-              </Box>
-              <Box>
+              <Stack direction='row' alignItems='center' spacing={.5}>
+                <Typography >{cardVotes.length}</Typography>
+                <Button
+                  disabled={(!voted && userVotes < 1)}
+                  onClick={() => voted ? removeVote() : addVote()}
+                  sx={{ minWidth: 30, width: 30, height: 30, p: 0, borderRadius: '16px' }}>
+                  <RecommendIcon style={{ width: 30, height: 30, fill: (voted ? "orange" : null) }} />
+                </Button>
+              </Stack>
+              <Stack direction='row' alignItems='center' spacing={.5}>
+                <Typography >{comments.length}</Typography>
                 <Button
                   onClick={() => toggleComments()}
                   sx={{ minWidth: 30, width: 30, height: 30, p: 0, borderRadius: '16px' }}>
                   <CommentIcon style={{ width: 30, height: 30, fill: (renderComments ? "orange" : null) }} />
                 </Button>
-              </Box>
+              </Stack>
               <Box>
                 <CardMenu removeCardFunc={removeCard} />
               </Box>

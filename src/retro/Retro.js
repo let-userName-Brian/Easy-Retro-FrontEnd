@@ -10,6 +10,8 @@ import Timer from "./Timer";
 import RetroTitle from './RetroTitle'
 import Fade from 'react-reveal/Fade';
 import CircularProgress from '@mui/material/CircularProgress';
+import ShareRetroModal from '../ShareRetroModal';
+import { useLocation } from 'react-router';
 
 export const RetroContext = createContext()
 
@@ -27,6 +29,8 @@ export default function Retro({ user_id, user }) {
   const [showSettings, setShowSettings] = useState(false);
   const [workMinutes, setWorkMinutes] = useState(5);
   const [breakMinutes, setBreakMinutes] = useState(5);
+
+  const location = useLocation()
 
   useEffect(() => {
     // Ask the server to join the room with name retroId
@@ -80,6 +84,7 @@ export default function Retro({ user_id, user }) {
           <Grid item xs={8} md={8} lg={8} sx={{ flex: '1', textAlign: 'left', mt: 2 }}>
             <RetroTitle title={retro.retro_name} />
             <Typography>You have {userVotes} votes left!</Typography>
+            <ShareRetroModal url={window.location.href} />
           </Grid>
           <Grid item xs={4} md={4} lg={4} sx={{ marginLeft: 'auto', textAlign: 'center', alignItems: 'flex-end' }}>
             <SettingsContext.Provider value={{
