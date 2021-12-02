@@ -22,6 +22,7 @@ export default function Card({ card_id, cards, user }) {
     // setCard(newCard)
     setCardText(newCard.card_text)
     setAuthor(newCard.user_name)
+    setCardVotes(newCard.votes)
   }, [cards, card_id]);
 
   useEffect(() => {
@@ -57,7 +58,6 @@ export default function Card({ card_id, cards, user }) {
   //add vote to card
   const addVote = () => {
     if (userVotes > 0) {
-      console.log("vote up")
       socket.emit('addVote', { card_id, vote_type: 'up', user_id })
       setVoted(true)
       setCardVotes(cardVotes.concat({ user_id, vote_type: 'up' }))
