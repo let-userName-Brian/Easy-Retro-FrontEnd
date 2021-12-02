@@ -102,7 +102,7 @@ export default function Card({ card_id, cards, user }) {
           <Box>
             <Button onClick={() => addComment()}>Add Comment</Button>
           </Box>
-          {comments?.map((comment, index) => (<Comment key={comment.comment_id} comment_id={comment.comment_id} comment={comment} index={index} user={user} />))}
+          {comments?.map((comment, index) => (<Comment key={index} comment_id={comment.comment_id} comment={comment} index={index} user={user} />))}
         </Box>
       </Paper>
     </Box>
