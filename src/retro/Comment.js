@@ -14,6 +14,12 @@ export default function Comment({ comment_id, comment, user_id, retro_id, user }
 
   // console.log("comment ID:",comment_id)
 
+
+  function submitCommentTextChange() {
+    socket.emit('changeCommentText', { comment_id })
+  }
+
+
   useEffect(() => {
     let comment = initComments?.find(c => c.comment_id === comment_id)
     // console.log('comment', comment)
@@ -48,9 +54,8 @@ console.log('author',author)
 return (
     <Paper variant="outlined" sx={{ m: 1, p: 1, borderRadius: '15px' }} >
       <Typography variant='h5'> Comment ID: {comment_id}</Typography>
-      <TextField fullWidth label={'comment?'} id="commentText" value={commentText} onChange={(e)=>setCommentText(e.target.value)}InputProps={{
-        inputProps: { style: { textAlign: "left" } }
-      }} />
+      <TextField fullWidth label={commentText} id="commentText" value={commentText} onChange={(e) => setCommentText(e.target.value)} onBlur={submitCommentTextChange} sx={{ my: 1 }}
+      />
       <Box>
         <Typography >Author: {author}</Typography>
          <CommentMenu removeCommentFunc={removeCommentFunc} />
