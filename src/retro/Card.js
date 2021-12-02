@@ -1,5 +1,5 @@
 import RecommendIcon from '@mui/icons-material/Recommend';
-import { Box, Button, Paper, TextField, Typography } from '@mui/material/';
+import { Box, Button, Paper, Stack, TextField, Typography } from '@mui/material/';
 import { useContext, useEffect, useState } from "react";
 import { socket } from "../SocketClient";
 import Comment from './Comment';
@@ -96,14 +96,10 @@ export default function Card({ card_id, cards, user }) {
         />
         <Box sx={{ m: 1 }}>
           <Typography>-{author}</Typography>
-          {userVotes === 0
-            ? <>Your votes have been cast!</>
-            : <Typography >Votes: {cardVotes.length}
-              {voted
-                ? <Button onClick={() => removeVote()}>Vote cast! Remove?</Button>
-                : <Button onClick={() => addVote()}><RecommendIcon /></Button>
-              }
-            </Typography>}
+          <Stack direction='row' justifyContent="space-between" alignItems='center'>
+            <Typography >Votes: {cardVotes.length}</Typography>
+            <Button disabled={(!voted && userVotes < 1)} onClick={() => voted ? removeVote() : addVote()} ><RecommendIcon style={{ fill: (voted ? "orange" : null) }} /></Button>
+          </Stack>
           <Box>
             <Button onClick={() => addComment()}>Add Comment</Button>
           </Box>
