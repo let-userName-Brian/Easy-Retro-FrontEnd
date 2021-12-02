@@ -26,7 +26,10 @@ export default function ShareRetroModal({ url }) {
   const [open, setOpen] = React.useState(false);
   const [buttonClicked, setButtonClicked] = React.useState(false)
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false)
+    setButtonClicked(false)
+  };
 
   function copyUrl() {
     navigator.clipboard.writeText(url);
