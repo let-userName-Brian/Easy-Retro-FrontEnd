@@ -44,7 +44,7 @@ export default function Dashboard({ user, user_id }) {
       </Grid>
       <Fade bottom>
         <Grid container spacing={2} margin={0} >
-          <RetroCards retros={userRetros} searchedRetros={searchedRetros} />
+          <RetroCards retros={userRetros} searchedRetros={searchedRetros} setUserRetros={setUserRetros} userRetros={userRetros} user_id={user_id}/>
         </Grid>
       </Fade>
     </div>

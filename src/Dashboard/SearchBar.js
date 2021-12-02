@@ -53,7 +53,6 @@ export default function SearchBar({ retros, setSearchedRetros }) {
       let filteredRetros = retros?.filter(retro => {
         return retro.retro_name?.toLowerCase()?.includes(searchText?.toLowerCase()) || retro.tags?.includes(searchText?.toLowerCase())
       })
-      console.log(filteredRetros);
       setSearchedRetros(filteredRetros);
     }, 400)
   }

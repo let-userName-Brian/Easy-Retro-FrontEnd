@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Grid, Stack } from '@mui/material'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -9,20 +9,22 @@ import Typography from '@mui/material/Typography';
 import bar2 from './bar2.png';
 import RetroCardMenu from './RetroCardMenu';
 import { Box } from '@mui/system';
-import { socket } from '../SocketClient';
+import { deleteRetro} from '../Fetch';
 
 
-export default function RetroCards({ retros, searchedRetros }) {
+export default function RetroCards({ retros, searchedRetros, setUserRetros, user_id }) {
 
   const handleClick = (id) => {
     window.location.href = `/retros/${id}`;
   }
-
-  function removeRetro(retro_id) {
-    console.log('Socket emitted this retroID:', retro_id);
-    //socket.emit('removeRetro', { retro_id: retro_id });
+  
+  async function removeRetro(retro_id, user_id) {
+    deleteRetro(retro_id, user_id)
+    .then(res => {
+      setUserRetros(res);
+    })
   }
-
+  
   if (searchedRetros?.length >= 1) {
     return (
       <>
@@ -84,7 +86,7 @@ export default function RetroCards({ retros, searchedRetros }) {
                 <Stack direction='row' width='100%' justifyContent="space-between">
                   <Button size="small" onClick={() => handleClick(retro?.retro_id)}>Open retro</Button >
                   <Box />
-                  <RetroCardMenu removeRetroFunc={()=>removeRetro(retro.retro_id)} />
+                  <RetroCardMenu removeRetroFunc={()=>removeRetro(retro?.retro_id, user_id)} />
                 </Stack>
               </CardActions>
             </Card>

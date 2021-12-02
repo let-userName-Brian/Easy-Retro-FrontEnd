@@ -103,3 +103,29 @@ export function login() {
       .catch(err => resolve(null))
   })
 }
+
+//delete a retro by the retro_id
+export function deleteRetro(retro_id, user_id) {
+  return new Promise((resolve, _) => {
+    fetch(`${serverURL}/retros/delete/${retro_id}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({user_id: user_id})
+    })
+      .then(function (res) {
+        console.log('res', res)
+        if (res.ok) { return res }
+        else { throw new Error(res.statusText) }
+      })
+      .then(res => res.json())
+      .then(json => {
+        console.log('json',json)
+        return json
+      })
+      .then(retro => resolve(retro))
+      .catch(err => resolve(null))
+  })
+}
