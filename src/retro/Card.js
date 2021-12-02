@@ -91,7 +91,6 @@ export default function Card({ card_id, cards, user }) {
         borderRadius: '10',
       }}>
       <Paper elevation={3} sx={{ m: 1, p: 1, borderRadius: '15px', border: 'solid', borderColor: '#90caf9' }}>
-        <div>card id: {card_id}</div>
         <TextField fullWidth label={cardText} id="cardText" value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={submitCardTextChange} sx={{ my: 1 }}
         />
         <Box sx={{ m: 1 }}>
