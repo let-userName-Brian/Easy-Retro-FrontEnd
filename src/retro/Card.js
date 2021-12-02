@@ -24,7 +24,7 @@ export default function Card({ card_id, cards, user }) {
     setAuthor(newCard.user_name)
     setCardVotes(newCard.votes)
     setVoted(newCard.votes.some(vote => vote.user_id === user_id))
-  }, [cards, card_id]);
+  }, [cards, card_id, user_id]);
 
   useEffect(() => {
     socket.on('cardTextUpdated', ({ card }) => {
