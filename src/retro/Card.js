@@ -50,13 +50,16 @@ export default function Card({ cards, card_id, user }) {// cards,
     })
 
     //does not yet use setCard since card is new card on line 20/initialization useEffect
-    socket.on('commentUpdated', ({ card, comments, user_id, comment_id }) => {
+    socket.on('commentUpdated', ({ card, comments, user_id: updatedByUserId, comment_id }) => {
       if (card_id === card.card_id) {
         console.log('commentUpdated', card, comments)
         setComments(comments)
 
-        if (user_id && comment_id) {
-          document.getElementById(`comment-${comment_id}`).select()
+        if (comment_id && user_id === updatedByUserId) {
+          let comment = document.getElementById(`comment-${comment_id}`)
+          if (comment) {
+            comment.select()
+          }
         }
       }
     })

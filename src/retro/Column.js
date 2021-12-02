@@ -44,13 +44,16 @@ export default function Column({ column_id, user }) {
     })
 
     // Received when the server sends us a card update
-    socket.on('cardUpdated', ({ cards, column, user_id, card_id }) => {
+    socket.on('cardUpdated', ({ cards, column, user_id: updatedByUserId, card_id }) => {
       if (column.column_id === column_id) {
         console.log('cardUpdated', cards, column)
         setCards(cards)
         setColumn(column)
-        if (user_id && card_id) {
-          document.getElementById(`card-${card_id}`).select()
+        if (card_id && updatedByUserId === user_id) {
+          let card = document.getElementById(`card-${card_id}`)
+          if (card) {
+            card.select()
+          }
         }
       }
     })
