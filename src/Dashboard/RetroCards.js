@@ -29,7 +29,7 @@ export default function RetroCards({ retros, searchedRetros }) {
         {searchedRetros.map((retro, index) => {
           return (
             <Grid key={index} item xs={12} sm={6} md={6} lg={3} sx={{ flexGrow: 1 }}>
-              <Box sx={{border: 'solid', borderColor: '#90caf9', borderRadius: '8px' }}>
+              <Box sx={{border: 'solid', borderColor: '#90caf9', borderRadius: '8px', maxWidth: 350 }}>
               <Card key={index} sx={{ maxWidth: 350}}>
                 <CardMedia
                   component="img"
@@ -62,7 +62,7 @@ export default function RetroCards({ retros, searchedRetros }) {
       <>
         {retros?.map((retro, index) => (
           <Grid key={index} item xs={12} sm={6} md={6} lg={3} sx={{ flexGrow: 1 }}>
-            <Box sx={{border: 'solid', borderColor: 'black', borderRadius: '8px' }}>
+            <Box sx={{border: 'solid', borderColor: 'black', borderRadius: '8px', maxWidth: 350 }}>
             <Card key={index} sx={{ maxWidth: 350}}>
               <CardMedia
                 component="img"
