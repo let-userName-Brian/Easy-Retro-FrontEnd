@@ -1,8 +1,8 @@
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { useContext, useEffect, useRef, useState } from "react";
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import {PlayButton, PauseButton, SettingsButton} from "./TimerButtons";
-import {useContext, useState, useEffect, useRef, createContext} from "react";
 import SettingsContext from "./SettingsContext";
+import { PauseButton, PlayButton, SettingsButton } from "./TimerButtons";
 
 const red = '#f54e4e';
 const green = '#4aec8c';
@@ -50,7 +50,7 @@ export default function Timer() {
       }
 
       tick();
-    },1000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [settingsInfo]);
@@ -62,21 +62,21 @@ export default function Timer() {
 
   const minutes = Math.floor(secondsLeft / 60);
   let seconds = secondsLeft % 60;
-  if(seconds < 10) seconds = '0'+seconds;
+  if (seconds < 10) seconds = '0' + seconds;
 
   return (
-    <div style={{marginTop: '-30%'}}>
-      <div style={{display: 'flex', transform: 'scale(0.3, 0.3)', marginTop: '0px', flex: '-1', }}>
-      <CircularProgressbar
-        value={percentage}
-        text={minutes + ':' + seconds}
-        styles={buildStyles({
-        textColor:'#fff',
-        pathColor:mode === 'work' ? red : green,
-        tailColor:'rgba(255,255,255,.2)',
-      })} />
+    <div style={{ marginTop: '-30%' }}>
+      <div style={{ display: 'flex', transform: 'scale(0.3, 0.3)', marginTop: '0px', flex: '-1', }}>
+        <CircularProgressbar
+          value={percentage}
+          text={minutes + ':' + seconds}
+          styles={buildStyles({
+            textColor: '#fff',
+            pathColor: mode === 'work' ? red : green,
+            tailColor: 'rgba(255,255,255,.2)',
+          })} />
       </div>
-      <div style={{marginTop:'10px', marginTop: '-40%'}}>
+      <div style={{ marginTop: '-40%' }}>
         {isPaused
           ? <PlayButton onClick={() => { setIsPaused(false); isPausedRef.current = false; }} />
           : <PauseButton onClick={() => { setIsPaused(true); isPausedRef.current = true; }} />}
@@ -84,4 +84,4 @@ export default function Timer() {
       </div>
     </div>
   );
-  }
+}
