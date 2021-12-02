@@ -19,10 +19,12 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
+  overflow: 'auto',
+  maxHeight: '90vh',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  p: 4
 };
 
 export default function RetroModal({ user_id }) {
@@ -124,7 +126,7 @@ export default function RetroModal({ user_id }) {
             </Typography>
             <Grid container spacing={3}>
               <Grid item >
-                <TextField fullWidth required id='retro_name' label="Retro Name?" variant="outlined"
+                <TextField fullWidth autoFocus required id='retro_name' label="Retro Name?" variant="outlined"
                   value={retroName} onChange={(e) => setRetroName(e.target.value)} />
               </Grid>
               <Grid item >
