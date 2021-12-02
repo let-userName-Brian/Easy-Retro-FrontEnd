@@ -40,7 +40,7 @@ export default function Dashboard({ user, user_id }) {
       </Grid>
         </RubberBand>
       <Grid item xs={12} sm={12} md={12} lg={12}>
-        <Typography variant="h6">Your Active Retros</Typography>
+        <Typography variant="h6" sx={{marginLeft: '1%'}}>Your Active Retros</Typography>
       </Grid>
       <Fade bottom>
         <Grid container spacing={2} margin={0} >
