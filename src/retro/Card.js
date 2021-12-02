@@ -45,21 +45,35 @@ export default function Card({ cards, card_id, user }) {// cards,
         setCardVotes(votes)
       }
     })
+
+    //does not yet use setCard since card is new card on line 20/initialization useEffect
+    socket.on('commentUpdated', ({ card, comments }) => {
+      if (card_id === card.card_id) {
+        setComments(comments)
+      }
+    })
+
     return () => {
       socket.off('cardTextUpdated')
       socket.off('votesChanged')
+      socket.off('commentUpdated')
     }
-  }, [card_id])
+  }, [card_id])//comments?
 
   //console.log('cardVotes', cardVotes)
   function changeCardText() {
     socket.emit('changeCardText', { card_id, card_text: cardText })
   }
 
-  //add comment to card
-  const addComment = () => {
-    setComments(comments.concat({ card_id, comment_text: cardText, user_id }))
+  function addComment(card_id, user_id) {
+    console.log('addComment emit: ', card_id, user_id)
+    socket.emit('addComment', { card_id, user_id });
   }
+
+  //broken local only - add comment to card
+  // const addComment = () => {
+  //   setComments(comments.concat({ card_id, comment_text: cardText, user_id }))
+  // }
 
   //add vote to card
   const addVote = () => {

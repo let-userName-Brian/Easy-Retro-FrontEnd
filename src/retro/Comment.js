@@ -42,7 +42,7 @@ export default function Comment({ comment_id, comment, user_id, retro_id, user }
   }
 
   function changeCommentText() {
-    socket.emit('changeCommentText', { comment_id })
+    socket.emit('changeCommentText', { comment_id, commentText })
   }
 
 
