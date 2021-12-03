@@ -23,6 +23,7 @@ export default function Retro({ user_id, user }) {
   const [cards, setCards] = useState([])
   const [comments, setComments] = useState([])
   const [userVotes, setUserVotes] = useState(0) //state set from the payload of max_votes
+  const [joinedRetro, setJoinedRetro] = useState(false)
 
   //timer state
   const [showSettings, setShowSettings] = useState(false);
@@ -31,12 +32,23 @@ export default function Retro({ user_id, user }) {
 
   useEffect(() => {
 
-    socket.emit('joinRetro', { user_id, retro_id });
+    // Reconnects to the retro room if we've refreshed the page or reloaded react
+    if (socket.connected && !joinedRetro) {
+      console.log(`Joining retro ${retro_id}`)
+      socket.emit('joinRetro', { user_id, retro_id });
+    }
 
     socket.on('connect', () => {
       // Ask the server to join the room with name retroId
-      console.log(`Joining retro ${retro_id}`)
-      socket.emit('joinRetro', { user_id, retro_id });
+      if (!joinedRetro) {
+        console.log(`Joining retro ${retro_id}`)
+        socket.emit('joinRetro', { user_id, retro_id });
+        setJoinedRetro(true)
+      }
+    })
+
+    socket.on('disconnect', () => {
+      setJoinedRetro(false)
     })
 
     // Received when the server sends us a retro
