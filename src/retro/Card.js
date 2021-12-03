@@ -45,7 +45,7 @@ export default function Card({ cards, card_id, user }) {// cards,
       console.log('handleCommentTextUpdated', retro_id, comment, comment_id)
       setComments(comments)
     }
-  }, [])
+  }, [card_id])
 
   useEffect(() => {
     let newCard = cards?.find(card => card.card_id === card_id)
