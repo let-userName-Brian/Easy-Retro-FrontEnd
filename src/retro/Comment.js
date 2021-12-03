@@ -17,29 +17,16 @@ export default function Comment({ comment_id, comment }) {
     }
   }, [comment])
 
-  useEffect(() => {
-    socket.on('commentTextUpdated', ({ comment }) => {
-      if (comment_id === comment.comment_id) {
-        setCommentText(comment.comment_text)
-      }
-    })
-
-    return () => {
-      socket.off('commentTextUpdated')
-    }
-  }, [comment_id])
-
-  async function updateCommentText(commentText) {
-    setCommentText(commentText)
+  async function updateCommentText(comment_text) {
+    setCommentText(comment_text)
     clearTimeout(timer)
     setTimer(setTimeout(() => {
-      socket.emit('changeCommentText', { comment_id, commentText })
+      socket.emit('changeCommentText', { comment_id, comment_text })
     }, 500))
   }
 
   function removeComment() {
     let card_id = comment.card_id
-    console.log('removeComment:', comment_id, card_id)
     socket.emit('removeComment', { comment_id, card_id })
   }
 
