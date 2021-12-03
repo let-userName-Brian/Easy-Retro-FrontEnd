@@ -28,11 +28,9 @@ export default function App() {
 
   useEffect(() => {
     if (darkMode) {
-      console.log('and then there was night')
       document.body.setAttribute('style', 'background: #1e1e1e')
     }
     else {
-      console.log('RIP eyes')
       document.body.setAttribute('style', 'background: #f8f8f8')
     }
   }, [darkMode])
