@@ -51,8 +51,11 @@ export default function SearchBar({ retros, setSearchedRetros }) {
     clearTimeout(timer)
     timer = setTimeout(() => {
       let filteredRetros = retros?.filter(retro => {
-        return retro.retro_name?.toLowerCase()?.includes(searchText?.toLowerCase()) || retro.tags?.includes(searchText?.toLowerCase())
-      })
+        if( searchText.length === 0 ) {
+          return null
+        } else {
+        return retro.retro_name?.toLowerCase()?.includes(searchText?.toLowerCase()) || retro.tags?.includes(searchText?.toLowerCase()) 
+      }})
       setSearchedRetros(filteredRetros);
     }, 400)
   }
