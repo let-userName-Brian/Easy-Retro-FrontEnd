@@ -10,7 +10,7 @@ export default function Column({ column_id, user }) {
   const { columns: initColumns, cards: initCards, retro, user_id } = useContext(RetroContext)//user_id with prop user?
   const [column, setColumn] = useState()
   const [cards, setCards] = useState()
-  const [colName, setColName] = useState()
+  const [colName, setColName] = useState('')
   const [retro_id, setRetroId] = useState()
 
   useEffect(() => {
@@ -58,11 +58,18 @@ export default function Column({ column_id, user }) {
       }
     })
 
+    socket.on('cardTextUpdated', ({ retro_id, card, cards: newCards, column_id: columnId, user_id, card_id }) => {
+      if (column_id === columnId) {
+        setCards(newCards)
+      }
+    })
+
     return () => {
       socket.off('columnRenamed')
       socket.off('cardUpdated')
+      socket.off('cardTextUpdated')
     }
-  }, [column_id])
+  }, [column_id, user_id])
 
   function removeColumn() {
     console.log('del col:', retro_id, column_id)
@@ -77,10 +84,6 @@ export default function Column({ column_id, user }) {
 
   function addCard(column_id) {
     socket.emit('addCard', { retro_id, column_id, user_id });
-  }
-
-  if (!column) {
-    return <>Loading Column</>
   }
 
   return (
@@ -103,7 +106,7 @@ export default function Column({ column_id, user }) {
           }} />
           <ColumnMenu removeColumnFunc={removeColumn} addCardFunc={() => addCard(column_id)} />
         </Box>
-        {column.card_ids.map((card_id) => (<Card key={card_id} card_id={card_id} cards={cards} user={user} />))}
+        {column?.card_ids.map((card_id) => (<Card key={card_id} card_id={card_id} cards={cards} user={user} />))}
         <AddCardButton addCardFunc={() => addCard(column_id)} />
       </Paper>
     </Box>
