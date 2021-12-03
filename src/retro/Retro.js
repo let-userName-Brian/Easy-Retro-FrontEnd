@@ -38,7 +38,7 @@ export default function Retro({ user_id, user }) {
     setComments(retroPayload.comments)
     let currentUsedVotes = retroPayload.cards.reduce((acc, card) => acc + card.votes.filter(vote => vote.user_id === user_id).length, 0)
     setUserVotes(retroPayload.retro.max_votes - currentUsedVotes)
-  }, [])
+  }, [user_id])
 
   const handleColumnUpdated = useCallback(({ retro, columns, user_id: updatedByUserId, column_id }) => {
     setRetro(retro)
@@ -51,7 +51,7 @@ export default function Retro({ user_id, user }) {
         column.select()
       }
     }
-  })
+  }, [user_id])
 
   const handleConnect = useCallback(() => {
     // Ask the server to join the room with name retroId
@@ -60,11 +60,11 @@ export default function Retro({ user_id, user }) {
       socket.emit('joinRetro', { user_id, retro_id });
       setJoinedRetro(true)
     }
-  })
+  }, [joinedRetro, retro_id, user_id])
 
   const handleDisconnect = useCallback(() => {
     setJoinedRetro(false)
-  })
+  }, [])
 
   useEffect(() => {
 
@@ -85,7 +85,7 @@ export default function Retro({ user_id, user }) {
       socket.off('connect', handleConnect)
       socket.off('disconnect', handleDisconnect)
     }
-  }, [retro_id, user_id])
+  }, [retro_id, user_id, handleColumnUpdated, handleConnect, handleDisconnect, handleInitRetro, joinedRetro])
 
   function addColumn() {
     socket.emit('addColumn', { retro_id });
