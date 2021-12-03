@@ -38,7 +38,6 @@ export default function Card({ cards, card_id, user }) {// cards,
   useEffect(() => {
     socket.on('cardTextUpdated', ({ card }) => {
       if (card_id === card.card_id) {
-        // setCard(card);
         setCardText(card.card_text)
       }
     })
