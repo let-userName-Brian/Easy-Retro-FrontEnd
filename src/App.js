@@ -63,10 +63,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline>
-        <nav>
-          <Navbar user={user} darkMode={darkMode} setDarkMode={setDarkMode} />
-          <Divider color="gray" />
-        </nav>
+        <Navbar user={user} darkMode={darkMode} setDarkMode={setDarkMode} />
         <Routes>
           <Route path="/" element={<Dashboard user={user} user_id={user.user_id} />} />
           <Route path="/retros/:retro_id" element={<Retro user_id={user.user_id} user={user} />} />
