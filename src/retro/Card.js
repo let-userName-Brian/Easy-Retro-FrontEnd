@@ -1,6 +1,6 @@
 import RecommendIcon from '@mui/icons-material/Recommend';
 import { Box, Button, IconButton, Paper, Stack, TextField, Tooltip, Typography } from '@mui/material/';
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import Bounce from 'react-reveal/Bounce';
 import { socket } from "../SocketClient";
 import UserAvatar from '../UserAvatar';
@@ -10,7 +10,7 @@ import CardMenu from './CardMenu';
 import CommentIcon from '@mui/icons-material/Comment';
 
 export default function Card({ cards, card_id, user }) {// cards,
-  const { cards: initCards, comments: initComments, user_id, userVotes, setUserVotes } = useContext(RetroContext)
+  const { comments: initComments, user_id, userVotes, setUserVotes } = useContext(RetroContext)
   // const [card, setCard] = useState()
   const [cardText, setCardText] = useState('')
   const [author, setAuthor] = useState()//needs to be converted to user_name
@@ -20,10 +20,36 @@ export default function Card({ cards, card_id, user }) {// cards,
   const [renderComments, setRenderComments] = useState(false)
   const [timer, setTimer] = useState()
 
+  const handleVotesChanged = useCallback(({ card_id: id, votes }) => {
+    if (card_id === id) {
+      setCardVotes(votes)
+    }
+  }, [card_id])
+
+  const handleCommentUpdated = useCallback(({ card, comments, user_id: updatedByUserId, comment_id }) => {
+    if (card_id === card.card_id) {
+      console.log('commentUpdated', card, comments)
+      setComments(comments)
+
+      if (comment_id && user_id === updatedByUserId) {
+        let comment = document.getElementById(`comment-${comment_id}`)
+        if (comment) {
+          comment.select()
+        }
+      }
+    }
+  }, [card_id, user_id])
+
+  const handleCommentTextUpdated = useCallback(({ retro_id, comment, comments, card_id: cardId, user_id, comment_id }) => {
+    if (card_id === cardId) {
+      console.log('handleCommentTextUpdated', retro_id, comment, comment_id)
+      setComments(comments)
+    }
+  }, [card_id])
+
   useEffect(() => {
     let newCard = cards?.find(card => card.card_id === card_id)
     if (!newCard) return;
-    // setCard(newCard)
     setCardText(newCard.card_text)
     setAuthor(newCard.user_name)
     setCardVotes(newCard.votes)
@@ -37,33 +63,16 @@ export default function Card({ cards, card_id, user }) {// cards,
   }, [initComments, card_id])
 
   useEffect(() => {
-    socket.on('votesChanged', ({ card_id: id, votes }) => {
-      if (card_id === id) {
-        setCardVotes(votes)
-      }
-    })
-
-    //does not yet use setCard since card is new card on line 20/initialization useEffect
-    socket.on('commentUpdated', ({ card, comments, user_id: updatedByUserId, comment_id }) => {
-      if (card_id === card.card_id) {
-        console.log('commentUpdated', card, comments)
-        setComments(comments)
-
-        if (comment_id && user_id === updatedByUserId) {
-          let comment = document.getElementById(`comment-${comment_id}`)
-          if (comment) {
-            comment.select()
-          }
-        }
-      }
-    })
+    socket.on('votesChanged', handleVotesChanged)
+    socket.on('commentUpdated', handleCommentUpdated)
+    socket.on('commentTextUpdated', handleCommentTextUpdated)
 
     return () => {
-      socket.off('cardTextUpdated')
-      socket.off('votesChanged')
-      socket.off('commentUpdated')
+      socket.off('votesChanged', handleVotesChanged)
+      socket.off('commentUpdated', handleCommentUpdated)
+      socket.off('commentTextUpdated', handleCommentTextUpdated)
     }
-  }, [card_id, user_id])
+  }, [handleVotesChanged, handleCommentUpdated, handleCommentTextUpdated])
 
   async function updateCardText(card_text) {
     setCardText(card_text)
@@ -115,7 +124,7 @@ export default function Card({ cards, card_id, user }) {// cards,
       }}>
       <Bounce bottom>
         <Paper sx={{ width: '100%', my: 1, p: 1, borderRadius: '10px', border: 'solid', borderWidth: '1px', borderColor: 'rgb(144 202 249 / 40%)', boxShadow: "0px 4px 5px -2px rgb(144 202 249 / 14%), 0px 7px 10px 1px rgb(144 202 249 / 14%), 0px 2px 16px 1px rgb(144 202 249 / 14%)" }}>
-
+          Card Id: {card_id}
           <TextField fullWidth multiline id={`card-${card_id}`} value={cardText} onChange={(e) => updateCardText(e.target.value)} sx={{ mb: 1 }}
           />
           <Box sx={{ m: 1 }}>

@@ -1,5 +1,5 @@
 import { Box, Paper, TextField } from '@mui/material/';
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { socket } from "../SocketClient";
 import AddCardButton from './AddCardButton';
 import Card from "./Card";
@@ -7,75 +7,63 @@ import ColumnMenu from './ColumnMenu';
 import { RetroContext } from './Retro';
 
 export default function Column({ column_id, user }) {
-  const { columns: initColumns, cards: initCards, retro, user_id } = useContext(RetroContext)//user_id with prop user?
-  const [column, setColumn] = useState()
+  const { retro_id, columns: initColumns, cards: initCards, user_id } = useContext(RetroContext)//user_id with prop user?
+  const [cardIds, setCardIds] = useState([])
   const [cards, setCards] = useState()
   const [colName, setColumnName] = useState('')
-  const [retro_id, setRetroId] = useState()
   const [timer, setTimer] = useState()
 
-  useEffect(() => {
-    if (!retro) return;
-    setRetroId(retro.retro_id)
-  }, [retro])
+  const handleColumnRenamed = useCallback(({ column }) => {
+    if (column.column_id === column_id) {
+      setColumnName(column.column_name)
+    }
+  }, [column_id])
 
-  useEffect(() => {
-    if (!column_id) return
-    if (initColumns.length === 0) return
-    let col = initColumns.find(column => column.column_id === column_id)
-    if (!col) return
-    setColumn(col)
-    setColumnName(col.column_name)
-  }, [initColumns, column_id])
+  const handleCardUpdated = useCallback(({ cards, column, user_id: updatedByUserId, card_id }) => {
+    if (column.column_id === column_id) {
+      setCards(cards)
+      setCardIds(column.card_ids)
+      if (card_id && updatedByUserId === user_id) {
+        let card = document.getElementById(`card-${card_id}`)
+        if (card) {
+          card.select()
+        }
+      }
+    }
+  }, [column_id, user_id])
+
+  const handleCardTextUpdated = useCallback(({ retro_id, card, cards: newCards, column_id: columnId, user_id, card_id }) => {
+    if (column_id === columnId) {
+      setCards(newCards)
+    }
+  }, [column_id])
 
   useEffect(() => {
     if (!initColumns) return
     if (!initCards) return
     //initialize cards from context
     let col = initColumns.find(column => column.column_id === column_id)
-    setCards(initCards?.filter(card => col?.card_ids.includes(card.card_id)))
+    if (!col) {
+      return
+    }
+    setColumnName(col.column_name)
+    setCardIds(col.card_ids)
+    setCards(initCards.filter(card => col.card_ids.includes(card.card_id)))
   }, [initColumns, initCards, column_id])
 
   useEffect(() => {
-    // Received when the server sends us a name update
-    socket.on('columnRenamed', ({ column }) => {
-      if (column.column_id === column_id) {
-        setColumn(column);
-        setColumnName(column.column_name)
-      }
-    })
-
-    // Received when the server sends us a card update
-    socket.on('cardUpdated', ({ cards, column, user_id: updatedByUserId, card_id }) => {
-      if (column.column_id === column_id) {
-        console.log('cardUpdated', cards, column)
-        setCards(cards)
-        setColumn(column)
-        if (card_id && updatedByUserId === user_id) {
-          let card = document.getElementById(`card-${card_id}`)
-          if (card) {
-            card.select()
-          }
-        }
-      }
-    })
-
-    socket.on('cardTextUpdated', ({ retro_id, card, cards: newCards, column_id: columnId, user_id, card_id }) => {
-      if (column_id === columnId) {
-        console.log('cardTextUpdated', columnId, newCards)
-        setCards(newCards)
-      }
-    })
+    socket.on('columnRenamed', handleColumnRenamed)
+    socket.on('cardUpdated', handleCardUpdated)
+    socket.on('cardTextUpdated', handleCardTextUpdated)
 
     return () => {
-      socket.off('columnRenamed')
-      socket.off('cardUpdated')
-      socket.off('cardTextUpdated')
+      socket.off('columnRenamed', handleColumnRenamed)
+      socket.off('cardUpdated', handleCardUpdated)
+      socket.off('cardTextUpdated', handleCardTextUpdated)
     }
-  }, [column_id, user_id])
+  }, [handleColumnRenamed, handleCardUpdated, handleCardTextUpdated])
 
   function removeColumn() {
-    console.log('del col:', retro_id, column_id)
     socket.emit('removeColumn', { retro_id, column_id })
   }
 
@@ -111,7 +99,7 @@ export default function Column({ column_id, user }) {
           }} />
           <ColumnMenu removeColumnFunc={removeColumn} addCardFunc={() => addCard(column_id)} />
         </Box>
-        {column?.card_ids.map((card_id) => (<Card key={card_id} card_id={card_id} cards={cards} user={user} />))}
+        {cardIds.map((card_id) => (<Card key={card_id} card_id={card_id} cards={cards} user={user} />))}
         <AddCardButton addCardFunc={() => addCard(column_id)} />
       </Paper>
     </Box>
