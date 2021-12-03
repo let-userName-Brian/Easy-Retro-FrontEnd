@@ -28,7 +28,6 @@ export default function Card({ cards, card_id, user }) {// cards,
 
   const handleCommentUpdated = useCallback(({ card, comments, user_id: updatedByUserId, comment_id }) => {
     if (card_id === card.card_id) {
-      console.log('commentUpdated', card, comments)
       setComments(comments)
 
       if (comment_id && user_id === updatedByUserId) {
@@ -42,7 +41,6 @@ export default function Card({ cards, card_id, user }) {// cards,
 
   const handleCommentTextUpdated = useCallback(({ retro_id, comment, comments, card_id: cardId, user_id, comment_id }) => {
     if (card_id === cardId) {
-      console.log('handleCommentTextUpdated', retro_id, comment, comment_id)
       setComments(comments)
     }
   }, [card_id])
@@ -87,7 +85,6 @@ export default function Card({ cards, card_id, user }) {// cards,
   }
 
   function addComment() {
-    console.log('addComment emit: ', card_id, user_id)
     socket.emit('addComment', { card_id, user_id });
   }
 
@@ -95,7 +92,6 @@ export default function Card({ cards, card_id, user }) {// cards,
     setRenderComments(!renderComments)
   }
 
-  //add vote to card
   const addVote = () => {
     if (userVotes > 0) {
       socket.emit('addVote', { card_id, vote_type: 'up', user_id })
@@ -105,9 +101,7 @@ export default function Card({ cards, card_id, user }) {// cards,
     }
   }
 
-  //remove vote from card
   const removeVote = () => {
-    // console.log("vote down", card_id, user_id, cardVotes)
     socket.emit('removeVote', { card_id, vote_type: 'up', user_id })
     setVoted(false)
     setCardVotes(cardVotes.filter(v => v.user_id !== user_id))
