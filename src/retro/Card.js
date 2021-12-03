@@ -18,6 +18,7 @@ export default function Card({ cards, card_id, user }) {// cards,
   const [voted, setVoted] = useState(false)
   const [comments, setComments] = useState([])
   const [renderComments, setRenderComments] = useState(false)
+  const [timer, setTimer] = useState()
 
   useEffect(() => {
     let newCard = cards?.find(card => card.card_id === card_id)
@@ -36,13 +37,6 @@ export default function Card({ cards, card_id, user }) {// cards,
   }, [initComments, card_id])
 
   useEffect(() => {
-    socket.on('cardTextUpdated', ({ card }) => {
-      if (card_id === card.card_id) {
-        // setCard(card);
-        setCardText(card.card_text)
-      }
-    })
-
     socket.on('votesChanged', ({ card_id: id, votes }) => {
       if (card_id === id) {
         setCardVotes(votes)
@@ -50,13 +44,16 @@ export default function Card({ cards, card_id, user }) {// cards,
     })
 
     //does not yet use setCard since card is new card on line 20/initialization useEffect
-    socket.on('commentUpdated', ({ card, comments, user_id, comment_id }) => {
+    socket.on('commentUpdated', ({ card, comments, user_id: updatedByUserId, comment_id }) => {
       if (card_id === card.card_id) {
         console.log('commentUpdated', card, comments)
         setComments(comments)
 
-        if (user_id && comment_id) {
-          document.getElementById(`comment-${comment_id}`).select()
+        if (comment_id && user_id === updatedByUserId) {
+          let comment = document.getElementById(`comment-${comment_id}`)
+          if (comment) {
+            comment.select()
+          }
         }
       }
     })
@@ -66,11 +63,14 @@ export default function Card({ cards, card_id, user }) {// cards,
       socket.off('votesChanged')
       socket.off('commentUpdated')
     }
-  }, [card_id])//comments?
+  }, [card_id, user_id])
 
-  //console.log('cardVotes', cardVotes)
-  function changeCardText() {
-    socket.emit('changeCardText', { card_id, card_text: cardText })
+  async function updateCardText(card_text) {
+    setCardText(card_text)
+    clearTimeout(timer)
+    setTimer(setTimeout(() => {
+      socket.emit('changeCardText', { card_id, card_text })
+    }, 500))
   }
 
   function removeCard() {
@@ -116,7 +116,7 @@ export default function Card({ cards, card_id, user }) {// cards,
       <Bounce bottom>
         <Paper sx={{ width: '100%', my: 1, p: 1, borderRadius: '10px', border: 'solid', borderWidth: '1px', borderColor: 'rgb(144 202 249 / 40%)', boxShadow: "0px 4px 5px -2px rgb(144 202 249 / 14%), 0px 7px 10px 1px rgb(144 202 249 / 14%), 0px 2px 16px 1px rgb(144 202 249 / 14%)" }}>
 
-          <TextField fullWidth multiline id={`card-${card_id}`} value={cardText} onChange={(e) => setCardText(e.target.value)} onBlur={changeCardText} sx={{ mb: 1 }}
+          <TextField fullWidth multiline id={`card-${card_id}`} value={cardText} onChange={(e) => updateCardText(e.target.value)} sx={{ mb: 1 }}
           />
           <Box sx={{ m: 1 }}>
             <Stack direction='row' justifyContent="space-between" alignItems='center'>
