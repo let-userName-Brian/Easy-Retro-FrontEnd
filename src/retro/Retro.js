@@ -11,7 +11,6 @@ import RetroTitle from './RetroTitle'
 import Fade from 'react-reveal/Fade';
 import CircularProgress from '@mui/material/CircularProgress';
 import ShareRetroModal from '../ShareRetroModal';
-import { useLocation } from 'react-router';
 
 export const RetroContext = createContext()
 
@@ -30,11 +29,15 @@ export default function Retro({ user_id, user }) {
   const [workMinutes, setWorkMinutes] = useState(5);
   const [breakMinutes, setBreakMinutes] = useState(5);
 
-  const location = useLocation()
-
   useEffect(() => {
-    // Ask the server to join the room with name retroId
+
     socket.emit('joinRetro', { user_id, retro_id });
+
+    socket.on('connect', () => {
+      // Ask the server to join the room with name retroId
+      console.log(`Joining retro ${retro_id}`)
+      socket.emit('joinRetro', { user_id, retro_id });
+    })
 
     // Received when the server sends us a retro
     socket.on('initRetro', (retroPayload) => {
@@ -54,6 +57,7 @@ export default function Retro({ user_id, user }) {
       if (column_id && updatedByUserId === user_id) {
         let column = document.getElementById(`column-${column_id}`)
         if (column) {
+          column.focus()
           column.select()
         }
       }
@@ -62,6 +66,7 @@ export default function Retro({ user_id, user }) {
     return () => {
       socket.off('initRetro')
       socket.off('columnUpdated')
+      socket.off('connect')
     }
   }, [retro_id, user_id])
 
