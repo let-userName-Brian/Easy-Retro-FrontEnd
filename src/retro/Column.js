@@ -10,8 +10,9 @@ export default function Column({ column_id, user }) {
   const { columns: initColumns, cards: initCards, retro, user_id } = useContext(RetroContext)//user_id with prop user?
   const [column, setColumn] = useState()
   const [cards, setCards] = useState()
-  const [colName, setColName] = useState('')
+  const [colName, setColumnName] = useState('')
   const [retro_id, setRetroId] = useState()
+  const [timer, setTimer] = useState()
 
   useEffect(() => {
     if (!retro) return;
@@ -24,7 +25,7 @@ export default function Column({ column_id, user }) {
     let col = initColumns.find(column => column.column_id === column_id)
     if (!col) return
     setColumn(col)
-    setColName(col.column_name)
+    setColumnName(col.column_name)
   }, [initColumns, column_id])
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function Column({ column_id, user }) {
     socket.on('columnRenamed', ({ column }) => {
       if (column.column_id === column_id) {
         setColumn(column);
-        setColName(column.column_name)
+        setColumnName(column.column_name)
       }
     })
 
@@ -60,6 +61,7 @@ export default function Column({ column_id, user }) {
 
     socket.on('cardTextUpdated', ({ retro_id, card, cards: newCards, column_id: columnId, user_id, card_id }) => {
       if (column_id === columnId) {
+        console.log('cardTextUpdated', columnId, newCards)
         setCards(newCards)
       }
     })
@@ -76,10 +78,12 @@ export default function Column({ column_id, user }) {
     socket.emit('removeColumn', { retro_id, column_id })
   }
 
-  function renameColumn() {
-    // let retro_id = retro.retro_id;
-    let column_id = column.column_id
-    socket.emit('renameColumn', { retro_id, column_id, column_name: colName })
+  async function updateColumnName(column_name) {
+    setColumnName(column_name)
+    clearTimeout(timer)
+    setTimer(setTimeout(() => {
+      socket.emit('renameColumn', { retro_id, column_id, column_name })
+    }, 500))
   }
 
   function addCard(column_id) {
@@ -94,7 +98,7 @@ export default function Column({ column_id, user }) {
       }}>
       <Paper elevation={9} sx={{ width: '100%', p: 1, px: 1.3, borderRadius: '15px', border: 'solid', borderColor: '#999', borderWidth: '.1em' }} >
         <Box container sx={{ width: '100%', display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-          <TextField fullWidth id={`column-${column_id}`} className={"columnName"} value={colName} onChange={(e) => setColName(e.target.value)} onBlur={renameColumn} sx={{
+          <TextField fullWidth id={`column-${column_id}`} className={"columnName"} value={colName} onChange={(e) => updateColumnName(e.target.value)} sx={{
             '& fieldset': {
               borderRadius: '6px',
               borderStartStartRadius: '10px',
