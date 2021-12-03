@@ -29,11 +29,12 @@ export default function Column({ column_id, user }) {
   }, [initColumns, column_id])
 
   useEffect(() => {
-    if (!column) return
+    if (!initColumns) return
     if (!initCards) return
     //initialize cards from context
-    setCards(initCards?.filter(card => column?.card_ids.includes(card.card_id)))
-  }, [column, initCards])
+    let col = initColumns.find(column => column.column_id === column_id)
+    setCards(initCards?.filter(card => col?.card_ids.includes(card.card_id)))
+  }, [initColumns, initCards, column_id])
 
   useEffect(() => {
     // Received when the server sends us a name update
