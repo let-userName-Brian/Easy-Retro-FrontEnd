@@ -107,7 +107,7 @@ export default function Retro({ user_id, user }) {
 
   //need to redo styling lost it on merge somehow and now I cant log in to see a screen
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{margin:'0'}}>
       <Fade right>
         <Grid container spacing={3} sx={{ display: 'flex' }}>
           <Grid item xs={8} md={8} lg={8} sx={{ flex: '1', textAlign: 'left', mt: 2 }}>
