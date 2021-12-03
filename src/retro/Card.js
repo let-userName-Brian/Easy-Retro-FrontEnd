@@ -40,6 +40,13 @@ export default function Card({ cards, card_id, user }) {// cards,
     }
   }, [card_id, user_id])
 
+  const handleCommentTextUpdated = useCallback(({ retro_id, comment, comments, card_id: cardId, user_id, comment_id }) => {
+    if (card_id === cardId) {
+      console.log('handleCommentTextUpdated', retro_id, comment, comment_id)
+      setComments(comments)
+    }
+  }, [])
+
   useEffect(() => {
     let newCard = cards?.find(card => card.card_id === card_id)
     if (!newCard) return;
@@ -58,12 +65,14 @@ export default function Card({ cards, card_id, user }) {// cards,
   useEffect(() => {
     socket.on('votesChanged', handleVotesChanged)
     socket.on('commentUpdated', handleCommentUpdated)
+    socket.on('commentTextUpdated', handleCommentTextUpdated)
 
     return () => {
       socket.off('votesChanged', handleVotesChanged)
       socket.off('commentUpdated', handleCommentUpdated)
+      socket.off('commentTextUpdated', handleCommentTextUpdated)
     }
-  }, [handleVotesChanged, handleCommentUpdated])
+  }, [handleVotesChanged, handleCommentUpdated, handleCommentTextUpdated])
 
   async function updateCardText(card_text) {
     setCardText(card_text)
